@@ -1,0 +1,84 @@
+## Samples information and input and output
+species: ''
+sample: ''
+hifi_reads: '' # Must be a fastq.gz file
+hic_r1: '' # Must be a fastq.gz file
+hic_r2: '' # Must be a fastq.gz file
+ont_reads: ''
+geneticcode: 
+taxid: 
+buscodb: ''
+solo_asm: 'Yes'
+
+## Threads
+threads: 32
+
+## Software Threads
+software_threads:
+  bwa_index: 1
+  samtools_flagstats: 4
+  pretext_snapshot: 1
+  fastp: 10
+  fastqc: 8
+  genomescope2: 8
+  nanoplot: 8
+  gfastats: 4
+
+## FCS-GX Database
+gxdb: /mnt/gen/opt/utils/lucas/S4-Databases/fcs-gx_testDB/gxdb
+
+## Fastp parameters
+fastp:
+  flags: '--cut_tail --detect_adapter_for_pe --dont_eval_duplication'
+  min_len: '--length_required 35'
+  crop: '--trim_front1 5'
+  quality: '--cut_mean_quality 24'
+
+## Cutadapt parameters
+cutadapt: 
+  adaptors: '-b ATCTCTCTCAACAACAACAACGGAGGAGGAGGAAAAGAGAGAGAT -b ATCTCTCTCTTTTCCTCCTCCTCCGTTGTTGTTGTTGAGAGAGAT'
+  filtering: '--discard -O 35'
+  adap_find: '--rc -e 0.1'
+
+## NanoPlot parameters
+nanoplot:
+  args: "--tsv_stats --format svg"
+  plots: "--plots kde hex dot"
+
+## Meryl parameters
+meryl:
+  kmer: "k=31"
+
+## Genomescope2 parameters
+genomescope2:
+  kmer: "-k 31"
+  ploidy: "-p 2"
+
+## Parameters for SmudgePlot
+smudgeplot:
+  fastk: "-v -t1 -k31"
+  ploidyplot: "-e10 -k -v"
+
+## Parameters for KAT GCP
+katgcp:
+  kmer: "-m 31"
+
+## Hifiasm parameters
+hifiasm:
+  purgelevel: "-l 1 -O 1"
+  similarity: "-s 0.75"
+
+## gfastats parameters
+gfastats:
+  params: "-o fa --discover-paths"
+
+## Bellerophon parameters
+bellerophon: "--quality 10"
+
+## Pretext parameters
+pretext:
+  map: "--mapq 10"
+  snapshot: "--sequences '=full' -c 'Mellow Rainbow' --gridSize 1 --gridColour black --jpegQuality 100 -r 4000"
+
+## YAHS parameters
+yahs: "-e GATC,GANTC,CTNAG,TTAA --no-mem-check -v 1"

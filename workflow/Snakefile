@@ -1,0 +1,65 @@
+### Pipeasm - a tool for automated large genome assembly and analysis 
+### Trindade F., Silva B. M., Canesin L., Souza Junior R. O., Oliveira R. 2024
+
+##### Input and functions #####
+
+##### Check Files ####
+
+include: "rules/singularity.smk"
+include: "rules/common.smk"
+include: "rules/prepare_buscodb.smk"
+
+##### Target rules #####
+
+include: "rules/hifi_files.smk"
+include: "rules/hifi_trimming_qc.smk"
+include: "rules/hifi_kmer_evaluation.smk"
+include: "rules/download_mito_reference.smk"
+
+if config["ont_reads"]:
+	include: "rules/ont_files.smk"
+	include: "rules/ont_trimming_qc.smk"
+
+if config['solo_asm'].lower() == 'yes':
+	
+	if config["ont_reads"]:
+		include: "rules/ont_solo_asm.smk"
+	else:
+		include: "rules/solo_asm.smk"
+	
+	include: "rules/solo_stats.smk"
+	include: "rules/solo_completeness.smk"
+	include: "rules/solo_merqury.smk"
+	include: "rules/solo_asm_plots.smk"
+	include: "rules/solo_decontamination.smk"
+	include: "rules/solo_mitohifi.smk"
+
+if config["hic_r1"] and config["hic_r2"]:
+	include: "rules/hic_files.smk"
+	include: "rules/hic_trimming_qc.smk"
+
+	if config["ont_reads"]:
+		include: "rules/ont_phased_asm.smk"
+	else:
+		include: "rules/phased_asm.smk"
+	
+	include: "rules/phased_stats.smk"
+	include: "rules/phased_completeness.smk"
+	include: "rules/phased_merqury.smk"
+	include: "rules/phased_asm_plots.smk"
+	include: "rules/phased_decontamination.smk"
+	include: "rules/phased_mitohifi.smk"
+	include: "rules/hic_initital_contacts.smk"
+	include: "rules/hic_scaffolding.smk"
+	include: "rules/hic_final_contacts.smk"
+	include: "rules/scaffolding_stats.smk"
+	include: "rules/scaffolding_completeness.smk"
+	include: "rules/scaffolding_plots.smk"
+	include: "rules/scaffolding_merqury.smk"
+
+## Ending
+rule all:
+	input:
+		get_output(config["sample"])
+	script:
+		"scripts/parse_results.py"
