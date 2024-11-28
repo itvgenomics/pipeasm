@@ -27,6 +27,8 @@ KMER_EVAL=false
 ASSEMBLY=false
 SCAFFOLDING=false
 
+SETUNLOCK=""
+
 while [ "$1" != "" ]; do
     case $1 in
     -c)
@@ -60,6 +62,9 @@ while [ "$1" != "" ]; do
     --scaffolding)
         SCAFFOLDING=true
         FULL=false
+        ;;
+    --unlock)
+        SETUNLOCK="--unlock"
         ;;
     *)
         echo "ERROR: Invalid argument definition. Ensure there are no spaces within your strings and that all arguments are correctly specified."
@@ -161,4 +166,4 @@ echo "INFO: Running Pipeasm."
 # Run the Pipeline
 export SINGULARITY_CACHEDIR=$WORKDIR/singularity && \
 export TMPDIR=$WORKDIR/tmp && \
-snakemake -d $WORKDIR --snakefile $SNAKEFILE --configfile $CONFIGFILE --use-singularity --singularity-args "-B $WORKDIR:/data --pwd /data" --cores $THREADS
+snakemake -d $WORKDIR --snakefile $SNAKEFILE --configfile $CONFIGFILE --use-singularity --singularity-args "-B $WORKDIR:/data --pwd /data" --cores $THREADS $SETUNLOCK
