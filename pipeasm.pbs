@@ -5,6 +5,15 @@
 #PBS -o pipeasm.log
 #PBS -e pipeasm.err
 
+CORES=$[ `cat $PBS_NODEFILE | wc -l` ]
+NODES=$[ `uniq $PBS_NODEFILE | wc -l` ]
+
+printf "Begin: `date`\n";
+TBEGIN=`echo "print time();" | perl`
+
+printf "\n"
+printf "> Running with $CORES cores, in $NODES nodes\n"
+
 # Make sure to activate the conda enviroment with snakemake and singularity installation
 source /mnt/gen/opt/softwares/miniconda3/etc/profile.d/conda.sh
 conda activate snakemake
@@ -12,3 +21,10 @@ conda activate snakemake
 cd $PBS_O_WORKDIR
 
 bash Pipeasm.sh -d . -c config/config.yaml -s workflow/Snakefile -t <threads>
+
+TEND=`echo "print time();" | perl`
+
+printf "\n"
+printf "End: `date`\n";
+printf "Run time (s): `expr $TEND - $TBEGIN`\n";
+printf "Run time (min): `expr $(( ($TEND - $TBEGIN)/60 ))`\n";
