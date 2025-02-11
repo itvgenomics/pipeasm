@@ -1,11 +1,11 @@
 import subprocess
 
 def build_mitohifi():
-    command = "singularity build resources/mitohifi.sif docker-daemon://ghcr.io/marcelauliano/mitohifi:master"
+    command = "singularity build resources/mitohifi.sif docker://ghcr.io/marcelauliano/mitohifi:master"
     subprocess.run(command, shell=True, check=True)
 
 def build_fcsgx():
-    command = "singularity build resources/fcs-gx.sif docker-daemon://ncbi/fcs-gx:latest"
+    command = "singularity build resources/fcs-gx.sif docker://ncbi/fcs-gx:latest"
     subprocess.run(command, shell=True, check=True)
 
 
