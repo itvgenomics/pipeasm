@@ -88,12 +88,12 @@ The fields to be edited are the following:
 ### 4. Run the Pipeline
 - Navigate back to the root directory of the cloned repository.
 - Run the pipeline with default parameters:
-  ``` bash 
+  ``` bash
   bash Pipeasm.sh -d /path/to/work/dir -t <n_threads>
- 
+
  - Run with all available parameters:
   ``` bash
-  bash Pipeasm.sh -d /path/to/work/dir -c </path/to/config.yaml> -s </path/to/snakefile> -t <n_threads> <step> 
+  bash Pipeasm.sh -d /path/to/work/dir -c </path/to/config.yaml> -s </path/to/snakefile> -t <n_threads> <step>
   ```
 - **Extra Flags**:
   - **-d** </path/to/work/dir> (Required) = Path to your working directory where all the workflow file are
@@ -102,17 +102,18 @@ The fields to be edited are the following:
   - **-t** {int} (Required) = Number of threads to use
 
   - Only the **-d** and **-t** flags are required if you want to run Pipeasm with default parameters. If you do not want to run the decontamination step, set **gxdb**, in the **config.yaml** file, **blank**.
+  - You can perform a dry-run (build only the DAG, no rule will be run) with -np and unlock the directory, if needed, with --unlock
 
-- You can choose a Pipeasm step with: 
+- You can choose a Pipeasm step with:
   -  `--trimming_qc` (for Trimming and Quality Control);
   -  `--kmer_eval` (for k-mer Evaluation stats/plots);
   -  `--assembly` (for all Assembly and Decontamination steps);
   -  `--scaffolding` (to run YAHS auto-scaffolding and create the Hi-C Maps);
 
-- Just make sure to run previous steps before running the next one. 
-  - Run 
-  `bash Pipeasm.sh -d /path/to/work/dir -t 64 --trimming_qc` 
-  before 
+- Just make sure to run previous steps before running the next one.
+  - Run
+  `bash Pipeasm.sh -d /path/to/work/dir -t 64 --trimming_qc`
+  before
   `bash Pipeasm.sh -d /path/to/work/dir -t 64 --kmer_eval`
 
 
@@ -144,7 +145,7 @@ The fields to be edited are the following:
 ├── results
 │   ├── Trimming_QC
 │   ├── Assembly
-│   ├── Decontamination  
+│   ├── Decontamination
 │   └── Scaffolding
 ├── README.md
 ├── pipeasm.pbs
