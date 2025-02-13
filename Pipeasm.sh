@@ -1,7 +1,7 @@
 #!/bin/bash
 cat << 'EOF'
 
-### Pipeasm - a tool for automated large genome assembly and analysis 
+### Pipeasm - a tool for automated large genome assembly and analysis
 #Authors: Trindade F., Silva B. M., Canesin L., Souza Junior R. O., Oliveira R. 2024
 
 ###    Copyright (C) 2024  Renato Oliveira
@@ -28,6 +28,7 @@ ASSEMBLY=false
 SCAFFOLDING=false
 
 SETUNLOCK=""
+SETUNP=""
 
 while [ "$1" != "" ]; do
     case $1 in
@@ -63,6 +64,9 @@ while [ "$1" != "" ]; do
         SCAFFOLDING=true
         FULL=false
         ;;
+    -np)
+        SETNP="-np"
+        ;;
     --unlock)
         SETUNLOCK="--unlock"
         ;;
@@ -85,14 +89,14 @@ ERROR: Missing one of the required arguments: -d (Work Directory), -t (# Threads
 #-s </path/to/snakefile> = Overwrite the default snakefile path (workflow/Snakefile)
 #-t <int> = Number of threads to use
 
-# You can choose a Pipeasm step with: 
+# You can choose a Pipeasm step with:
     --trimming_qc (for Trimming and Quality Control);
     --kmer_eval (for k-mer Evaluation stats/plots);
     --assembly (for all Assembly and Decontamination steps);
     --scaffolding (for all Scaffolding and Hi-C Map steps);
 
 # Only the -d and -t flags are required if you want to use the Snakemake default parameters
-    
+
 EOF
 
     exit 1
@@ -123,7 +127,7 @@ lines=(
 
 for line in "${lines[@]}"; do
     if ! grep -qF "$line" "$CONFIGFILE"; then
-        echo "$line" >> "$CONFIGFILE" 
+        echo "$line" >> "$CONFIGFILE"
     fi
 done
 
@@ -166,4 +170,4 @@ echo "INFO: Running Pipeasm."
 # Run the Pipeline
 export SINGULARITY_CACHEDIR=$WORKDIR/singularity && \
 export TMPDIR=$WORKDIR/tmp && \
-snakemake -d $WORKDIR --snakefile $SNAKEFILE --configfile $CONFIGFILE --use-singularity --singularity-args "-B $WORKDIR:/data --pwd /data" --cores $THREADS $SETUNLOCK
+snakemake -d $WORKDIR --snakefile $SNAKEFILE --configfile $CONFIGFILE --use-singularity --singularity-args "-B $WORKDIR:/data --pwd /data" --cores $THREADS $SETUNLOCK $SETNP
