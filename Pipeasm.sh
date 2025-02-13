@@ -96,6 +96,7 @@ ERROR: Missing one of the required arguments: -d (Work Directory), -t (# Threads
     --scaffolding (for all Scaffolding and Hi-C Map steps);
 
 # Only the -d and -t flags are required if you want to use the Snakemake default parameters
+# You can perform a dry-run (build only the DAG, no rule will be run) with -np and unlock the directory, if needed, with --unlock
 
 EOF
 
