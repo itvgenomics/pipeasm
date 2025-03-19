@@ -16,7 +16,7 @@ rule initial_contacts_bwa_mem2_index_hap1:
     benchmark:
         "benchmarks/{sample}.initial_contacts_bwa_mem2_index_hap1.txt"
     singularity:
-       "docker://itvdsbioinfo/hic_mapping:1.0"
+       f"{config["sif_dir"]}/hic_mapping.sif"
     shell:
         """
         mkdir -p results/Scaffolding/Initial_Contacts/Hap1 && \
@@ -34,7 +34,7 @@ rule initial_contacts_bwa_mem2_index_hap2:
     benchmark:
         "benchmarks/{sample}.initial_contacts_bwa_mem2_index_hap2.txt"
     singularity:
-       "docker://itvdsbioinfo/hic_mapping:1.0"
+       f"{config["sif_dir"]}/hic_mapping.sif"
     shell:
         """
         mkdir -p results/Scaffolding/Initial_Contacts/Hap2 && \
@@ -57,7 +57,7 @@ rule initial_contacts_bwa_mem2_mapping_hap1_r1:
     params:
         tmpdir="results/Scaffolding/Initial_Contacts/Hap1/tmp1"
     singularity:
-       "docker://itvdsbioinfo/hic_mapping:1.0"
+       f"{config["sif_dir"]}/hic_mapping.sif"
     shell:
         """
         mkdir -p {params.tmpdir} && \
@@ -80,7 +80,7 @@ rule initial_contacts_bwa_mem2_mapping_hap1_r2:
     params:
         tmpdir="results/Scaffolding/Initial_Contacts/Hap1/tmp2"
     singularity:
-       "docker://itvdsbioinfo/hic_mapping:1.0"
+       f"{config["sif_dir"]}/hic_mapping.sif"
     shell:
         """
         mkdir -p {params.tmpdir} && \
@@ -103,7 +103,7 @@ rule initial_contacts_bwa_mem2_mapping_hap2_r1:
     params:
         tmpdir="results/Scaffolding/Initial_Contacts/Hap2/tmp1"
     singularity:
-       "docker://itvdsbioinfo/hic_mapping:1.0"
+       f"{config["sif_dir"]}/hic_mapping.sif"
     shell:
         """
         mkdir -p {params.tmpdir} && \
@@ -126,7 +126,7 @@ rule initial_contacts_bwa_mem2_mapping_hap2_r2:
     params:
         tmpdir="results/Scaffolding/Initial_Contacts/Hap2/tmp2"
     singularity:
-       "docker://itvdsbioinfo/hic_mapping:1.0"
+       f"{config["sif_dir"]}/hic_mapping.sif"
     shell:
         """
         mkdir -p {params.tmpdir} && \
@@ -148,7 +148,7 @@ rule initial_contacts_bellerophon_merge_hap1:
     benchmark:
         "benchmarks/{sample}.initial_contacts_bellerophon_merge_hap1.txt"
     singularity:
-       "docker://itvdsbioinfo/hic_mapping:1.0"
+       f"{config["sif_dir"]}/hic_mapping.sif"
     shell:
         """
         bellerophon --forward {input.bam_r1} --reverse {input.bam_r2} --output {output} {params} --threads {threads} >> {log} 2>&1
@@ -169,7 +169,7 @@ rule initial_contacts_bellerophon_merge_hap2:
     benchmark:
         "benchmarks/{sample}.initial_contacts_bellerophon_merge_hap2.txt"
     singularity:
-       "docker://itvdsbioinfo/hic_mapping:1.0"
+       f"{config["sif_dir"]}/hic_mapping.sif"
     shell:
         """
         bellerophon --forward {input.bam_r1} --reverse {input.bam_r2} --output {output} {params} --threads {threads} >> {log} 2>&1
@@ -188,7 +188,7 @@ rule initial_contacts_samtools_flagstats_hap1:
     benchmark:
         "benchmarks/{sample}.initial_contacts_samtools_flagstats_hap1.txt"
     singularity:
-       "docker://itvdsbioinfo/hic_mapping:1.0"
+       f"{config["sif_dir"]}/hic_mapping.sif"
     shell:
         """
         samtools flagstat -@ {threads} -O tsv {input.merged_bam} > {output.flagstats} 2>{log} && \
@@ -208,7 +208,7 @@ rule initial_contacts_samtools_flagstats_hap2:
     benchmark:
         "benchmarks/{sample}.initial_contacts_samtools_flagstats_hap2.txt"
     singularity:
-       "docker://itvdsbioinfo/hic_mapping:1.0"
+       f"{config["sif_dir"]}/hic_mapping.sif"
     shell:
         """
         samtools flagstat -@ {threads} -O tsv {input.merged_bam} > {output.flagstats} 2>{log} && \
@@ -230,7 +230,7 @@ rule initial_contacts_pretext_map_snapshot_hap1:
     benchmark:
         "benchmarks/{sample}.initial_contacts_pretext_map_snapshot_hap1.txt"
     singularity:
-       "docker://itvdsbioinfo/hic_mapping:1.0"
+       f"{config["sif_dir"]}/hic_mapping.sif"
     shell:
         """
         samtools view -h {input.merged_bam} | PretextMap -o {output} {params.pretextmap} >> {log} 2>&1 && \
@@ -252,7 +252,7 @@ rule initial_contacts_pretext_map_snapshot_hap2:
     benchmark:
         "benchmarks/{sample}.initial_contacts_pretext_map_snapshot_hap2.txt"
     singularity:
-       "docker://itvdsbioinfo/hic_mapping:1.0"
+       f"{config["sif_dir"]}/hic_mapping.sif"
     shell:
         """
         samtools view -h {input.merged_bam} | PretextMap -o {output} {params.pretextmap} >> {log} 2>&1 && \
@@ -274,7 +274,7 @@ rule initial_contacts_samtools_flagstats_bam_r1_hap1:
     benchmark:
         "benchmarks/{sample}.initial_contacts_samtools_flagstats_bam_r1_hap1.txt"
     singularity:
-       "docker://itvdsbioinfo/hic_mapping:1.0"
+       f"{config["sif_dir"]}/hic_mapping.sif"
     shell:
         """
         samtools flagstat -@ {threads} -O tsv {input.bam_r1} > {output.flagstats_r1} 2>{log}
@@ -295,7 +295,7 @@ rule initial_contacts_samtools_flagstats_bam_r2_hap1:
     benchmark:
         "benchmarks/{sample}.initial_contacts_samtools_flagstats_bam_r2_hap1.txt"
     singularity:
-       "docker://itvdsbioinfo/hic_mapping:1.0"
+       f"{config["sif_dir"]}/hic_mapping.sif"
     shell:
         """
         samtools flagstat -@ {threads} -O tsv {input.bam_r2} > {output.flagstats_r2} 2>{log}
@@ -316,7 +316,7 @@ rule initial_contacts_samtools_flagstats_bam_r1_hap2:
     benchmark:
         "benchmarks/{sample}.initial_contacts_samtools_flagstats_bam_r1_hap2.txt"
     singularity:
-       "docker://itvdsbioinfo/hic_mapping:1.0"
+       f"{config["sif_dir"]}/hic_mapping.sif"
     shell:
         """
         samtools flagstat -@ {threads} -O tsv {input.bam_r1} > {output.flagstats_r1} 2>{log}
@@ -337,7 +337,7 @@ rule initial_contacts_samtools_flagstats_bam_r2_hap2:
     benchmark:
         "benchmarks/{sample}.initial_contacts_samtools_flagstats_bam_r2_hap2.txt"
     singularity:
-       "docker://itvdsbioinfo/hic_mapping:1.0"
+       f"{config["sif_dir"]}/hic_mapping.sif"
     shell:
         """
         samtools flagstat -@ {threads} -O tsv {input.bam_r2} > {output.flagstats_r2} 2>{log}

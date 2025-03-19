@@ -17,7 +17,7 @@ rule trimming_hic:
 	benchmark:
 		"benchmarks/{sample}.trimming_hic.txt"
 	singularity:
-		"docker://staphb/fastp:0.23.4"
+		f"{config["sif_dir"]}/fastp.sif"
 	shell:
 		"""
 		fastp --in1 {input.r1} --in2 {input.r2} \
@@ -37,7 +37,7 @@ rule qc_trim_hic:
 	benchmark:
 		"benchmarks/{sample}.qc_trim_hic.txt"
 	singularity:
-		"docker://staphb/fastqc:0.12.1"
+		f"{config["sif_dir"]}/fastqc.sif"
 	params:
 		outdir="results/Trimming_QC/QC/HiC_FastQC/"
 	shell:

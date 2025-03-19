@@ -23,7 +23,7 @@ rule solo_run_snailplot_create_primary:
         "benchmarks/{sample}.solo_run_snailplot_create_primary.txt"
     threads: 1
     singularity:
-        "docker://genomehubs/blobtoolkit:4.3.5"
+        f"{config["sif_dir"]}/blobtoolkit.sif"
     shell:
         """
         blobtools create --replace \
@@ -48,7 +48,7 @@ rule solo_run_snailplot_plot_primary:
         "benchmarks/{sample}.solo_run_snailplot_plot_primary.txt"
     threads: 1
     singularity:
-        "docker://genomehubs/blobtoolkit:4.3.5"
+        f"{config["sif_dir"]}/blobtoolkit.sif"
     shell:
         """
         blobtools view --plot --view snail results/Assembly/Genome_Stats/SnailPlot/Solo_Asm/00-Solo-Hap1/ >> {log} 2>&1 && \
@@ -67,7 +67,7 @@ rule solo_run_snailplot_create_alt:
         "benchmarks/{sample}.solo_run_snailplot_create_alt.txt"
     threads: 1
     singularity:
-        "docker://genomehubs/blobtoolkit:4.3.5"
+        f"{config["sif_dir"]}/blobtoolkit.sif"
     shell:
         """
         blobtools create --replace \
@@ -92,7 +92,7 @@ rule solo_run_snailplot_plot_alt:
         "benchmarks/{sample}.solo_run_snailplot_plot_alt.txt"
     threads: 1
     singularity:
-        "docker://genomehubs/blobtoolkit:4.3.5"
+        f"{config["sif_dir"]}/blobtoolkit.sif"
     shell:
         """
         blobtools view --plot --view snail results/Assembly/Genome_Stats/SnailPlot/Solo_Asm/01-Solo-Hap2/ >> {log} 2>&1 && \

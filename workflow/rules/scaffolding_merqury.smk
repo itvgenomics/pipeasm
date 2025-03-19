@@ -18,7 +18,7 @@ rule scaffolding_merqury:
 	params:
 		"results/Scaffolding/Scaffolding_stats/Merqury"
 	singularity:
-		"docker://itvdsbioinfo/merqury:1.3"
+		f"{config["sif_dir"]}/merqury.sif"
 	shell:
 		"""
 		bash -c 'export OMP_NUM_THREADS={threads} && \

@@ -14,7 +14,7 @@ rule trimming_pacbio:
 	benchmark:
 		"benchmarks/{sample}.trimming_pacbio.txt"
 	singularity:
-		"docker://pipecraft/cutadapt:4.4"
+		f"{config["sif_dir"]}/cutadapt.sif"
 	shell:
 		"cutadapt -j {threads} {params} -o {output} {input} >> {log} 2>&1"
 
@@ -24,14 +24,14 @@ rule qc_trim_pacbio:
 		"results/Trimming_QC/HiFi/{sample}.trimmed.fastq.gz"
 	output:
 		expand("results/Trimming_QC/QC/HiFi_FastQC/{{sample}}.trimmed_fastqc.{ext}", ext=['zip','html'])
-	threads: 
+	threads:
 		config["software_threads"]["fastqc"]
 	log:
 		"logs/{sample}.qc_trim_pacbio.log"
 	benchmark:
 		"benchmarks/{sample}.qc_trim_pacbio.txt"
 	singularity:
-		"docker://staphb/fastqc:0.12.1"
+		f"{config["sif_dir"]}/fastqc.sif"
 	params:
 		adapt_txt="resources/pacbio_adapters.txt",
 		outdir="results/Trimming_QC/QC/HiFi_FastQC/"
@@ -66,10 +66,10 @@ rule qc_nanoplot_pacbio:
 	benchmark:
 		"benchmarks/{sample}.qc_nanoplot_pacbio.txt"
 	singularity:
-		"docker://staphb/nanoplot:1.41.6"
+		f"{config["sif_dir"]}/nanoplot.sif"
 	shell:
 		"""
 		NanoPlot -t {threads} \
 		-o {params.outdir} -p {wildcards.sample} \
-		--fastq {input} {params.args} {params.plots} >> {log} 2>&1 
+		--fastq {input} {params.args} {params.plots} >> {log} 2>&1
 		"""

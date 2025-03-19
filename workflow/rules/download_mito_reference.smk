@@ -1,6 +1,4 @@
 rule download_mito_reference:
-    input:
-        sif="resources/mitohifi.sif"
     output:
         fasta="resources/{sample}.reference.fasta",
         gb="resources/{sample}.reference.gb"
@@ -10,7 +8,7 @@ rule download_mito_reference:
     benchmark:
         "benchmarks/{sample}.download_mito_reference.txt"
     singularity:
-        "resources/mitohifi.sif"
+        f"{config["sif_dir"]}/mitohifi.sif"
     shell:
         """
         findMitoReference.py --species '{config[species]}' \

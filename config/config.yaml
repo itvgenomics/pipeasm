@@ -5,10 +5,11 @@ hifi_reads: '' # Must be a fastq.gz file
 hic_r1: '' # Must be a fastq.gz file
 hic_r2: '' # Must be a fastq.gz file
 ont_reads: ''
-geneticcode: 
-taxid: 
+geneticcode:
+taxid:
 buscodb: ''
 solo_asm: 'Yes'
+sif_dir: ''
 
 ## Threads
 threads: 32
@@ -35,7 +36,7 @@ fastp:
   quality: '--cut_mean_quality 24'
 
 ## Cutadapt parameters
-cutadapt: 
+cutadapt:
   adaptors: '-b ATCTCTCTCAACAACAACAACGGAGGAGGAGGAAAAGAGAGAGAT -b ATCTCTCTCTTTTCCTCCTCCTCCGTTGTTGTTGTTGAGAGAGAT'
   filtering: '--discard -O 35'
   adap_find: '--rc -e 0.1'

@@ -12,7 +12,7 @@ rule yahs_scaffolding_hap1:
     benchmark:
         "benchmarks/{sample}.yahs_scaffolding_hap1.txt"
     singularity:
-       "docker://itvdsbioinfo/yahs:1.2a.2"
+       f"{config["sif_dir"]}/yahs.sif"
     shell:
         """
         samtools faidx {input.fasta} >> {log} 2>&1 && \
@@ -33,7 +33,7 @@ rule yahs_scaffolding_hap2:
     benchmark:
         "benchmarks/{sample}.yahs_scaffolding_hap2.txt"
     singularity:
-       "docker://itvdsbioinfo/yahs:1.2a.2"
+       f"{config["sif_dir"]}/yahs.sif"
     shell:
         """
         samtools faidx {input.fasta} >> {log} 2>&1 && \

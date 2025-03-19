@@ -7,7 +7,7 @@ rule download_buscodb:
     log:
         "logs/{sample}.download_buscodb.log"
     singularity:
-        "docker://huangnengcsu/compleasm:v0.2.5"
+        f"{config["sif_dir"]}/compleasm.sif"
     shell:
         """
         bash -c 'mkdir {output} && \

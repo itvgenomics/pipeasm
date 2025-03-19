@@ -23,7 +23,7 @@ rule scaffolding_run_snailplot_create_hap1:
         "benchmarks/{sample}.scaffolding_run_snailplot_create_hap1.txt"
     threads: 1
     singularity:
-        "docker://genomehubs/blobtoolkit:4.3.5"
+        f"{config["sif_dir"]}/blobtoolkit.sif"
     shell:
         """
         blobtools create --replace \
@@ -48,7 +48,7 @@ rule scaffolding_run_snailplot_plot_hap1:
         "benchmarks/{sample}.scaffolding_run_snailplot_plot_hap1.txt"
     threads: 1
     singularity:
-        "docker://genomehubs/blobtoolkit:4.3.5"
+        f"{config["sif_dir"]}/blobtoolkit.sif"
     shell:
         """
         blobtools view --plot --view snail results/Scaffolding/Scaffolding_stats/SnailPlot/Hap1/ >> {log} 2>&1 && \
@@ -67,7 +67,7 @@ rule scaffolding_run_snailplot_create_hap2:
         "benchmarks/{sample}.scaffolding_run_snailplot_create_hap2.txt"
     threads: 1
     singularity:
-        "docker://genomehubs/blobtoolkit:4.3.5"
+        f"{config["sif_dir"]}/blobtoolkit.sif"
     shell:
         """
         blobtools create --replace \
@@ -92,7 +92,7 @@ rule scaffolding_run_snailplot_plot_hap2:
         "benchmarks/{sample}.scaffolding_run_snailplot_plot_hap2.txt"
     threads: 1
     singularity:
-        "docker://genomehubs/blobtoolkit:4.3.5"
+        f"{config["sif_dir"]}/blobtoolkit.sif"
     shell:
         """
         blobtools view --plot --view snail results/Scaffolding/Scaffolding_stats/SnailPlot/Hap2/ >> {log} 2>&1 && \

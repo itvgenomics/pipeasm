@@ -15,7 +15,7 @@ rule ont_solo_assembly:
     benchmark:
         "benchmarks/{sample}.ont_solo_assembly.txt"
     singularity:
-        "docker://itvdsbioinfo/hifiasm:0.20.0"
+        f"{config["sif_dir"]}/hifiasm.sif"
     shell:
         """
         hifiasm -t {threads} {params} \

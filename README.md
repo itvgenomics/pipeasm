@@ -81,6 +81,7 @@ The fields to be edited are the following:
 | buscodb | 'aves' | Pick the closest taxonomic group available for your species. You can check the available datasets [here](https://busco-data.ezlab.org/v5/data/lineages/) | Required |
 | solo_asm | 'Yes' | Run both solo and phased contig assembly. Fill with "Yes" or "No" | Required |
 | threads | 32 | We recommend 32 to 64 threads (which may require ~150Gb of RAM for a 1Gb genome assembly, and up to 500Gb for decontamination and kmer analysis) | Required |
+| sif_dir | '/absolute/path/to/singularity/images/' | Directory to build all singularity image files used in the pipeline. If the path already contains the images, they will not be pulled. | Required |
 | gxdb | '/absolute/path/to/fcs-gx_DB/gxdb' | FCS-GX database to perform the contamination step. To download, see this [guide](https://github.com/ncbi/fcs/wiki/FCS-GX-quickstart#download-the-fcs-gx-database). Leave it blank if you dont want to run this step. | Optional |
 
 - We have set default parameters to some software threads and flags. You can change them at the `config/config.yaml` file.

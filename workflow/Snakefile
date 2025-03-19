@@ -1,4 +1,4 @@
-### Pipeasm - a tool for automated large genome assembly and analysis 
+### Pipeasm - a tool for automated large genome assembly and analysis
 ### Trindade F., Silva B. M., Canesin L., Souza Junior R. O., Oliveira R. 2024
 
 ##### Input and functions #####
@@ -21,12 +21,12 @@ if config["ont_reads"]:
 	include: "rules/ont_trimming_qc.smk"
 
 if config['solo_asm'].lower() == 'yes':
-	
+
 	if config["ont_reads"]:
 		include: "rules/ont_solo_asm.smk"
 	else:
 		include: "rules/solo_asm.smk"
-	
+
 	include: "rules/solo_stats.smk"
 	include: "rules/solo_completeness.smk"
 	include: "rules/solo_merqury.smk"
@@ -42,7 +42,7 @@ if config["hic_r1"] and config["hic_r2"]:
 		include: "rules/ont_phased_asm.smk"
 	else:
 		include: "rules/phased_asm.smk"
-	
+
 	include: "rules/phased_stats.smk"
 	include: "rules/phased_completeness.smk"
 	include: "rules/phased_merqury.smk"

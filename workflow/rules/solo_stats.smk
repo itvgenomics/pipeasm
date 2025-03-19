@@ -12,7 +12,7 @@ rule solo_gfastats_fasta_primary:
     benchmark:
         "benchmarks/{sample}.solo_gfastats_fasta_primary.txt"
     singularity:
-        "docker://staphb/gfastats:1.3.6"
+        f"{config["sif_dir"]}/gfastats.sif"
     shell:
         """
         bash -c 'gfastats -f {input} \
@@ -34,7 +34,7 @@ rule solo_gfastats_stats_primary:
     benchmark:
         "benchmarks/{sample}.solo_gfastats_stats_primary.txt"
     singularity:
-        "docker://staphb/gfastats:1.3.6"
+        f"{config["sif_dir"]}/gfastats.sif"
     shell:
         """
         bash -c 'gfastats -f {input} \
@@ -55,7 +55,7 @@ rule solo_gfastats_fasta_alt:
     benchmark:
         "benchmarks/{sample}.solo_gfastats_fasta_alt.txt"
     singularity:
-        "docker://staphb/gfastats:1.3.6"
+        f"{config["sif_dir"]}/gfastats.sif"
     shell:
         """
         bash -c 'gfastats -f {input} \
@@ -77,7 +77,7 @@ rule solo_gfastats_stats_alt:
     benchmark:
         "benchmarks/{sample}.solo_gfastats_stats_alt.txt"
     singularity:
-        "docker://staphb/gfastats:1.3.6"
+        f"{config["sif_dir"]}/gfastats.sif"
     shell:
         """
         bash -c 'gfastats -f {input} \

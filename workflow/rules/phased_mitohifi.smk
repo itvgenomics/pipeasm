@@ -3,8 +3,7 @@ rule phased_run_mitohifi:
         hifi_hap1="results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap1.p_ctg.fa",
         hifi_hap2="results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap2.p_ctg.fa",
         reference_fasta="resources/{sample}.reference.fasta",
-        reference_gb="resources/{sample}.reference.gb",
-        sif="resources/mitohifi.sif"
+        reference_gb="resources/{sample}.reference.gb"
     output:
         "results/Assembly/Mitogenome/Phased_Asm/{sample}.contigs_stats.tsv"
     threads:
@@ -16,7 +15,7 @@ rule phased_run_mitohifi:
     params:
         config["geneticcode"]
     singularity:
-        "resources/mitohifi.sif"
+        f"{config["sif_dir"]}/mitohifi.sif"
     shell:
         """
         cat {input.hifi_hap1} {input.hifi_hap2} >> results/Assembly/Mitogenome/Phased_Asm/concat.fasta && \

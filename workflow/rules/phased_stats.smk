@@ -12,7 +12,7 @@ rule phased_gfastats_fasta_hap1:
     benchmark:
         "benchmarks/{sample}.phased_gfastats_fasta_hap1.txt"
     singularity:
-        "docker://staphb/gfastats:1.3.6"
+        f"{config["sif_dir"]}/gfastats.sif"
     shell:
         """
         bash -c 'gfastats -f {input} \
@@ -34,7 +34,7 @@ rule phased_gfastats_stats_hap1:
     benchmark:
         "benchmarks/{sample}.phased_gfastats_stats_hap1.txt"
     singularity:
-        "docker://staphb/gfastats:1.3.6"
+        f"{config["sif_dir"]}/gfastats.sif"
     shell:
         """
         bash -c 'gfastats -f {input} \
@@ -46,7 +46,7 @@ rule phased_gfastats_fasta_hap2:
         "results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap2.p_ctg.gfa"
     output:
         "results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap2.p_ctg.fa"
-    threads: 
+    threads:
         config["software_threads"]["gfastats"]
     params:
         params= config['gfastats']['params']
@@ -55,7 +55,7 @@ rule phased_gfastats_fasta_hap2:
     benchmark:
         "benchmarks/{sample}.phased_gfastats_fasta_hap2.txt"
     singularity:
-        "docker://staphb/gfastats:1.3.6"
+        f"{config["sif_dir"]}/gfastats.sif"
     shell:
         """
         bash -c 'gfastats -f {input} \
@@ -77,7 +77,7 @@ rule phased_gfastats_stats_hap2:
     benchmark:
         "benchmarks/{sample}.phased_gfastats_stats_hap2.txt"
     singularity:
-        "docker://staphb/gfastats:1.3.6"
+        f"{config["sif_dir"]}/gfastats.sif"
     shell:
         """
         bash -c 'gfastats -f {input} \

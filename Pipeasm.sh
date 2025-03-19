@@ -166,6 +166,9 @@ echo "INFO: Creating temp dirs."
 # Create the singularity cache and temporary files directories
 mkdir -p $WORKDIR/singularity $WORKDIR/tmp
 
+# Run script to fetch the Singularity images
+python $WORKDIR/workflow/scripts/singularity.py --config $CONFIGFILE
+
 echo "INFO: Running Pipeasm."
 
 # Run the Pipeline

@@ -12,7 +12,7 @@ rule meryl_count:
     benchmark:
         "benchmarks/{sample}.meryl_count.txt"
     singularity:
-        "docker://itvdsbioinfo/meryl:1.3"
+        f"{config["sif_dir"]}/meryl.sif"
     shell:
         """
         meryl threads={threads} {params} count \
@@ -35,7 +35,7 @@ rule meryl_union:
     benchmark:
         "benchmarks/{sample}.meryl_union.txt"
     singularity:
-        "docker://itvdsbioinfo/meryl:1.3"
+        f"{config["sif_dir"]}/meryl.sif"
     shell:
         """
         meryl threads={threads} {params} union-sum \
@@ -58,7 +58,7 @@ rule meryl_histo:
     benchmark:
         "benchmarks/{sample}.meryl_histo.txt"
     singularity:
-        "docker://itvdsbioinfo/meryl:1.3"
+        f"{config["sif_dir"]}/meryl.sif"
     shell:
         """
         bash -c 'meryl threads={threads} {params} histogram \
@@ -85,7 +85,7 @@ rule genomescope2_pacbio:
     benchmark:
         "benchmarks/{sample}.genomescope2_pacbio.txt"
     singularity:
-        "docker://abner12/genomescope:2.0"
+        f"{config["sif_dir"]}/genomescope.sif"
     shell:
         """
         genomescope.R {params.ploidy} -i {input} \
@@ -110,7 +110,7 @@ rule smudgeplot:
     benchmark:
         "benchmarks/{sample}.smudgeplot_count.txt"
     singularity:
-        "docker://itvdsbioinfo/smudgeplot:0.3.0"
+        f"{config["sif_dir"]}/smudgeplot.sif"
     shell:
         """
         mkdir -p results/Assembly/Genome_Stats/Smudgeplot && \
@@ -133,7 +133,7 @@ rule katgcp:
     benchmark:
         "benchmarks/{sample}.katgcp.txt"
     singularity:
-        "docker://itvdsbioinfo/kat:2.4.0"
+        f"{config["sif_dir"]}/kat.sif"
     shell:
         """
         kat gcp -t {threads} {params.kmer} -o results/Assembly/Genome_Stats/KAT/{wildcards.sample} {input.reads} >> {log} 2>&1

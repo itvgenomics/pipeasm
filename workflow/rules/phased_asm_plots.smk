@@ -10,7 +10,7 @@ rule phased_edit_busco_table:
     threads: 1
     script:
         "../scripts/phased_edit_busco_table.py"
-        
+
 
 rule phased_run_snailplot_create_hap1:
     input:
@@ -24,7 +24,7 @@ rule phased_run_snailplot_create_hap1:
         "benchmarks/{sample}.phased_run_snailplot_create_hap1.txt"
     threads: 1
     singularity:
-        "docker://genomehubs/blobtoolkit:4.3.5"
+        f"{config["sif_dir"]}/blobtoolkit.sif"
     shell:
         """
         blobtools create --replace \
@@ -49,7 +49,7 @@ rule phased_run_snailplot_plot_hap1:
         "benchmarks/{sample}.phased_run_snailplot_plot_hap1.txt"
     threads: 1
     singularity:
-        "docker://genomehubs/blobtoolkit:4.3.5"
+        f"{config["sif_dir"]}/blobtoolkit.sif"
     shell:
         """
         blobtools view --plot --view snail results/Assembly/Genome_Stats/SnailPlot/Phased_Asm/Phased-Hap1/ >> {log} 2>&1 && \
@@ -68,7 +68,7 @@ rule phased_run_snailplot_create_hap2:
         "benchmarks/{sample}.phased_run_snailplot_create_hap2.txt"
     threads: 1
     singularity:
-        "docker://genomehubs/blobtoolkit:4.3.5"
+        f"{config["sif_dir"]}/blobtoolkit.sif"
     shell:
         """
         blobtools create --replace \
@@ -93,7 +93,7 @@ rule phased_run_snailplot_plot_hap2:
         "benchmarks/{sample}.phased_run_snailplot_plot_hap2.txt"
     threads: 1
     singularity:
-        "docker://genomehubs/blobtoolkit:4.3.5"
+        f"{config["sif_dir"]}/blobtoolkit.sif"
     shell:
         """
         blobtools view --plot --view snail results/Assembly/Genome_Stats/SnailPlot/Phased_Asm/Phased-Hap2/ >> {log} 2>&1 && \

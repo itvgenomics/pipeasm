@@ -18,7 +18,7 @@ rule solo_merqury:
 	params:
 		"results/Assembly/Genome_Stats/Merqury/Solo_Asm"
 	singularity:
-		"docker://itvdsbioinfo/merqury:1.3"
+		f"{config["sif_dir"]}/merqury.sif"
 	shell:
 		"""
 		bash -c 'export OMP_NUM_THREADS={threads} && \

@@ -3,8 +3,7 @@ rule solo_run_mitohifi:
         hifi_hap1="results/Assembly/Contigging/Solo_Asm/{sample}.p_ctg.fa",
         hifi_hap2="results/Assembly/Contigging/Solo_Asm/{sample}.a_ctg.fa",
         reference_fasta="resources/{sample}.reference.fasta",
-        reference_gb="resources/{sample}.reference.gb",
-        sif="resources/mitohifi.sif"
+        reference_gb="resources/{sample}.reference.gb"
     output:
         "results/Assembly/Mitogenome/Solo_Asm/{sample}.contigs_stats.tsv"
     threads:
@@ -16,7 +15,7 @@ rule solo_run_mitohifi:
     params:
         config["geneticcode"]
     singularity:
-        "resources/mitohifi.sif"
+        f"{config["sif_dir"]}/mitohifi.sif"
     shell:
         """
         cat {input.hifi_hap1} {input.hifi_hap2} >> results/Assembly/Mitogenome/Solo_Asm/concat.fasta && \

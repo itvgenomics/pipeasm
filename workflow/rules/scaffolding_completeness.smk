@@ -13,7 +13,7 @@ rule scaffolding_compleasm_hap1:
     benchmark:
         "benchmarks/{sample}.scaffolding_compleasm_hap1.txt"
     singularity:
-        "docker://huangnengcsu/compleasm:v0.2.5"
+        f"{config["sif_dir"]}/compleasm.sif"
     shell:
         """
         (bash -c 'compleasm run -a {input.fasta} \
@@ -37,7 +37,7 @@ rule scaffolding_compleasm_hap2:
     benchmark:
         "benchmarks/{sample}.scaffolding_compleasm_hap2.txt"
     singularity:
-        "docker://huangnengcsu/compleasm:v0.2.5"
+        f"{config["sif_dir"]}/compleasm.sif"
     shell:
         """
         (bash -c 'compleasm run -a {input.fasta} \

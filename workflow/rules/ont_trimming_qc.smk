@@ -10,7 +10,7 @@ rule trimming_ont:
 	benchmark:
 		"benchmarks/{sample}.trimming_ont.txt"
 	singularity:
-		"docker://nanoporetech/dorado:shae36d1b49fe470a60e006afad90bedd2fc2774a89"
+		f"{config["sif_dir"]}/dorado.sif"
 	shell:
 		"""
         dorado trim {input} --emit-fastq -t {threads} > results/Trimming_QC/ONT/{wildcards.sample}_ONT.trimmed.fastq 2> {log} && \
@@ -40,10 +40,10 @@ rule qc_nanoplot_ont:
 	benchmark:
 		"benchmarks/{sample}.qc_nanoplot_ont.txt"
 	singularity:
-		"docker://staphb/nanoplot:1.41.6"
+		f"{config["sif_dir"]}/nanoplot.sif"
 	shell:
 		"""
 		NanoPlot -t {threads} \
 		-o {params.outdir} -p {wildcards.sample} \
-		--fastq {input} {params.args} {params.plots} >> {log} 2>&1 
+		--fastq {input} {params.args} {params.plots} >> {log} 2>&1
 		"""

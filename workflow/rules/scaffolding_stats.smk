@@ -12,7 +12,7 @@ rule scaffolding_gfastats_stats_hap1:
     benchmark:
         "benchmarks/{sample}.scaffolding_gfastats_stats_hap1.txt"
     singularity:
-        "docker://staphb/gfastats:1.3.6"
+        f"{config["sif_dir"]}/gfastats.sif"
     shell:
         """
         bash -c 'gfastats -f {input} \
@@ -33,7 +33,7 @@ rule scaffolding_gfastats_stats_hap2:
     benchmark:
         "benchmarks/{sample}.scaffolding_gfastats_stats_hap2.txt"
     singularity:
-        "docker://staphb/gfastats:1.3.6"
+        f"{config["sif_dir"]}/gfastats.sif"
     shell:
         """
         bash -c 'gfastats -f {input} \
