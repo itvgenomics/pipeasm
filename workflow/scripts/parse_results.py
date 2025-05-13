@@ -235,7 +235,7 @@ def parse_nanoplot(sample):
 
 def parse_genomescope2(sample):
     genomescope2_file = f"results/Assembly/Genome_Stats/HiFi_GenomeScope2/{sample}_model.txt"
-    
+
     if os.path.exists(genomescope2_file):
         # Read the text from the file
         with open(genomescope2_file, "r") as file:
@@ -669,7 +669,7 @@ def abstract(sample):
                 if match:
                     number = match.group(1)
                     data_hap1.append(number)
-                match = re.search(r"Largest contig: (\d+)", line)
+                match = re.search(r"Largest scaffold: (\d+)", line)
                 if match:
                     number = match.group(1)
                     data_hap1.append(number)
@@ -698,7 +698,7 @@ def abstract(sample):
                 if match:
                     number = match.group(1)
                     data_hap2.append(number)
-                match = re.search(r"Largest contig: (\d+)", line)
+                match = re.search(r"Largest scaffold: (\d+)", line)
                 if match:
                     number = match.group(1)
                     data_hap2.append(number)
@@ -736,7 +736,7 @@ N Scaffolds -> Primary: {data_hap1[0]} Alternate: {data_hap2[0]}
 Assembled Bases (bp) -> Primary: {data_hap1[1]} Alternate: {data_hap2[1]}
 N50 -> Primary: {data_hap1[2]} Alternate: {data_hap2[2]}
 N Contigs -> Primary: {data_hap1[3]} Alternate: {data_hap2[3]}
-Largest Contig (bp) -> Primary: {data_hap1[4]} Alternate: {data_hap2[4]}
+Largest scaffold (bp) -> Primary: {data_hap1[4]} Alternate: {data_hap2[4]}
 Busco (Prim. only) -> C(%): {data_busco[0]} D(%): {data_busco[1]} F(%): {data_busco[2]} M(%): {data_busco[3]} Genes:  {data_busco[4]}
 QV (Prim. only) -> {data_qv[3]}
 """
@@ -770,7 +770,7 @@ QV (Prim. only) -> {data_qv[3]}
                 if match:
                     number = match.group(1)
                     data_hap1.append(number)
-                match = re.search(r"Largest contig: (\d+)", line)
+                match = re.search(r"Largest scaffold: (\d+)", line)
                 if match:
                     number = match.group(1)
                     data_hap1.append(number)
@@ -799,7 +799,7 @@ QV (Prim. only) -> {data_qv[3]}
                 if match:
                     number = match.group(1)
                     data_hap2.append(number)
-                match = re.search(r"Largest contig: (\d+)", line)
+                match = re.search(r"Largest scaffold: (\d+)", line)
                 if match:
                     number = match.group(1)
                     data_hap2.append(number)
@@ -837,7 +837,7 @@ N Scaffolds -> Hap1: {data_hap1[0]} Hap2: {data_hap2[0]}
 Assembled Bases (bp) -> Hap1: {data_hap1[1]} Hap2: {data_hap2[1]}
 N50 -> Hap1: {data_hap1[2]} Hap2: {data_hap2[2]}
 N Contigs -> Hap1: {data_hap1[3]} Hap2: {data_hap2[3]}
-Largest Contig (bp) -> Hap1: {data_hap1[4]} Hap2: {data_hap2[4]}
+Largest scaffold (bp) -> Hap1: {data_hap1[4]} Hap2: {data_hap2[4]}
 Busco (Hap1. only) -> C(%): {data_busco[0]} D(%): {data_busco[1]} F(%): {data_busco[2]} M(%): {data_busco[3]} Genes:  {data_busco[4]}
 QV (Hap1. only) -> {data_qv[3]}
 """
@@ -872,7 +872,7 @@ QV (Hap1. only) -> {data_qv[3]}
                 if match:
                     number = match.group(1)
                     data_hap1.append(number)
-                match = re.search(r"Largest contig: (\d+)", line)
+                match = re.search(r"Largest scaffold: (\d+)", line)
                 if match:
                     number = match.group(1)
                     data_hap1.append(number)
@@ -901,7 +901,7 @@ QV (Hap1. only) -> {data_qv[3]}
                 if match:
                     number = match.group(1)
                     data_hap2.append(number)
-                match = re.search(r"Largest contig: (\d+)", line)
+                match = re.search(r"Largest scaffold: (\d+)", line)
                 if match:
                     number = match.group(1)
                     data_hap2.append(number)
@@ -939,7 +939,7 @@ N Scaffolds -> Hap1: {data_hap1[0]} Hap2: {data_hap2[0]}
 Assembled Bases (bp) -> Hap1: {data_hap1[1]} Hap2: {data_hap2[1]}
 N50 -> Hap1: {data_hap1[2]} Hap2: {data_hap2[2]}
 N Contigs -> Hap1: {data_hap1[3]} Hap2: {data_hap2[3]}
-Largest Contig (bp) -> Hap1: {data_hap1[4]} Hap2: {data_hap2[4]}
+Largest scaffold (bp) -> Hap1: {data_hap1[4]} Hap2: {data_hap2[4]}
 Busco (Hap1. only) -> C(%): {data_busco[0]} D(%): {data_busco[1]} F(%): {data_busco[2]} M(%): {data_busco[3]} Genes:  {data_busco[4]}
 QV (Hap1. only) -> {data_qv[3]}
 """
@@ -951,7 +951,7 @@ def parse_gfastats(sample):
     df_completo = pd.DataFrame()
     # Define a regular expression pattern to extract key-value pairs
     pattern = re.compile(r"([^:]+):\s*([^:]+)")
-    
+
     columns_to_keep = [
         "asm",
         "# scaffolds",
@@ -1288,7 +1288,7 @@ def parse_flagstats(sample):
 
             df.insert(0, "file", names[i])
 
-            i = i + 1 
+            i = i + 1
 
             df_completo = pd.concat([df_completo, df])
 

@@ -76,6 +76,7 @@ The fields to be edited are the following:
 | hifi_reads | '/absolute/path/to/raw_data/hifi/bHypStr1.fastq.gz' | Full path to your HiFI raw reads. Make sure to get all your reads into a single `fastq.gz` file | Required |
 | hic_r1 | '/absolute/path/to/raw_data/hic/bHypStr1.R1.fastq.gz' | Full path to your HiC forward raw reads. Make sure to get all your forward reads into a single `fastq.gz` file | Optional |
 | hic_r2 | '/absolute/path/to/raw_data/hic/bHypStr1.R2.fastq.gz' | Full path to your HiC reverse raw reads. Make sure to get all your reverse reads into a single `fastq.gz` file | Optional |
+| ont_reads | '/absolute/path/to/raw_data/hic/bHypStr1.ONT.fastq.gz' | Full path to your ONT demultiplexed reads. | Optional |
 | geneticcode | 2 | Genetic Code to be used at mitochondrial genome annotation. This can be left as it is. Only basal eukaryotes or special cases will require to change this parameter | Required |
 | taxid | 1202453 | You can check the Tax_ID for your species in NCBI's Taxonomy database. If your species does not have a TaxID, you can set a similar organism. This will be used at the decontamination step. | Required |
 | buscodb | 'aves' | Pick the closest taxonomic group available for your species. You can check the available datasets [here](https://busco-data.ezlab.org/v5/data/lineages/) | Required |

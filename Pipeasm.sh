@@ -174,4 +174,4 @@ echo "INFO: Running Pipeasm."
 # Run the Pipeline
 export SINGULARITY_CACHEDIR=$WORKDIR/singularity && \
 export TMPDIR=$WORKDIR/tmp && \
-snakemake -d $WORKDIR --snakefile $SNAKEFILE --configfile $CONFIGFILE --use-singularity --singularity-args "-B $WORKDIR:/data --pwd /data" --cores $THREADS $SETUNLOCK $SETNP
+snakemake -d $WORKDIR --snakefile $SNAKEFILE --configfile $CONFIGFILE --use-singularity --singularity-args "-B $WORKDIR:/data --pwd /data" --rerun-incomplete --cores $THREADS $SETUNLOCK $SETNP
