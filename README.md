@@ -80,7 +80,7 @@ The fields to be edited are the following:
 | geneticcode | 2 | Genetic Code to be used at mitochondrial genome annotation. This can be left as it is. Only basal eukaryotes or special cases will require to change this parameter | Required |
 | taxid | 1202453 | You can check the Tax_ID for your species in NCBI's Taxonomy database. If your species does not have a TaxID, you can set a similar organism. This will be used at the decontamination step. | Required |
 | buscodb | 'aves' | Pick the closest taxonomic group available for your species. You can check the available datasets [here](https://busco-data.ezlab.org/v5/data/lineages/) | Required |
-| solo_asm | 'Yes' | Run both solo and phased contig assembly. Fill with "Yes" or "No" | Required |
+| solo_asm | 'Yes' | If "Yes", run both solo and phased contig assembly. If "No", run only phased assembly. | Required |
 | threads | 32 | We recommend 32 to 64 threads (which may require ~150Gb of RAM for a 1Gb genome assembly, and up to 500Gb for decontamination and kmer analysis) | Required |
 | sif_dir | '/absolute/path/to/singularity/images/' | Directory to build all singularity image files used in the pipeline. If the path already contains the images, they will not be pulled. | Required |
 | gxdb | '/absolute/path/to/fcs-gx_DB/gxdb' | FCS-GX database to perform the contamination step. To download, see this [guide](https://github.com/ncbi/fcs/wiki/FCS-GX-quickstart#download-the-fcs-gx-database). Leave it blank if you dont want to run this step. | Optional |

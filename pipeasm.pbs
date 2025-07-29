@@ -16,10 +16,11 @@ printf "> Running with $CORES cores, in $NODES nodes\n"
 
 # Make sure to activate the conda enviroment with snakemake and singularity installation
 source /mnt/gen/opt/softwares/miniconda3/etc/profile.d/conda.sh
-conda activate snakemake
+conda activate snakemake2
 
 cd $PBS_O_WORKDIR
 
+# Caminho dos arquivos do singularity para colocar no config.yaml (sif_dir): /scratch/sif_files/pipeasm
 bash Pipeasm.sh -d . -c config/config.yaml -s workflow/Snakefile -t <threads>
 
 TEND=`echo "print time();" | perl`

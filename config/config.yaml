@@ -1,20 +1,24 @@
 ## Samples information and input and output
-species: ''
-sample: ''
-hifi_reads: '' # Must be a fastq.gz file
-hic_r1: '' # Must be a fastq.gz file
-hic_r2: '' # Must be a fastq.gz file
-ont_reads: ''
-geneticcode:
-taxid:
-buscodb: ''
-solo_asm: 'Yes'
+species: ''  # (Required) Scientific name of the species. Used for naming and mito annotation reference. Must be present on NCBI taxonomy database. This name is used to seach a mithocondrial reference.
+sample: ''  # (Required) Unique identifier of the sample, e.g., DToL ID.
+hifi_reads: ''  # (Required) Absolute path to your HiFi reads, merged into a single .fastq.gz file.
+hic_r1: ''  # (Optional) Absolute path to Hi-C forward reads in .fastq.gz format.
+hic_r2: ''  # (Optional) Absolute path to Hi-C reverse reads in .fastq.gz format.
+ont_reads: ''  # (Optional) Absolute path to Oxford Nanopore reads in .fastq.gz format.
+geneticcode:  # (Required) Genetic code for mitochondrial genome annotation (e.g., 2 for vertebrates).
+taxid:  # (Required) NCBI Taxonomy ID; use a similar species if unavailable. Important for the decontamination step.
+buscodb: ''  # (Required) BUSCO lineage name, e.g., "aves", based on closest taxonomic group. Do not use the "_odb10" suffix.
+solo_asm: 'Yes'  # (Required) Set to 'Yes' for both solo and phased assemblies, or 'No' for phased only.
+
+# (Required) Directory for storing Singularity image files.
 sif_dir: ''
 
 ## Threads
-threads: 32
+threads: 32 # Max number of threads to be used by the rules across the workflow.
 
 ## Software Threads
+# Fine-tune the number of threads for each tool if necessary for performance optimization.
+
 software_threads:
   bwa_index: 1
   samtools_flagstats: 4
@@ -26,60 +30,72 @@ software_threads:
   gfastats: 4
 
 ## FCS-GX Database
-gxdb: /mnt/gen/opt/utils/lucas/S4-Databases/fcs-gx_testDB/gxdb
+gxdb: /mnt/gen/opt/utils/lucas/S4-Databases/fcs-gx_testDB/gxdb # (Optional) Path to FCS-GX contamination DB. Leave empty to skip.
 
 ## Fastp parameters
+# Parameters used for read trimming and QC via fastp.
 fastp:
-  flags: '--cut_tail --detect_adapter_for_pe --dont_eval_duplication'
-  min_len: '--length_required 35'
-  crop: '--trim_front1 5'
-  quality: '--cut_mean_quality 24'
+  flags: '--cut_tail --detect_adapter_for_pe --dont_eval_duplication'  # Main fastp flags for adapter detection and trimming.
+  min_len: '--length_required 35'  # Minimum read length to keep after trimming.
+  crop: '--trim_front1 5'  # Trim 5 bases from start of read1.
+  quality: '--cut_mean_quality 24'  # Trim based on mean quality (Q24 threshold).
 
 ## Cutadapt parameters
+# Used for adapter trimming with Cutadapt. Customize these only if needed.
 cutadapt:
-  adaptors: '-b ATCTCTCTCAACAACAACAACGGAGGAGGAGGAAAAGAGAGAGAT -b ATCTCTCTCTTTTCCTCCTCCTCCGTTGTTGTTGTTGAGAGAGAT'
-  filtering: '--discard -O 35'
-  adap_find: '--rc -e 0.1'
+  adaptors: '-b ATCTCTCTCAACAACAACAACGGAGGAGGAGGAAAAGAGAGAGAT -b ATCTCTCTCTTTTCCTCCTCCTCCGTTGTTGTTGTTGAGAGAGAT'  # Adapter sequences to remove.
+  filtering: '--discard -O 35'  # Discard reads without adapter and require overlap of 35 bases.
+  adap_find: '--rc -e 0.1'  # Search for adapter on reverse complement, with 10% error rate allowed.
 
 ## NanoPlot parameters
+# Parameters for read quality plots using NanoPlot.
 nanoplot:
-  args: "--tsv_stats --format svg"
-  plots: "--plots kde hex dot"
+  args: "--tsv_stats --format svg"  # Output format and statistical tables.
+  plots: "--plots kde hex dot"  # Types of plots to generate.
 
 ## Meryl parameters
+# Used for counting k-mers with Meryl. You can change `k=` to adjust k-mer size and 'mem=' the max RAM usage.
 meryl:
-  kmer: "k=31"
+  kmer: "k=31 mem=256g"
 
 ## Genomescope2 parameters
+# Used for estimating genome properties from k-mer histogram.
 genomescope2:
-  kmer: "-k 31"
-  ploidy: "-p 2"
+  kmer: "-k 31"  # K-mer size (should match meryl).
+  ploidy: "-p 2"  # Ploidy level; usually 2 for diploids.
 
 ## Parameters for SmudgePlot
+# Used to infer ploidy from k-mer pairs.
 smudgeplot:
-  fastk: "-v -t1 -k31"
-  ploidyplot: "-e10 -k -v"
+  fastk: "-v -t1 -k31"  # FastK k-mer options (k size and verbosity).
+  ploidyplot: "-e10 -k -v"  # Plotting options for SmudgePlot.
 
 ## Parameters for KAT GCP
+# K-mer copy number profiling using KAT.
 katgcp:
-  kmer: "-m 31"
+  kmer: "-m 31"  # K-mer size.
 
 ## Hifiasm parameters
+# Assembly-specific flags; advanced users can tweak these for purge and similarity tuning.
 hifiasm:
-  purgelevel: "-l 1 -O 1"
-  similarity: "-s 0.75"
+  purgelevel: "-l 1 -O 1"  # Controls haplotig purging.
+  similarity: "-s 0.75"  # Controls stringency for contig comparison.
 
 ## gfastats parameters
+# Used for summarizing assemblies.
 gfastats:
-  params: "-o fa --discover-paths"
+  params: "-o fa --discover-paths"  # Output in FASTA format with extra stats.
 
 ## Bellerophon parameters
+# Used for contamination removal; keep quality thresholds here.
 bellerophon: "--quality 10"
 
 ## Pretext parameters
+# Hi-C visualization; adjust styles here if needed.
 pretext:
-  map: "--mapq 10"
-  snapshot: "--sequences '=full' -c 'Mellow Rainbow' --gridSize 1 --gridColour black --jpegQuality 100 -r 4000"
+  map: "--mapq 10"  # Minimum mapping quality for PretextMap.
+  snapshot: "--sequences '=full' -c 'Mellow Rainbow' --gridSize 1 --gridColour black --jpegQuality 100 -r 4000"  # Snapshot settings.
 
 ## YAHS parameters
-yahs: "-e GATC,GANTC,CTNAG,TTAA --no-mem-check -v 1"
+# Auto-scaffolding with Hi-C data.
+yahs: "-e GATC,GANTC,CTNAG,TTAA --no-mem-check -v 1"  # Enzyme cut sites and verbosity.
