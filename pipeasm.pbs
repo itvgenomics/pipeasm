@@ -20,7 +20,8 @@ conda activate snakemake2
 
 cd $PBS_O_WORKDIR
 
-# Caminho dos arquivos do singularity para colocar no config.yaml (sif_dir): /scratch/sif_files/pipeasm
+# Caminho dos arquivos do singularity para colocar no config.yaml (sif_dir): "/scratch/sif_files/pipeasm"
+# Caminho para colocar no gxdb: "/mnt/gen/opt/utils/lucas/S4-Databases/fcs-gx_testDB/gxdb"
 bash Pipeasm.sh -d . -c config/config.yaml -s workflow/Snakefile -t <threads>
 
 TEND=`echo "print time();" | perl`

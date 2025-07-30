@@ -1,16 +1,27 @@
 ## Samples information and input and output
-species: ''  # (Required) Scientific name of the species. Used for naming and mito annotation reference. Must be present on NCBI taxonomy database. This name is used to seach a mithocondrial reference.
-sample: ''  # (Required) Unique identifier of the sample, e.g., DToL ID.
-hifi_reads: ''  # (Required) Absolute path to your HiFi reads, merged into a single .fastq.gz file.
-hic_r1: ''  # (Optional) Absolute path to Hi-C forward reads in .fastq.gz format.
-hic_r2: ''  # (Optional) Absolute path to Hi-C reverse reads in .fastq.gz format.
-ont_reads: ''  # (Optional) Absolute path to Oxford Nanopore reads in .fastq.gz format.
-geneticcode:  # (Required) Genetic code for mitochondrial genome annotation (e.g., 2 for vertebrates).
-taxid:  # (Required) NCBI Taxonomy ID; use a similar species if unavailable. Important for the decontamination step.
-buscodb: ''  # (Required) BUSCO lineage name, e.g., "aves", based on closest taxonomic group. Do not use the "_odb10" suffix.
-solo_asm: 'Yes'  # (Required) Set to 'Yes' for both solo and phased assemblies, or 'No' for phased only.
+# (Required) Scientific name of the species. Used for naming and mito annotation reference. Must be present on NCBI taxonomy database. This name is used to seach a mithocondrial reference.
+species: ''
+# (Required) Unique identifier of the sample, e.g., DToL ID.
+sample: ''
+# (Required) Absolute path to your HiFi reads, merged into a single .fastq.gz file.
+hifi_reads: ''
+# (Optional) Absolute path to Hi-C forward reads in .fastq.gz format.
+hic_r1: ''
+# (Optional) Absolute path to Hi-C reverse reads in .fastq.gz format.
+hic_r2: ''
+# (Optional) Absolute path to Oxford Nanopore reads in .fastq.gz format.
+ont_reads: ''
+# (Required) Genetic code for mitochondrial genome annotation (e.g., 2 for vertebrates).
+geneticcode:
+# (Required) NCBI Taxonomy ID; use a similar species if unavailable. Important for the decontamination step.
+taxid:
+# (Required) BUSCO lineage name, e.g., "aves", based on closest taxonomic group. Do not use the "_odb10" suffix.
+buscodb: ''
+# (Required) Set to 'Yes' for both solo and phased assemblies, or 'No' for phased only.
+solo_asm: 'No'
 
 # (Required) Directory for storing Singularity image files.
+# E.g.: "/scratch/sif_files/pipeasm"
 sif_dir: ''
 
 ## Threads
@@ -30,7 +41,9 @@ software_threads:
   gfastats: 4
 
 ## FCS-GX Database
-gxdb: /mnt/gen/opt/utils/lucas/S4-Databases/fcs-gx_testDB/gxdb # (Optional) Path to FCS-GX contamination DB. Leave empty to skip.
+# (Optional) Path to FCS-GX contamination DB. Leave empty to skip.
+# E.g.: "/mnt/gen/opt/utils/lucas/S4-Databases/fcs-gx_testDB/gxdb"
+gxdb:
 
 ## Fastp parameters
 # Parameters used for read trimming and QC via fastp.
@@ -54,9 +67,9 @@ nanoplot:
   plots: "--plots kde hex dot"  # Types of plots to generate.
 
 ## Meryl parameters
-# Used for counting k-mers with Meryl. You can change `k=` to adjust k-mer size and 'mem=' the max RAM usage.
+# Used for counting k-mers with Meryl. You can change `k=` to adjust k-mer size and 'memory=' the max RAM usage.
 meryl:
-  kmer: "k=31 mem=256g"
+  kmer: "k=31 memory=256g"
 
 ## Genomescope2 parameters
 # Used for estimating genome properties from k-mer histogram.
