@@ -12,7 +12,7 @@ rule solo_fcsadaptor_hap1:
     shell:
         """
         bash -c 'export OMP_NUM_THREADS={threads} && \
-        bash workflow/scripts/run_fcsadaptor.sh --fasta-input {input} --output-dir results/Decontamination/FCS-Adaptor/Solo_Asm_Primary --euk'
+        bash workflow/scripts/run_fcsadaptor.sh --fasta-input {input} --output-dir results/Decontamination/FCS-Adaptor/Solo_Asm_Primary --euk >> {log} 2>&1'
         """
 
 rule solo_fcsadaptor_hap2:
@@ -29,7 +29,7 @@ rule solo_fcsadaptor_hap2:
     shell:
         """
         bash -c 'export OMP_NUM_THREADS={threads} && \
-        bash workflow/scripts/run_fcsadaptor.sh --fasta-input {input} --output-dir results/Decontamination/FCS-Adaptor/Solo_Asm_Alt --euk'
+        bash workflow/scripts/run_fcsadaptor.sh --fasta-input {input} --output-dir results/Decontamination/FCS-Adaptor/Solo_Asm_Alt --euk >> {log} 2>&1'
         """
 
 rule solo_fcsgx:
@@ -56,7 +56,7 @@ rule solo_fcsgx:
         screen genome \
         --fasta {input.hap1} \
         --out-dir results/Decontamination/Contaminants/Solo_Asm_Primary \
-        --gx-db {params.gxdb} --tax-id {params.taxid} --generate-logfile True && \
+        --gx-db {params.gxdb} --tax-id {params.taxid} --generate-logfile True >> {log} 2>&1 && \
         touch {output.hap1}'
 
         bash -c 'echo "OMP_NUM_THREADS={threads}" >>  results/Decontamination/Contaminants/Solo_Asm_Alt/gx_env.txt && \
@@ -64,7 +64,7 @@ rule solo_fcsgx:
         screen genome \
         --fasta {input.hap2} \
         --out-dir results/Decontamination/Contaminants/Solo_Asm_Alt \
-        --gx-db {params.gxdb} --tax-id {params.taxid} --generate-logfile True && \
+        --gx-db {params.gxdb} --tax-id {params.taxid} --generate-logfile True >> {log} 2>&1 && \
         touch {output.hap2}'
         """
 
@@ -87,7 +87,7 @@ rule solo_fcsgx_clean_hap1:
         bash -c 'cat {input.hap1_fa} | python workflow/scripts/fcs.py \
         --image resources/fcs-gx.sif clean genome \
         --action-report results/Decontamination/Contaminants/Solo_Asm_Primary/{wildcards.sample}.p_ctg.{params}.fcs_gx_report.txt \
-        --output {output.hap1} --contam-fasta-out results/Decontamination/Contaminants/Solo_Asm_Primary/{wildcards.sample}.contam.fasta'
+        --output {output.hap1} --contam-fasta-out results/Decontamination/Contaminants/Solo_Asm_Primary/{wildcards.sample}.contam.fasta >> {log} 2>&1'
         """
 
 
@@ -110,5 +110,5 @@ rule solo_fcsgx_clean_hap2:
         bash -c 'cat {input.hap2_fa} | python workflow/scripts/fcs.py \
         --image resources/fcs-gx.sif clean genome \
         --action-report results/Decontamination/Contaminants/Solo_Asm_Alt/{wildcards.sample}.a_ctg.{params}.fcs_gx_report.txt \
-        --output {output.hap2} --contam-fasta-out results/Decontamination/Contaminants/Solo_Asm_Alt/{wildcards.sample}.contam.fasta'
+        --output {output.hap2} --contam-fasta-out results/Decontamination/Contaminants/Solo_Asm_Alt/{wildcards.sample}.contam.fasta >> {log} 2>&1'
         """

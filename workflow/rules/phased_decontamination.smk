@@ -12,7 +12,7 @@ rule phased_fcsadaptor_hap1:
     shell:
         """
         bash -c 'export OMP_NUM_THREADS={threads} && \
-        bash workflow/scripts/run_fcsadaptor.sh --fasta-input {input} --output-dir results/Decontamination/FCS-Adaptor/Phased_Asm_Hap1 --euk'
+        bash workflow/scripts/run_fcsadaptor.sh --fasta-input {input} --output-dir results/Decontamination/FCS-Adaptor/Phased_Asm_Hap1 --euk >> {log} 2>&1'
         """
 
 rule phased_fcsadaptor_hap2:
@@ -29,7 +29,7 @@ rule phased_fcsadaptor_hap2:
     shell:
         """
         bash -c 'export OMP_NUM_THREADS={threads} && \
-        bash workflow/scripts/run_fcsadaptor.sh --fasta-input {input} --output-dir results/Decontamination/FCS-Adaptor/Phased_Asm_Hap2 --euk'
+        bash workflow/scripts/run_fcsadaptor.sh --fasta-input {input} --output-dir results/Decontamination/FCS-Adaptor/Phased_Asm_Hap2 --euk >> {log} 2>&1'
         """
 
 rule phased_fcsgx:
@@ -56,7 +56,7 @@ rule phased_fcsgx:
         screen genome \
         --fasta {input.hap1} \
         --out-dir results/Decontamination/Contaminants/Phased_Asm_Hap1 \
-        --gx-db {params.gxdb} --tax-id {params.taxid} --generate-logfile True && \
+        --gx-db {params.gxdb} --tax-id {params.taxid} --generate-logfile True >> {log} 2>&1 && \
         touch {output.hap1}'
 
         bash -c 'echo "OMP_NUM_THREADS={threads}" >>  results/Decontamination/Contaminants/Phased_Asm_Hap2/gx_env.txt && \
@@ -64,7 +64,7 @@ rule phased_fcsgx:
         screen genome \
         --fasta {input.hap2} \
         --out-dir results/Decontamination/Contaminants/Phased_Asm_Hap2 \
-        --gx-db {params.gxdb} --tax-id {params.taxid} --generate-logfile True && \
+        --gx-db {params.gxdb} --tax-id {params.taxid} --generate-logfile True >> {log} 2>&1 && \
         touch {output.hap2}'
         """
 
@@ -87,7 +87,7 @@ rule phased_fcsgx_clean_hap1:
         bash -c 'cat {input.hap1_fa} | python workflow/scripts/fcs.py \
         --image resources/fcs-gx.sif clean genome \
         --action-report results/Decontamination/Contaminants/Phased_Asm_Hap1/{wildcards.sample}.hic.hap1.p_ctg.{params}.fcs_gx_report.txt \
-        --output {output.hap1} --contam-fasta-out results/Decontamination/Contaminants/Phased_Asm_Hap1/{wildcards.sample}.contam.fasta'
+        --output {output.hap1} --contam-fasta-out results/Decontamination/Contaminants/Phased_Asm_Hap1/{wildcards.sample}.contam.fasta >> {log} 2>&1'
         """
 
 
@@ -110,5 +110,5 @@ rule phased_fcsgx_clean_hap2:
         bash -c 'cat {input.hap2_fa} | python workflow/scripts/fcs.py \
         --image resources/fcs-gx.sif clean genome \
         --action-report results/Decontamination/Contaminants/Phased_Asm_Hap2/{wildcards.sample}.hic.hap2.p_ctg.{params}.fcs_gx_report.txt \
-        --output {output.hap2} --contam-fasta-out results/Decontamination/Contaminants/Phased_Asm_Hap2/{wildcards.sample}.contam.fasta'
+        --output {output.hap2} --contam-fasta-out results/Decontamination/Contaminants/Phased_Asm_Hap2/{wildcards.sample}.contam.fasta >> {log} 2>&1'
         """

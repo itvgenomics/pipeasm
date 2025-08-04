@@ -1,23 +1,23 @@
 import sys
 
 ## Function to get all expected output files
-def get_output(sampĺe_name):
+def get_output(sample_name):
 
     out = []
 
     ## Check if the input files exists
-    out.extend(expand("results/Trimming_QC/HiFi/{sample}.fastq.gz", sample=sampĺe_name))
+    out.extend(expand("results/Trimming_QC/HiFi/{sample}.fastq.gz", sample=sample_name))
 
     if config['hic_r1'] and config['hic_r2']:
-        out.extend(expand("results/Trimming_QC/HiC/{sample}_R{pair}.fastq.gz", sample=sampĺe_name, pair=["1","2"]))
+        out.extend(expand("results/Trimming_QC/HiC/{sample}_R{pair}.fastq.gz", sample=sample_name, pair=["1","2"]))
 
     if config['ont_reads']:
-        out.extend(expand("results/Trimming_QC/ONT/{sample}_ONT.fastq.gz", sample=sampĺe_name))
+        out.extend(expand("results/Trimming_QC/ONT/{sample}_ONT.fastq.gz", sample=sample_name))
 
     ## Check the Trimming and QC output files
     if config['run_trimming_qc'].lower() == "yes":
 
-        out.extend(expand("results/Trimming_QC/HiFi/{sample}.trimmed.fastq.gz", sample=sampĺe_name))
+        out.extend(expand("results/Trimming_QC/HiFi/{sample}.trimmed.fastq.gz", sample=sample_name))
 
         out.extend(expand("results/Trimming_QC/QC/HiFi_FastQC/{sample}.trimmed_fastqc.{ext}", sample=config["sample"], ext=['zip','html']))
 
@@ -33,13 +33,13 @@ def get_output(sampĺe_name):
             out.append(file)
 
         if config["hic_r1"] and config["hic_r2"]:
-            out.extend(expand("results/Trimming_QC/HiC/{sample}_R1.trimmed_paired.fastq.gz", sample=sampĺe_name))
-            out.extend(expand("results/Trimming_QC/HiC/{sample}_R2.trimmed_paired.fastq.gz", sample=sampĺe_name))
+            out.extend(expand("results/Trimming_QC/HiC/{sample}_R1.trimmed_paired.fastq.gz", sample=sample_name))
+            out.extend(expand("results/Trimming_QC/HiC/{sample}_R2.trimmed_paired.fastq.gz", sample=sample_name))
             out.extend(expand("results/Trimming_QC/QC/HiC_FastQC/{sample}_R{pair}.trimmed_paired_fastqc.{ext}", sample=config["sample"], pair=['1','2'], ext=['zip','html']))
 
         if config['ont_reads']:
 
-            out.extend(expand("results/Trimming_QC/ONT/{sample}_ONT.trimmed.fastq.gz", sample=sampĺe_name))
+            out.extend(expand("results/Trimming_QC/ONT/{sample}_ONT.trimmed.fastq.gz", sample=sample_name))
 
             ont_nanoplot_out = [expand("results/Trimming_QC/QC/ONT_NanoPlot/{sample}LengthvsQualityScatterPlot_dot.svg", sample=config["sample"]),
                         expand("results/Trimming_QC/QC/ONT_NanoPlot/{sample}LengthvsQualityScatterPlot_kde.svg", sample=config["sample"]),
@@ -131,8 +131,8 @@ def get_output(sampĺe_name):
 
 
         ## Check Mitogenomes references
-        out.append(expand("resources/{sample}.reference.fasta", sample=sampĺe_name))
-        out.append(expand("resources/{sample}.reference.gb", sample=sampĺe_name))
+        out.append(expand("resources/{sample}.reference.fasta", sample=sample_name))
+        out.append(expand("resources/{sample}.reference.gb", sample=sample_name))
 
         if config['solo_asm'].lower() == 'yes':
             out.append(expand("results/Assembly/Mitogenome/Solo_Asm/{sample}.contigs_stats.tsv", sample=config["sample"]))
@@ -246,23 +246,3 @@ def get_output(sampĺe_name):
             out.append(expand("results/Scaffolding/Scaffolding_stats/Merqury/{sample}.spectra-cn.st.png", sample=config["sample"]))
 
     return out
-
-# ### Function to create a list of files for checking before remove buscodb folder
-# def files_remove_buscodb():
-
-#     files = []
-
-#     if config['hic_r1'] and config['hic_r2']:
-#         files.append(expand("results/Assembly/Genome_Stats/Compleasm/Phased_Asm_Hap1/{sample}.summary.txt", sample=config["sample"]))
-#         files.append(expand("results/Assembly/Genome_Stats/Compleasm/Phased_Asm_Hap2/{sample}.summary.txt", sample=config["sample"]))
-
-#         if config['run_auto_scaffolding'].lower() == "yes":
-#             files.append(expand("results/Scaffolding/Scaffolding_stats/Compleasm/Hap1/{sample}.summary.txt", sample=config["sample"]))
-#             files.append(expand("results/Scaffolding/Scaffolding_stats/Compleasm/Hap2/{sample}.summary.txt", sample=config["sample"]))
-
-#     elif config['solo_asm'].lower() == 'yes':
-#         files.append(expand("results/Assembly/Genome_Stats/Compleasm/Solo_Asm_Primary/{sample}.summary.txt", sample=config["sample"]))
-#         files.append(expand("results/Assembly/Genome_Stats/Compleasm/Solo_Asm_Alt/{sample}.summary.txt", sample=config["sample"]))
-
-
-#     return files
