@@ -68,6 +68,9 @@ def copy_files(sample):
         f"results/Scaffolding/Initial_Contacts/Hap2/{sample}.merged.bam.pretext",
         f"results/Scaffolding/Final_Contacts/Hap1/{sample}.merged.bam.pretext",
         f"results/Scaffolding/Final_Contacts/Hap2/{sample}.merged.bam.pretext",
+        f"results/Scaffolding/YAHS_Scaffolding/Hap1/{sample}.yahs_scaffolds_final.fa",
+        f"results/Scaffolding/YAHS_Scaffolding/Hap2/{sample}.yahs_scaffolds_final.fa",
+
     ]
 
     directories = [
@@ -109,6 +112,12 @@ def copy_files(sample):
                     shutil.copy(file, f"workflow/report/files/YAHS_Hap1_{file_name}")
                 elif "Final_Contacts" in file and "Hap2" in file:
                     shutil.copy(file, f"workflow/report/files/YAHS_Hap2_{file_name}")
+
+            elif "YAHS_Scaffolding" in file:
+                if "Hap1" in file:
+                    shutil.copy(file, f"workflow/report/files/Hap1_{file_name}")
+                elif "Hap2" in file:
+                    shutil.copy(file, f"workflow/report/files/Hap2_{file_name}")
 
             else:
                 shutil.copy(file, "workflow/report/files")
