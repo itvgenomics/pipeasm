@@ -59,12 +59,20 @@ def copy_files(sample):
 		f"results/Scaffolding/Scaffolding_stats/Merqury/{sample}.{sample}.yahs_hap1.spectra-cn.st.png",
 		f"results/Scaffolding/Scaffolding_stats/Merqury/{sample}.{sample}.yahs_hap2.spectra-cn.st.png",
 		f"results/Scaffolding/Scaffolding_stats/Merqury/{sample}.spectra-asm.st.png",
-		f"results/Scaffolding/Scaffolding_stats/Merqury/{sample}.spectra-cn.st.png"
+		f"results/Scaffolding/Scaffolding_stats/Merqury/{sample}.spectra-cn.st.png",
+        f"results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap1.p_ctg.fa",
+        f"results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap2.p_ctg.fa",
+        f"results/Assembly/Contigging/Solo_Asm/{sample}.p_ctg.gfa",
+        f"results/Assembly/Contigging/Solo_Asm/{sample}.a_ctg.gfa",
+        f"results/Scaffolding/Initial_Contacts/Hap1/{sample}.merged.bam.pretext",
+        f"results/Scaffolding/Initial_Contacts/Hap2/{sample}.merged.bam.pretext",
+        f"results/Scaffolding/Final_Contacts/Hap1/{sample}.merged.bam.pretext",
+        f"results/Scaffolding/Final_Contacts/Hap2/{sample}.merged.bam.pretext",
     ]
 
     directories = [
-        "workflow/report/Images",
-        "workflow/report/Files",
+        "workflow/report/images",
+        "workflow/report/files",
     ]
 
     for dir in directories:
@@ -78,21 +86,32 @@ def copy_files(sample):
             if ".png" in file or ".svg" in file or ".pdf" in file:
                 file_name = os.path.basename(file)
                 if "HiFi" in file:
-                    shutil.copy(file, f"workflow/report/Images/HiFi_{file_name}")
+                    shutil.copy(file, f"workflow/report/images/HiFi_{file_name}")
                 elif "HiC" in file:
-                    shutil.copy(file, f"workflow/report/Images/HiC_{file_name}")
+                    shutil.copy(file, f"workflow/report/images/HiC_{file_name}")
                 elif "ONT" in file:
-                    shutil.copy(file, f"workflow/report/Images/ONT_{file_name}")
+                    shutil.copy(file, f"workflow/report/images/ONT_{file_name}")
                 elif "Solo_Asm" in file:
-                    shutil.copy(file, f"workflow/report/Images/Solo_{file_name}")
+                    shutil.copy(file, f"workflow/report/images/Solo_{file_name}")
                 elif "Phased_Asm" in file:
-                    shutil.copy(file, f"workflow/report/Images/Phased_{file_name}")
+                    shutil.copy(file, f"workflow/report/images/Phased_{file_name}")
                 elif "Scaffolding_stats/Merqury" in file:
-                    shutil.copy(file, f"workflow/report/Images/Scaffolding_{file_name}")
+                    shutil.copy(file, f"workflow/report/images/Scaffolding_{file_name}")
                 else:
-                    shutil.copy(file, "workflow/report/Images")
+                    shutil.copy(file, "workflow/report/images")
+
+            elif ".pretext" in file:
+                if "Initial_Contacts" in file and "Hap1" in file:
+                    shutil.copy(file, f"workflow/report/files/Hifiasm_Hap1_{file_name}")
+                elif "Initial_Contacts" in file and "Hap2" in file:
+                    shutil.copy(file, f"workflow/report/files/Hifiasm_Hap2_{file_name}")
+                elif "Final_Contacts" in file and "Hap1" in file:
+                    shutil.copy(file, f"workflow/report/files/YAHS_Hap1_{file_name}")
+                elif "Final_Contacts" in file and "Hap2" in file:
+                    shutil.copy(file, f"workflow/report/files/YAHS_Hap2_{file_name}")
+
             else:
-                shutil.copy(file, "workflow/report/Files")
+                shutil.copy(file, "workflow/report/files")
 
 
 def parse_fastqc(sample):
