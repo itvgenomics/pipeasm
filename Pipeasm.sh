@@ -180,6 +180,7 @@ echo "INFO: Running Pipeasm."
 if [ "$SETSLURM" = true ]; then
     # Run the Pipeline
     export SINGULARITY_CACHEDIR=$WORKDIR/singularity && \
+    export SINGULARITY_TMPDIR=$WORKDIR/tmp && \
     export TMPDIR=$WORKDIR/tmp && \
     sed "s|{WORKDIR}|$WORKDIR|g; s|{THREADS}|$THREADS|g" $WORKDIR/config/slurm_params.yaml > $WORKDIR/profiles/slurm/config.yaml && \
     snakemake -d $WORKDIR --snakefile $SNAKEFILE \
@@ -189,6 +190,7 @@ if [ "$SETSLURM" = true ]; then
 else
     # Run the Pipeline
     export SINGULARITY_CACHEDIR=$WORKDIR/singularity && \
+    export SINGULARITY_TMPDIR=$WORKDIR/tmp && \
     export TMPDIR=$WORKDIR/tmp && \
     sed "s|{WORKDIR}|$WORKDIR|g; s|{THREADS}|$THREADS|g" $WORKDIR/config/local_params.yaml > $WORKDIR/profiles/local/config.yaml && \
     snakemake -d $WORKDIR --snakefile $SNAKEFILE \
