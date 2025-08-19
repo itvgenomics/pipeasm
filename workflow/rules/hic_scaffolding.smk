@@ -4,7 +4,6 @@ rule yahs_scaffolding_hap1:
         merged_bam="results/Scaffolding/Initial_Contacts/Hap1/{sample}.merged.bam",
     output:
         "results/Scaffolding/YAHS_Scaffolding/Hap1/{sample}.yahs_scaffolds_final.fa"
-    threads: 1
     params:
         yahs=config['yahs']
     log:
@@ -25,7 +24,6 @@ rule yahs_scaffolding_hap2:
         merged_bam="results/Scaffolding/Initial_Contacts/Hap2/{sample}.merged.bam",
     output:
         "results/Scaffolding/YAHS_Scaffolding/Hap2/{sample}.yahs_scaffolds_final.fa"
-    threads: 1
     params:
         yahs=config['yahs']
     log:

@@ -3,8 +3,6 @@ rule trimming_ont:
 		"results/Trimming_QC/ONT/{sample}_ONT.fastq.gz"
 	output:
 		"results/Trimming_QC/ONT/{sample}_ONT.trimmed.fastq.gz"
-	threads:
-		config["threads"]
 	log:
 		"logs/{sample}.trimming_ont.log"
 	benchmark:
@@ -29,8 +27,6 @@ rule qc_nanoplot_ont:
 		"results/Trimming_QC/QC/ONT_NanoPlot/{sample}WeightedLogTransformed_HistogramReadlength.svg",
 		"results/Trimming_QC/QC/ONT_NanoPlot/{sample}Yield_By_Length.svg",
 		"results/Trimming_QC/QC/ONT_NanoPlot/{sample}NanoPlot-report.html"
-	threads:
-		config["software_threads"]["nanoplot"]
 	params:
 		args= config['nanoplot']['args'],
 		plots= config['nanoplot']['plots'],

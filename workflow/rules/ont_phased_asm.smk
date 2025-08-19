@@ -6,8 +6,6 @@ rule ont_phased_assembly:
         ont="results/Trimming_QC/ONT/{sample}_ONT.trimmed.fastq.gz"
     output:
         expand("results/Assembly/Contigging/Phased_Asm/{{sample}}.hic.hap{hap}.p_ctg.gfa", hap=["1", "2"])
-    threads:
-        config["threads"]
     params:
         purgelevel= config['hifiasm']['purgelevel'],
         similarity= config['hifiasm']['similarity']

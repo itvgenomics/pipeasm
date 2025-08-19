@@ -7,7 +7,6 @@ rule scaffolding_edit_busco_table:
         "results/Scaffolding/Scaffolding_stats/Compleasm/Hap2/{sample}.full_table_busco_format_edit.tsv"
     log:
         "logs/{sample}.scaffolding_edit_busco_table.log"
-    threads: 1
     script:
         "../scripts/scaffolding_edit_busco_table.py"
 
@@ -21,7 +20,6 @@ rule scaffolding_run_snailplot_create_hap1:
         "logs/{sample}.scaffolding_run_snailplot_create_hap1.log"
     benchmark:
         "benchmarks/{sample}.scaffolding_run_snailplot_create_hap1.txt"
-    threads: 1
     singularity:
         f"{config["sif_dir"]}/blobtoolkit.sif"
     shell:
@@ -46,7 +44,6 @@ rule scaffolding_run_snailplot_plot_hap1:
         "logs/{sample}.scaffolding_run_snailplot_plot_hap1.log"
     benchmark:
         "benchmarks/{sample}.scaffolding_run_snailplot_plot_hap1.txt"
-    threads: 1
     singularity:
         f"{config["sif_dir"]}/blobtoolkit.sif"
     shell:
@@ -65,7 +62,6 @@ rule scaffolding_run_snailplot_create_hap2:
         "logs/{sample}.scaffolding_run_snailplot_create_hap2.log"
     benchmark:
         "benchmarks/{sample}.scaffolding_run_snailplot_create_hap2.txt"
-    threads: 1
     singularity:
         f"{config["sif_dir"]}/blobtoolkit.sif"
     shell:
@@ -90,7 +86,6 @@ rule scaffolding_run_snailplot_plot_hap2:
         "logs/{sample}.scaffolding_run_snailplot_plot_hap2.log"
     benchmark:
         "benchmarks/{sample}.scaffolding_run_snailplot_plot_hap2.txt"
-    threads: 1
     singularity:
         f"{config["sif_dir"]}/blobtoolkit.sif"
     shell:

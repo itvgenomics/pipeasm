@@ -1,7 +1,6 @@
 rule download_buscodb:
     output:
         directory("resources/{sample}_buscodb")
-    threads: 1
     params:
         buscodb= config['buscodb']
     log:

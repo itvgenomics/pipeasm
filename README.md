@@ -104,21 +104,23 @@ The fields to be edited are the following:
   - **-c** </path/to/config.yaml> (Optional) = Overwrite the default configuration file with all nedded parameters (config/config.yaml)
   - **-s** </path/to/snakefile> (Optional) = Overwrite the default snakefile path (workflow/snakefile)
   - **-t** {int} (Required) = Number of threads to use
+  - **-slurm** (Optional) = Use the `config/slurm_params.yaml` file to run the workflow with SLURM job submission using Snakemake’s profile system. This enables use of SLURM-specific resource configuration, submission rules, and cluster-specific options. If you want to change any default SLURM settings, such as the partition: Edit `config/slurm_params.yaml` and set the appropriate value for the slurm_partition variable
 
   - Only the **-d** and **-t** flags are required if you want to run Pipeasm with default parameters. If you do not want to run the decontamination step, set **gxdb**, in the **config.yaml** file, **blank**.
   - You can perform a dry-run (build only the DAG, no rule will be run) with -np and unlock the directory, if needed, with --unlock
-
+  - If you want to change any default settings, such as the threads number and memory usage: Edit config/local_params.yaml. **DO NOT CHANGE THE {WORKDIR} and {THREADS} VARIABLES**.
+  
 - You can choose a Pipeasm step with:
-  -  `--trimming_qc` (for Trimming and Quality Control);
-  -  `--kmer_eval` (for k-mer Evaluation stats/plots);
-  -  `--assembly` (for all Assembly and Decontamination steps);
-  -  `--scaffolding` (to run YAHS auto-scaffolding and create the Hi-C Maps);
+  -  `-trimming_qc` (for Trimming and Quality Control);
+  -  `-kmer_eval` (for k-mer Evaluation stats/plots);
+  -  `-assembly` (for all Assembly and Decontamination steps);
+  -  `-scaffolding` (to run YAHS auto-scaffolding and create the Hi-C Maps);
 
 - Just make sure to run previous steps before running the next one.
   - Run
-  `bash Pipeasm.sh -d /path/to/work/dir -t 64 --trimming_qc`
+  `bash Pipeasm.sh -d /path/to/work/dir -t 64 -trimming_qc`
   before
-  `bash Pipeasm.sh -d /path/to/work/dir -t 64 --kmer_eval`
+  `bash Pipeasm.sh -d /path/to/work/dir -t 64 -kmer_eval`
 
 
 - Pipeasm will create a temporary directory at you working dir to store all singularity images and Snakemake temp files.

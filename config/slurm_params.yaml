@@ -1,0 +1,644 @@
+executor: slurm
+use-singularity: true
+singularity-args: "-B {WORKDIR}:/data --pwd /data"
+latency-wait: 60
+show-failed-logs: True
+keep-going: True
+printshellcmds: True
+rerun-incomplete: True
+max-jobs-per-second: {THREADS}
+max-status-checks-per-second: 20
+jobs: {THREADS}
+
+set-threads:
+  download_mito_reference: 1
+  check_hic_files: 1
+  check_ont_files: 1
+  final_contacts_bwa_mem2_index_hap1: 2
+  final_contacts_bwa_mem2_index_hap2: 2
+  final_contacts_bwa_mem2_mapping_hap1_r1: 31
+  final_contacts_bwa_mem2_mapping_hap1_r2: 31
+  final_contacts_bwa_mem2_mapping_hap2_r1: 31
+  final_contacts_bwa_mem2_mapping_hap2_r2: 31
+  final_contacts_bellerophon_merge_hap1: 2
+  final_contacts_bellerophon_merge_hap2: 2
+  final_contacts_samtools_flagstats_hap1: 4
+  final_contacts_samtools_flagstats_hap2: 4
+  final_contacts_pretext_map_snapshot_hap1: 2
+  final_contacts_pretext_map_snapshot_hap2: 2
+  final_contacts_samtools_flagstats_bam_r1_hap1: 4
+  final_contacts_samtools_flagstats_bam_r2_hap1: 4
+  final_contacts_samtools_flagstats_bam_r1_hap2: 4
+  final_contacts_samtools_flagstats_bam_r2_hap2: 4
+  initial_contacts_bwa_mem2_index_hap1: 2
+  initial_contacts_bwa_mem2_index_hap2: 2
+  initial_contacts_bwa_mem2_mapping_hap1_r1: 31
+  initial_contacts_bwa_mem2_mapping_hap1_r2: 31
+  initial_contacts_bwa_mem2_mapping_hap2_r1: 31
+  initial_contacts_bwa_mem2_mapping_hap2_r2: 31
+  initial_contacts_bellerophon_merge_hap1: 2
+  initial_contacts_bellerophon_merge_hap2: 2
+  initial_contacts_samtools_flagstats_hap1: 4
+  initial_contacts_samtools_flagstats_hap2: 4
+  initial_contacts_pretext_map_snapshot_hap1: 2
+  initial_contacts_pretext_map_snapshot_hap2: 2
+  initial_contacts_samtools_flagstats_bam_r1_hap1: 4
+  initial_contacts_samtools_flagstats_bam_r2_hap1: 4
+  initial_contacts_samtools_flagstats_bam_r1_hap2: 4
+  initial_contacts_samtools_flagstats_bam_r2_hap2: 4
+  yahs_scaffolding_hap1: 4
+  yahs_scaffolding_hap2: 4
+  trimming_hic: 10
+  qc_trim_hic: 8
+  check_hifi_files: 1
+  meryl_count: 31
+  meryl_union: 31
+  meryl_histo: 31
+  genomescope2_pacbio: 8
+  smudgeplot: 31
+  katgcp: 31
+  trimming_pacbio: 31
+  trimming_ont: 31
+  qc_trim_pacbio: 8
+  qc_nanoplot_pacbio: 8
+  qc_nanoplot_ont: 8
+  phased_assembly: 31
+  ont_phased_assembly: 31
+  ont_solo_assembly: 31
+  phased_edit_busco_table: 1
+  phased_run_snailplot_create_hap1: 1
+  phased_run_snailplot_plot_hap1: 1
+  phased_run_snailplot_create_hap2: 1
+  phased_run_snailplot_plot_hap2: 1
+  phased_compleasm_hap1: 31
+  phased_compleasm_hap2: 31
+  phased_fcsadaptor_hap1: 31
+  phased_fcsadaptor_hap2: 31
+  phased_fcsgx: 31
+  phased_fcsgx_clean_hap1: 31
+  phased_fcsgx_clean_hap2: 31
+  phased_merqury: 31
+  phased_run_mitohifi: 31
+  phased_gfastats_fasta_hap1: 1
+  phased_gfastats_stats_hap1: 1
+  phased_gfastats_fasta_hap2: 1
+  phased_gfastats_stats_hap2: 1
+  download_buscodb: 1
+  remove_buscodb: 1
+  scaffolding_compleasm_hap1: 2
+  scaffolding_compleasm_hap2: 31
+  scaffolding_edit_busco_table: 1
+  scaffolding_run_snailplot_create_hap1: 1
+  scaffolding_run_snailplot_plot_hap1: 1
+  scaffolding_run_snailplot_create_hap2: 1
+  scaffolding_run_snailplot_plot_hap2: 1
+  scaffolding_gfastats_stats_hap1: 1
+  scaffolding_gfastats_stats_hap2: 1
+  build_sifs: 1
+  solo_assembly: 31
+  solo_edit_busco_table: 1
+  solo_run_snailplot_create_primary: 1
+  solo_run_snailplot_plot_primary: 1
+  solo_run_snailplot_create_alt: 1
+  solo_run_snailplot_plot_alt: 1
+  solo_compleasm_hap1: 31
+  solo_compleasm_hap2: 31
+  solo_fcsadaptor_hap1: 31
+  solo_fcsadaptor_hap2: 31
+  solo_fcsgx: 31
+  solo_fcsgx_clean_hap1: 31
+  solo_fcsgx_clean_hap2: 31
+  solo_merqury: 31
+  solo_run_mitohifi: 31
+  solo_gfastats_fasta_primary: 1
+  solo_gfastats_stats_primary: 1
+  solo_gfastats_fasta_alt: 1
+  solo_gfastats_stats_alt: 1
+  scaffolding_merqury: 31
+
+set-resources:
+  download_mito_reference:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  check_hic_files:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  check_ont_files:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  final_contacts_bwa_mem2_index_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 240000
+    runtime: 4320
+    nodes: 1
+  final_contacts_bwa_mem2_index_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 240000
+    runtime: 4320
+    nodes: 1
+  final_contacts_bwa_mem2_mapping_hap1_r1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  final_contacts_bwa_mem2_mapping_hap1_r2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  final_contacts_bwa_mem2_mapping_hap2_r1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  final_contacts_bwa_mem2_mapping_hap2_r2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  final_contacts_bellerophon_merge_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  final_contacts_bellerophon_merge_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  final_contacts_samtools_flagstats_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  final_contacts_samtools_flagstats_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  final_contacts_pretext_map_snapshot_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 20000
+    runtime: 4320
+    nodes: 1
+  final_contacts_pretext_map_snapshot_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 20000
+    runtime: 4320
+    nodes: 1
+  final_contacts_samtools_flagstats_bam_r1_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  final_contacts_samtools_flagstats_bam_r2_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  final_contacts_samtools_flagstats_bam_r1_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  final_contacts_samtools_flagstats_bam_r2_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  initial_contacts_bwa_mem2_index_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 240000
+    runtime: 4320
+    nodes: 1
+  initial_contacts_bwa_mem2_index_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 240000
+    runtime: 4320
+    nodes: 1
+  initial_contacts_bwa_mem2_mapping_hap1_r1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  initial_contacts_bwa_mem2_mapping_hap1_r2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  initial_contacts_bwa_mem2_mapping_hap2_r1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  initial_contacts_bwa_mem2_mapping_hap2_r2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  initial_contacts_bellerophon_merge_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  initial_contacts_bellerophon_merge_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  initial_contacts_samtools_flagstats_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  initial_contacts_samtools_flagstats_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  initial_contacts_pretext_map_snapshot_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 20000
+    runtime: 4320
+    nodes: 1
+  initial_contacts_pretext_map_snapshot_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 20000
+    runtime: 4320
+    nodes: 1
+  initial_contacts_samtools_flagstats_bam_r1_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  initial_contacts_samtools_flagstats_bam_r2_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  initial_contacts_samtools_flagstats_bam_r1_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  initial_contacts_samtools_flagstats_bam_r2_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  yahs_scaffolding_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 80000
+    runtime: 4320
+    nodes: 1
+  yahs_scaffolding_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 80000
+    runtime: 4320
+    nodes: 1
+  trimming_hic:
+    slurm_partition: "op1_slurm"
+    mem_mb: 100000
+    runtime: 4320
+    nodes: 1
+  qc_trim_hic:
+    slurm_partition: "op1_slurm"
+    mem_mb: 100000
+    runtime: 4320
+    nodes: 1
+  check_hifi_files:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  meryl_count:
+    slurm_partition: "op1_slurm"
+    mem_mb: 300000
+    runtime: 4320
+    nodes: 1
+  meryl_union:
+    slurm_partition: "op1_slurm"
+    mem_mb: 300000
+    runtime: 4320
+    nodes: 1
+  meryl_histo:
+    slurm_partition: "op1_slurm"
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  genomescope2_pacbio:
+    slurm_partition: "op1_slurm"
+    mem_mb: 20000
+    runtime: 4320
+    nodes: 1
+  smudgeplot:
+    slurm_partition: "op1_slurm"
+    mem_mb: 150000
+    runtime: 4320
+    nodes: 1
+  katgcp:
+    slurm_partition: "op1_slurm"
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  trimming_pacbio:
+    slurm_partition: "op1_slurm"
+    mem_mb: 100000
+    runtime: 4320
+    nodes: 1
+  trimming_ont:
+    slurm_partition: "op1_slurm"
+    mem_mb: 100000
+    runtime: 4320
+    nodes: 1
+  qc_trim_pacbio:
+    slurm_partition: "op1_slurm"
+    mem_mb: 50000
+    runtime: 4320
+    nodes: 1
+  qc_nanoplot_pacbio:
+    slurm_partition: "op1_slurm"
+    mem_mb: 50000
+    runtime: 4320
+    nodes: 1
+  qc_nanoplot_ont:
+    slurm_partition: "op1_slurm"
+    mem_mb: 50000
+    runtime: 4320
+    nodes: 1
+  phased_assembly:
+    slurm_partition: "op1_slurm"
+    mem_mb: 700000
+    runtime: 4320
+    nodes: 1
+  ont_phased_assembly:
+    slurm_partition: "op1_slurm"
+    mem_mb: 700000
+    runtime: 4320
+    nodes: 1
+  ont_solo_assembly:
+    slurm_partition: "op1_slurm"
+    mem_mb: 700000
+    runtime: 4320
+    nodes: 1
+  phased_edit_busco_table:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  phased_run_snailplot_create_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 16000
+    runtime: 4320
+    nodes: 1
+  phased_run_snailplot_plot_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 8000
+    runtime: 4320
+    nodes: 1
+  phased_run_snailplot_create_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 16000
+    runtime: 4320
+    nodes: 1
+  phased_run_snailplot_plot_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 8000
+    runtime: 4320
+    nodes: 1
+  phased_compleasm_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 300000
+    runtime: 4320
+    nodes: 1
+  phased_compleasm_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 300000
+    runtime: 4320
+    nodes: 1
+  phased_fcsadaptor_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 400000
+    runtime: 4320
+    nodes: 1
+  phased_fcsadaptor_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 400000
+    runtime: 4320
+    nodes: 1
+  phased_fcsgx:
+    slurm_partition: "op1_slurm"
+    mem_mb: 480000
+    runtime: 4320
+    nodes: 1
+  phased_fcsgx_clean_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  phased_fcsgx_clean_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  phased_merqury:
+    slurm_partition: "op1_slurm"
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  phased_run_mitohifi:
+    slurm_partition: "op1_slurm"
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  phased_gfastats_fasta_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 16000
+    runtime: 4320
+    nodes: 1
+  phased_gfastats_stats_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 16000
+    runtime: 4320
+    nodes: 1
+  phased_gfastats_fasta_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 16000
+    runtime: 4320
+    nodes: 1
+  phased_gfastats_stats_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 16000
+    runtime: 4320
+    nodes: 1
+  download_buscodb:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  remove_buscodb:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  scaffolding_compleasm_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  scaffolding_compleasm_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  scaffolding_edit_busco_table:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  scaffolding_run_snailplot_create_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 8000
+    runtime: 4320
+    nodes: 1
+  scaffolding_run_snailplot_plot_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 8000
+    runtime: 4320
+    nodes: 1
+  scaffolding_run_snailplot_create_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 8000
+    runtime: 4320
+    nodes: 1
+  scaffolding_run_snailplot_plot_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 8000
+    runtime: 4320
+    nodes: 1
+  scaffolding_gfastats_stats_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 16000
+    runtime: 4320
+    nodes: 1
+  scaffolding_gfastats_stats_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 16000
+    runtime: 4320
+    nodes: 1
+  build_sifs:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  solo_assembly:
+    slurm_partition: "op1_slurm"
+    mem_mb: 700000
+    runtime: 4320
+    nodes: 1
+  solo_edit_busco_table:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  solo_run_snailplot_create_primary:
+    slurm_partition: "op1_slurm"
+    mem_mb: 16000
+    runtime: 4320
+    nodes: 1
+  solo_run_snailplot_plot_primary:
+    slurm_partition: "op1_slurm"
+    mem_mb: 8000
+    runtime: 4320
+    nodes: 1
+  solo_run_snailplot_create_alt:
+    slurm_partition: "op1_slurm"
+    mem_mb: 16000
+    runtime: 4320
+    nodes: 1
+  solo_run_snailplot_plot_alt:
+    slurm_partition: "op1_slurm"
+    mem_mb: 8000
+    runtime: 4320
+    nodes: 1
+  solo_compleasm_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 300000
+    runtime: 4320
+    nodes: 1
+  solo_compleasm_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 300000
+    runtime: 4320
+    nodes: 1
+  solo_fcsadaptor_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  solo_fcsadaptor_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  solo_fcsgx:
+    slurm_partition: "op1_slurm"
+    mem_mb: 480000
+    runtime: 4320
+    nodes: 1
+  solo_fcsgx_clean_hap1:
+    slurm_partition: "op1_slurm"
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  solo_fcsgx_clean_hap2:
+    slurm_partition: "op1_slurm"
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  solo_merqury:
+    slurm_partition: "op1_slurm"
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  scaffolding_merqury:
+    slurm_partition: "op1_slurm"
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  solo_run_mitohifi:
+    slurm_partition: "op1_slurm"
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  solo_gfastats_fasta_primary:
+    slurm_partition: "op1_slurm"
+    mem_mb: 16000
+    runtime: 4320
+    nodes: 1
+  solo_gfastats_stats_primary:
+    slurm_partition: "op1_slurm"
+    mem_mb: 16000
+    runtime: 4320
+    nodes: 1
+  solo_gfastats_fasta_alt:
+    slurm_partition: "op1_slurm"
+    mem_mb: 16000
+    runtime: 4320
+    nodes: 1
+  solo_gfastats_stats_alt:
+    slurm_partition: "op1_slurm"
+    mem_mb: 16000
+    runtime: 4320
+    nodes: 1
+  all:
+    slurm_partition: "op1_slurm"
+    mem_mb: 8000
+    runtime: 4320
+    nodes: 1

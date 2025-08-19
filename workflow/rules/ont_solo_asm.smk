@@ -5,8 +5,6 @@ rule ont_solo_assembly:
     output:
         "results/Assembly/Contigging/Solo_Asm/{sample}.p_ctg.gfa",
         "results/Assembly/Contigging/Solo_Asm/{sample}.a_ctg.gfa"
-    threads:
-        config["threads"]
     params:
         purgelevel= config['hifiasm']['purgelevel'],
         similarity= config['hifiasm']['similarity']

@@ -5,9 +5,7 @@ rule solo_run_mitohifi:
         reference_fasta="resources/{sample}.reference.fasta",
         reference_gb="resources/{sample}.reference.gb"
     output:
-        "results/Assembly/Mitogenome/Solo_Asm/{sample}.contigs_stats.tsv"
-    threads:
-        config["threads"]
+        "results/Assembly/Mitogenome/Solo_Asm/mitohifi.check"
     log:
         "logs/{sample}.run_mitohifi.log"
     benchmark:
@@ -21,5 +19,6 @@ rule solo_run_mitohifi:
         cat {input.hifi_hap1} {input.hifi_hap2} >> results/Assembly/Mitogenome/Solo_Asm/concat.fasta && \
         cd results/Assembly/Mitogenome/Solo_Asm && \
         mitohifi.py -t {threads} -c concat.fasta -f ../../../../{input.reference_fasta} -g ../../../../{input.reference_gb} -o {params} >> ../../../../{log} 2>&1 && \
-        mv contigs_stats.tsv {wildcards.sample}.contigs_stats.tsv && rm concat.fasta
+        if [ -f contigs_stats.tsv ]; then mv contigs_stats.tsv {wildcards.sample}.contigs_stats.tsv; fi && \
+        rm concat.fasta && touch {output}
         """

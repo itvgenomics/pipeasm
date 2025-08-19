@@ -14,8 +14,7 @@ TBEGIN=`echo "print time();" | perl`
 printf "\n"
 # Activate conda envs
 
-source /mnt/gen/opt/softwares/miniconda3/etc/profile.d/conda.sh
-conda activate /mnt/gen/opt/softwares/miniforge3/envs/organpipe
+module load snakemake
 
 # Move to workdir
 cd $SLURM_SUBMIT_DIR

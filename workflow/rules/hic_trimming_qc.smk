@@ -5,8 +5,6 @@ rule trimming_hic:
 	output:
 		r1="results/Trimming_QC/HiC/{sample}_R1.trimmed_paired.fastq.gz",
 		r2="results/Trimming_QC/HiC/{sample}_R2.trimmed_paired.fastq.gz"
-	threads:
-		config["software_threads"]["fastp"]
 	params:
 		flags= config['fastp']['flags'],
 		min_len= config['fastp']['min_len'],
@@ -30,8 +28,6 @@ rule qc_trim_hic:
 		expand("results/Trimming_QC/HiC/{{sample}}_R{pair}.trimmed_paired.fastq.gz", pair=['1','2'])
 	output:
 		expand("results/Trimming_QC/QC/HiC_FastQC/{{sample}}_R{pair}.trimmed_paired_fastqc.{ext}", pair=['1','2'], ext=['zip','html'])
-	threads:
-		config["software_threads"]["fastqc"]
 	log:
 		"logs/{sample}.qc_trim_hic.log"
 	benchmark:

@@ -2,7 +2,6 @@ rule download_mito_reference:
     output:
         fasta="resources/{sample}.reference.fasta",
         gb="resources/{sample}.reference.gb"
-    threads: 1
     log:
         "logs/{sample}.download_mito_reference.log"
     benchmark:

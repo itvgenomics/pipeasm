@@ -24,22 +24,6 @@ solo_asm: 'No'
 # E.g.: "/scratch/sif_files/pipeasm"
 sif_dir: ''
 
-## Threads
-threads: 32 # Max number of threads to be used by the rules across the workflow.
-
-## Software Threads
-# Fine-tune the number of threads for each tool if necessary for performance optimization.
-
-software_threads:
-  bwa_index: 1
-  samtools_flagstats: 4
-  pretext_snapshot: 1
-  fastp: 10
-  fastqc: 8
-  genomescope2: 8
-  nanoplot: 8
-  gfastats: 4
-
 ## FCS-GX Database
 # (Optional) Path to FCS-GX contamination DB. Leave empty to skip.
 # E.g.: "/mnt/gen/opt/utils/lucas/S4-Databases/fcs-gx_testDB/gxdb"

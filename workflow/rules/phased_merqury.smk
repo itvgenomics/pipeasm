@@ -13,8 +13,6 @@ rule phased_merqury:
 		"logs/{sample}.phased_merqury.log"
 	benchmark:
 		"benchmarks/{sample}.phased_merqury.txt"
-	threads:
-		config["threads"]
 	params:
 		"results/Assembly/Genome_Stats/Merqury/Phased_Asm"
 	singularity:

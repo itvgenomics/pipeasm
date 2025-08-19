@@ -9,8 +9,6 @@ rule initial_contacts_bwa_mem2_index_hap1:
     input:
         lambda wildcards: "results/Decontamination/Contaminants/Phased_Asm_Hap1/{sample}.hic.hap1.p_ctg.clean.fasta" if config["gxdb"] else "results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap1.p_ctg.fa"
     output: index_out_hap1
-    threads:
-        config["software_threads"]["bwa_index"]
     log:
         "logs/{sample}.initial_contacts_bwa_mem2_index_hap1.txt"
     benchmark:
@@ -27,8 +25,6 @@ rule initial_contacts_bwa_mem2_index_hap2:
     input:
         lambda wildcards: "results/Decontamination/Contaminants/Phased_Asm_Hap2/{sample}.hic.hap2.p_ctg.clean.fasta" if config["gxdb"] else "results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap2.p_ctg.fa"
     output: index_out_hap2
-    threads:
-        config["software_threads"]["bwa_index"]
     log:
         "logs/{sample}.initial_contacts_bwa_mem2_index_hap2.txt"
     benchmark:
@@ -48,8 +44,6 @@ rule initial_contacts_bwa_mem2_mapping_hap1_r1:
         index=lambda wildcards: "results/Decontamination/Contaminants/Phased_Asm_Hap1/{sample}.hic.hap1.p_ctg.clean.fasta.bwt.2bit.64" if config["gxdb"] else "results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap1.p_ctg.fa.bwt.2bit.64"
     output:
         "results/Scaffolding/Initial_Contacts/Hap1/{sample}.R1.bam"
-    threads:
-        config["threads"]
     log:
         "logs/{sample}.initial_contacts_bwa_mem2_mapping_hap1_r1.txt"
     benchmark:
@@ -71,8 +65,6 @@ rule initial_contacts_bwa_mem2_mapping_hap1_r2:
         index=lambda wildcards: "results/Decontamination/Contaminants/Phased_Asm_Hap1/{sample}.hic.hap1.p_ctg.clean.fasta.bwt.2bit.64" if config["gxdb"] else "results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap1.p_ctg.fa.bwt.2bit.64"
     output:
         "results/Scaffolding/Initial_Contacts/Hap1/{sample}.R2.bam"
-    threads:
-        config["threads"]
     log:
         "logs/{sample}.initial_contacts_bwa_mem2_mapping_hap1_r2.txt"
     benchmark:
@@ -94,8 +86,6 @@ rule initial_contacts_bwa_mem2_mapping_hap2_r1:
         index=lambda wildcards: "results/Decontamination/Contaminants/Phased_Asm_Hap2/{sample}.hic.hap2.p_ctg.clean.fasta.bwt.2bit.64" if config["gxdb"] else "results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap2.p_ctg.fa.bwt.2bit.64"
     output:
         "results/Scaffolding/Initial_Contacts/Hap2/{sample}.R1.bam"
-    threads:
-        config["threads"]
     log:
         "logs/{sample}.initial_contacts_bwa_mem2_mapping_hap2_r1.txt"
     benchmark:
@@ -117,8 +107,6 @@ rule initial_contacts_bwa_mem2_mapping_hap2_r2:
         index=lambda wildcards: "results/Decontamination/Contaminants/Phased_Asm_Hap2/{sample}.hic.hap2.p_ctg.clean.fasta.bwt.2bit.64" if config["gxdb"] else "results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap2.p_ctg.fa.bwt.2bit.64"
     output:
         "results/Scaffolding/Initial_Contacts/Hap2/{sample}.R2.bam"
-    threads:
-        config["threads"]
     log:
         "logs/{sample}.initial_contacts_bwa_mem2_mapping_hap2_r2.txt"
     benchmark:
@@ -139,8 +127,6 @@ rule initial_contacts_bellerophon_merge_hap1:
         bam_r2="results/Scaffolding/Initial_Contacts/Hap1/{sample}.R2.bam",
     output:
         "results/Scaffolding/Initial_Contacts/Hap1/{sample}.merged.bam"
-    threads:
-        config["threads"]
     params:
         quality= config['bellerophon'],
     log:
@@ -160,8 +146,6 @@ rule initial_contacts_bellerophon_merge_hap2:
         bam_r2="results/Scaffolding/Initial_Contacts/Hap2/{sample}.R2.bam",
     output:
         "results/Scaffolding/Initial_Contacts/Hap2/{sample}.merged.bam"
-    threads:
-        config["threads"]
     params:
         quality= config['bellerophon'],
     log:
@@ -181,8 +165,6 @@ rule initial_contacts_samtools_flagstats_hap1:
     output:
         flagstats="results/Scaffolding/Initial_Contacts/Hap1/{sample}.merged.bam.flagstats",
         hic_stats="results/Scaffolding/Initial_Contacts/Hap1/{sample}.merged.bam.hic_stats"
-    threads:
-        config["software_threads"]["samtools_flagstats"]
     log:
         "logs/{sample}.initial_contacts_samtools_flagstats_hap1.txt"
     benchmark:
@@ -201,8 +183,6 @@ rule initial_contacts_samtools_flagstats_hap2:
     output:
         flagstats="results/Scaffolding/Initial_Contacts/Hap2/{sample}.merged.bam.flagstats",
         hic_stats="results/Scaffolding/Initial_Contacts/Hap2/{sample}.merged.bam.hic_stats"
-    threads:
-        config["software_threads"]["samtools_flagstats"]
     log:
         "logs/{sample}.initial_contacts_samtools_flagstats_hap2.txt"
     benchmark:
@@ -220,8 +200,6 @@ rule initial_contacts_pretext_map_snapshot_hap1:
         merged_bam="results/Scaffolding/Initial_Contacts/Hap1/{sample}.merged.bam",
     output:
         "results/Scaffolding/Initial_Contacts/Hap1/{sample}.merged.bam.pretext"
-    threads:
-        config["software_threads"]["pretext_snapshot"]
     params:
         pretextmap= config['pretext']["map"],
         snapshot=  config['pretext']["snapshot"]
@@ -242,8 +220,6 @@ rule initial_contacts_pretext_map_snapshot_hap2:
         merged_bam="results/Scaffolding/Initial_Contacts/Hap2/{sample}.merged.bam",
     output:
         "results/Scaffolding/Initial_Contacts/Hap2/{sample}.merged.bam.pretext"
-    threads:
-        config["software_threads"]["pretext_snapshot"]
     params:
         pretextmap= config['pretext']["map"],
         snapshot=  config['pretext']["snapshot"]
@@ -264,8 +240,6 @@ rule initial_contacts_samtools_flagstats_bam_r1_hap1:
         bam_r1="results/Scaffolding/Initial_Contacts/Hap1/{sample}.R1.bam",
     output:
         flagstats_r1="results/Scaffolding/Initial_Contacts/Hap1/{sample}.R1.bam.flagstats"
-    threads:
-        config["software_threads"]["samtools_flagstats"]
     params:
         pretextmap= config['pretext']["map"],
         snapshot=  config['pretext']["snapshot"]
@@ -285,8 +259,6 @@ rule initial_contacts_samtools_flagstats_bam_r2_hap1:
         bam_r2="results/Scaffolding/Initial_Contacts/Hap1/{sample}.R2.bam",
     output:
         flagstats_r2="results/Scaffolding/Initial_Contacts/Hap1/{sample}.R2.bam.flagstats"
-    threads:
-        config["software_threads"]["samtools_flagstats"]
     params:
         pretextmap= config['pretext']["map"],
         snapshot=  config['pretext']["snapshot"]
@@ -306,8 +278,6 @@ rule initial_contacts_samtools_flagstats_bam_r1_hap2:
         bam_r1="results/Scaffolding/Initial_Contacts/Hap2/{sample}.R1.bam",
     output:
         flagstats_r1="results/Scaffolding/Initial_Contacts/Hap2/{sample}.R1.bam.flagstats"
-    threads:
-        config["software_threads"]["samtools_flagstats"]
     params:
         pretextmap= config['pretext']["map"],
         snapshot=  config['pretext']["snapshot"]
@@ -327,8 +297,6 @@ rule initial_contacts_samtools_flagstats_bam_r2_hap2:
         bam_r2="results/Scaffolding/Initial_Contacts/Hap2/{sample}.R2.bam",
     output:
         flagstats_r2="results/Scaffolding/Initial_Contacts/Hap2/{sample}.R2.bam.flagstats"
-    threads:
-        config["software_threads"]["samtools_flagstats"]
     params:
         pretextmap= config['pretext']["map"],
         snapshot=  config['pretext']["snapshot"]

@@ -3,7 +3,6 @@ rule check_ont_files:
         config['ont_reads']
     output:
         "results/Trimming_QC/ONT/{sample}_ONT.fastq.gz",
-    threads: 1
     shell:
         """
         mkdir -p results/Trimming_QC/ONT && \

@@ -3,8 +3,6 @@ rule scaffolding_gfastats_stats_hap1:
         "results/Scaffolding/YAHS_Scaffolding/Hap1/{sample}.yahs_scaffolds_final.fa"
     output:
         "results/Scaffolding/Scaffolding_stats/GFAstats/{sample}.yahs_scaffolds_hap1.fa.stats"
-    threads:
-        config["software_threads"]["gfastats"]
     params:
         params= config['gfastats']['params']
     log:
@@ -24,8 +22,6 @@ rule scaffolding_gfastats_stats_hap2:
         "results/Scaffolding/YAHS_Scaffolding/Hap2/{sample}.yahs_scaffolds_final.fa"
     output:
         "results/Scaffolding/Scaffolding_stats/GFAstats/{sample}.yahs_scaffolds_hap2.fa.stats"
-    threads:
-        config["software_threads"]["gfastats"]
     params:
         params= config['gfastats']['params']
     log:

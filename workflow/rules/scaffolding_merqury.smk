@@ -13,8 +13,6 @@ rule scaffolding_merqury:
 		"logs/{sample}.scaffolding_merqury.log"
 	benchmark:
 		"benchmarks/{sample}.scaffolding_merqury.txt"
-	threads:
-		config["threads"]
 	params:
 		"results/Scaffolding/Scaffolding_stats/Merqury"
 	singularity:

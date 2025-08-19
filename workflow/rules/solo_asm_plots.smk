@@ -7,7 +7,6 @@ rule solo_edit_busco_table:
         "results/Assembly/Genome_Stats/Compleasm/Solo_Asm_Alt/{sample}.full_table_busco_format_edit.tsv"
     log:
         "logs/{sample}.solo_edit_busco_table.log"
-    threads: 1
     script:
         "../scripts/solo_edit_busco_table.py"
 
@@ -21,7 +20,6 @@ rule solo_run_snailplot_create_primary:
         "logs/{sample}.solo_run_snailplot_create_primary.log"
     benchmark:
         "benchmarks/{sample}.solo_run_snailplot_create_primary.txt"
-    threads: 1
     singularity:
         f"{config["sif_dir"]}/blobtoolkit.sif"
     shell:
@@ -46,7 +44,6 @@ rule solo_run_snailplot_plot_primary:
         "logs/{sample}.solo_run_snailplot_plot_primary.log"
     benchmark:
         "benchmarks/{sample}.solo_run_snailplot_plot_primary.txt"
-    threads: 1
     singularity:
         f"{config["sif_dir"]}/blobtoolkit.sif"
     shell:
@@ -65,7 +62,6 @@ rule solo_run_snailplot_create_alt:
         "logs/{sample}.solo_run_snailplot_create_alt.log"
     benchmark:
         "benchmarks/{sample}.solo_run_snailplot_create_alt.txt"
-    threads: 1
     singularity:
         f"{config["sif_dir"]}/blobtoolkit.sif"
     shell:
@@ -90,7 +86,6 @@ rule solo_run_snailplot_plot_alt:
         "logs/{sample}.solo_run_snailplot_plot_alt.log"
     benchmark:
         "benchmarks/{sample}.solo_run_snailplot_plot_alt.txt"
-    threads: 1
     singularity:
         f"{config["sif_dir"]}/blobtoolkit.sif"
     shell:

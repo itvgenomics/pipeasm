@@ -1,18 +1,19 @@
 executor: slurm
 use-singularity: true
-singularity-args: "-B <WORKDIR>:/data --pwd /data"
-latency-wait: 10
+singularity-args: "-B {WORKDIR}:/data --pwd /data"
+latency-wait: 60
 show-failed-logs: True
 keep-going: True
 printshellcmds: True
 rerun-incomplete: True
-max-jobs-per-second: 32                 #Maximal number of cluster/drmaa jobs per second, default is 10, fractions allowed.
-max-status-checks-per-second: 10       #Maximal number of job status checks per second, default is 10
-jobs: 32                              #Use at most N CPU cluster/cloud jobs in parallel.
+max-jobs-per-second: {THREADS}
+max-status-checks-per-second: 20
+jobs: {THREADS}
 
 set-threads:
   download_mito_reference: 1
   check_hic_files: 1
+  check_ont_files: 1
   final_contacts_bwa_mem2_index_hap1: 2
   final_contacts_bwa_mem2_index_hap2: 2
   final_contacts_bwa_mem2_mapping_hap1_r1: 31
@@ -57,9 +58,13 @@ set-threads:
   smudgeplot: 31
   katgcp: 31
   trimming_pacbio: 31
+  trimming_ont: 31
   qc_trim_pacbio: 8
   qc_nanoplot_pacbio: 8
+  qc_nanoplot_ont: 8
   phased_assembly: 31
+  ont_phased_assembly: 31
+  ont_solo_assembly: 31
   phased_edit_busco_table: 1
   phased_run_snailplot_create_hap1: 1
   phased_run_snailplot_plot_hap1: 1
@@ -89,14 +94,13 @@ set-threads:
   scaffolding_run_snailplot_plot_hap2: 1
   scaffolding_gfastats_stats_hap1: 1
   scaffolding_gfastats_stats_hap2: 1
-  build_mitohifi_sif: 31
-  build_fcsgx_sif: 1
+  build_sifs: 1
   solo_assembly: 31
   solo_edit_busco_table: 1
-  solo_run_snailplot_create_hap1: 1
-  solo_run_snailplot_plot_hap1: 1
-  solo_run_snailplot_create_hap2: 1
-  solo_run_snailplot_plot_hap2: 1
+  solo_run_snailplot_create_primary: 1
+  solo_run_snailplot_plot_primary: 1
+  solo_run_snailplot_create_alt: 1
+  solo_run_snailplot_plot_alt: 1
   solo_compleasm_hap1: 31
   solo_compleasm_hap2: 31
   solo_fcsadaptor_hap1: 31
@@ -106,10 +110,11 @@ set-threads:
   solo_fcsgx_clean_hap2: 31
   solo_merqury: 31
   solo_run_mitohifi: 31
-  solo_gfastats_fasta_hap1: 1
-  solo_gfastats_stats_hap1: 1
-  solo_gfastats_fasta_hap2: 1
-  solo_gfastats_stats_hap2: 1
+  solo_gfastats_fasta_primary: 1
+  solo_gfastats_stats_primary: 1
+  solo_gfastats_fasta_alt: 1
+  solo_gfastats_stats_alt: 1
+  scaffolding_merqury: 31
 
 set-resources:
   download_mito_reference:
@@ -118,6 +123,11 @@ set-resources:
     runtime: 4320
     nodes: 1
   check_hic_files:
+    slurm_partition: "op1_slurm"
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  check_ont_files:
     slurm_partition: "op1_slurm"
     mem_mb: 2000
     runtime: 4320
@@ -342,6 +352,11 @@ set-resources:
     mem_mb: 100000
     runtime: 4320
     nodes: 1
+  trimming_ont:
+    slurm_partition: "op1_slurm"
+    mem_mb: 100000
+    runtime: 4320
+    nodes: 1
   qc_trim_pacbio:
     slurm_partition: "op1_slurm"
     mem_mb: 50000
@@ -352,7 +367,22 @@ set-resources:
     mem_mb: 50000
     runtime: 4320
     nodes: 1
+  qc_nanoplot_ont:
+    slurm_partition: "op1_slurm"
+    mem_mb: 50000
+    runtime: 4320
+    nodes: 1
   phased_assembly:
+    slurm_partition: "op1_slurm"
+    mem_mb: 700000
+    runtime: 4320
+    nodes: 1
+  ont_phased_assembly:
+    slurm_partition: "op1_slurm"
+    mem_mb: 700000
+    runtime: 4320
+    nodes: 1
+  ont_solo_assembly:
     slurm_partition: "op1_slurm"
     mem_mb: 700000
     runtime: 4320
@@ -502,12 +532,7 @@ set-resources:
     mem_mb: 16000
     runtime: 4320
     nodes: 1
-  build_mitohifi_sif:
-    slurm_partition: "op1_slurm"
-    mem_mb: 2000
-    runtime: 4320
-    nodes: 1
-  build_fcsgx_sif:
+  build_sifs:
     slurm_partition: "op1_slurm"
     mem_mb: 2000
     runtime: 4320
@@ -522,22 +547,22 @@ set-resources:
     mem_mb: 2000
     runtime: 4320
     nodes: 1
-  solo_run_snailplot_create_hap1:
+  solo_run_snailplot_create_primary:
     slurm_partition: "op1_slurm"
     mem_mb: 16000
     runtime: 4320
     nodes: 1
-  solo_run_snailplot_plot_hap1:
+  solo_run_snailplot_plot_primary:
     slurm_partition: "op1_slurm"
     mem_mb: 8000
     runtime: 4320
     nodes: 1
-  solo_run_snailplot_create_hap2:
+  solo_run_snailplot_create_alt:
     slurm_partition: "op1_slurm"
     mem_mb: 16000
     runtime: 4320
     nodes: 1
-  solo_run_snailplot_plot_hap2:
+  solo_run_snailplot_plot_alt:
     slurm_partition: "op1_slurm"
     mem_mb: 8000
     runtime: 4320
@@ -582,27 +607,32 @@ set-resources:
     mem_mb: 200000
     runtime: 4320
     nodes: 1
+  scaffolding_merqury:
+    slurm_partition: "op1_slurm"
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
   solo_run_mitohifi:
     slurm_partition: "op1_slurm"
     mem_mb: 200000
     runtime: 4320
     nodes: 1
-  solo_gfastats_fasta_hap1:
+  solo_gfastats_fasta_primary:
     slurm_partition: "op1_slurm"
     mem_mb: 16000
     runtime: 4320
     nodes: 1
-  solo_gfastats_stats_hap1:
+  solo_gfastats_stats_primary:
     slurm_partition: "op1_slurm"
     mem_mb: 16000
     runtime: 4320
     nodes: 1
-  solo_gfastats_fasta_hap2:
+  solo_gfastats_fasta_alt:
     slurm_partition: "op1_slurm"
     mem_mb: 16000
     runtime: 4320
     nodes: 1
-  solo_gfastats_stats_hap2:
+  solo_gfastats_stats_alt:
     slurm_partition: "op1_slurm"
     mem_mb: 16000
     runtime: 4320

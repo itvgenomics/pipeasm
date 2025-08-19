@@ -13,8 +13,6 @@ rule solo_merqury:
 		"logs/{sample}.solo_merqury.log"
 	benchmark:
 		"benchmarks/{sample}.solo_merqury.txt"
-	threads:
-		config["threads"]
 	params:
 		"results/Assembly/Genome_Stats/Merqury/Solo_Asm"
 	singularity:

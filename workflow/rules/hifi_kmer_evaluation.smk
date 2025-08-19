@@ -3,8 +3,6 @@ rule meryl_count:
         "results/Trimming_QC/HiFi/{sample}.trimmed.fastq.gz"
     output:
         directory("results/Trimming_QC/Meryl_DB/{sample}.trimmed.meryl")
-    threads:
-        config["threads"]
     params:
         kmer= config['meryl']['kmer']
     log:
@@ -26,8 +24,6 @@ rule meryl_union:
         directory("results/Trimming_QC/Meryl_DB/{sample}.trimmed.meryl")
     output:
         directory("results/Trimming_QC/Meryl_DB/{sample}.trimmed.union.meryl")
-    threads:
-        config["threads"]
     params:
         kmer= config['meryl']['kmer']
     log:
@@ -49,8 +45,6 @@ rule meryl_histo:
         directory("results/Trimming_QC/Meryl_DB/{sample}.trimmed.union.meryl")
     output:
        "results/Trimming_QC/Meryl_DB/{sample}.trimmed.meryl.histo"
-    threads:
-        config["threads"]
     params:
         kmer= config['meryl']['kmer']
     log:
@@ -75,8 +69,6 @@ rule genomescope2_pacbio:
         "results/Assembly/Genome_Stats/HiFi_GenomeScope2/{sample}_transformed_linear_plot.png",
         "results/Assembly/Genome_Stats/HiFi_GenomeScope2/{sample}_transformed_log_plot.png",
         "results/Assembly/Genome_Stats/HiFi_GenomeScope2/{sample}_model.txt"
-    threads:
-        config["software_threads"]["genomescope2"]
     params:
         kmer=config["genomescope2"]["kmer"],
         ploidy=config["genomescope2"]["ploidy"]
@@ -100,8 +92,6 @@ rule smudgeplot:
     output:
         "results/Assembly/Genome_Stats/Smudgeplot/{sample}_smudgeplot_log10.pdf",
         "results/Assembly/Genome_Stats/Smudgeplot/{sample}_smudgeplot.pdf"
-    threads:
-        config["threads"]
     params:
         fastk= config['smudgeplot']['fastk'],
         ploidyplot= config['smudgeplot']['ploidyplot']
@@ -124,8 +114,6 @@ rule katgcp:
         reads="results/Trimming_QC/HiFi/{sample}.trimmed.fastq.gz"
     output:
         "results/Assembly/Genome_Stats/KAT/{sample}.mx.png"
-    threads:
-        config["threads"]
     params:
         kmer= config['katgcp']['kmer'],
     log:

@@ -3,8 +3,6 @@ rule trimming_pacbio:
 		"results/Trimming_QC/HiFi/{sample}.fastq.gz"
 	output:
 		"results/Trimming_QC/HiFi/{sample}.trimmed.fastq.gz"
-	threads:
-		config["threads"]
 	params:
 		adaptors=config['cutadapt']['adaptors'],
 		filtering=config['cutadapt']['filtering'],
@@ -24,8 +22,6 @@ rule qc_trim_pacbio:
 		"results/Trimming_QC/HiFi/{sample}.trimmed.fastq.gz"
 	output:
 		expand("results/Trimming_QC/QC/HiFi_FastQC/{{sample}}.trimmed_fastqc.{ext}", ext=['zip','html'])
-	threads:
-		config["software_threads"]["fastqc"]
 	log:
 		"logs/{sample}.qc_trim_pacbio.log"
 	benchmark:
@@ -55,8 +51,6 @@ rule qc_nanoplot_pacbio:
 		"results/Trimming_QC/QC/HiFi_NanoPlot/{sample}WeightedLogTransformed_HistogramReadlength.svg",
 		"results/Trimming_QC/QC/HiFi_NanoPlot/{sample}Yield_By_Length.svg",
 		"results/Trimming_QC/QC/HiFi_NanoPlot/{sample}NanoPlot-report.html"
-	threads:
-		config["software_threads"]["nanoplot"]
 	params:
 		args= config['nanoplot']['args'],
 		plots= config['nanoplot']['plots'],

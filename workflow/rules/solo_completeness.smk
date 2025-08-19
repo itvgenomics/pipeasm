@@ -4,8 +4,6 @@ rule solo_compleasm_hap1:
         buscodbpath=directory("resources/{sample}_buscodb")
     output:
         "results/Assembly/Genome_Stats/Compleasm/Solo_Asm_Primary/{sample}.summary.txt"
-    threads:
-        config["threads"]
     params:
         buscodb= config['buscodb']
     log:
@@ -28,8 +26,6 @@ rule solo_compleasm_hap2:
         buscodbpath=directory("resources/{sample}_buscodb")
     output:
         "results/Assembly/Genome_Stats/Compleasm/Solo_Asm_Alt/{sample}.summary.txt"
-    threads:
-        config["threads"]
     params:
         buscodb= config['buscodb']
     log:

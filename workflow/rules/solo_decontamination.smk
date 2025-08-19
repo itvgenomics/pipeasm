@@ -4,8 +4,6 @@ rule solo_fcsadaptor_hap1:
         sif="resources/fcs-adaptor.sif"
     output:
         "results/Decontamination/FCS-Adaptor/Solo_Asm_Primary/cleaned_sequences/{sample}.p_ctg.fa"
-    threads:
-        config['threads']
     log:
         "logs/{sample}.solo_fcsadaptor_hap1.log"
     benchmark:
@@ -22,8 +20,6 @@ rule solo_fcsadaptor_hap2:
         sif="resources/fcs-adaptor.sif"
     output:
         "results/Decontamination/FCS-Adaptor/Solo_Asm_Alt/cleaned_sequences/{sample}.a_ctg.fa",
-    threads:
-        config['threads']
     log:
         "logs/{sample}.solo_fcsadaptor_hap2.log"
     benchmark:
@@ -42,8 +38,6 @@ rule solo_fcsgx:
     output:
         hap1="results/Decontamination/Contaminants/Solo_Asm_Primary/{sample}.p_ctg.screen.check",
         hap2="results/Decontamination/Contaminants/Solo_Asm_Alt/{sample}.a_ctg.screen.check"
-    threads:
-        config['threads']
     params:
         taxid=config['taxid'],
         gxdb=config['gxdb']
@@ -76,8 +70,6 @@ rule solo_fcsgx_clean_hap1:
         hap1="results/Decontamination/Contaminants/Solo_Asm_Primary/{sample}.p_ctg.screen.check",
     output:
         hap1="results/Decontamination/Contaminants/Solo_Asm_Primary/{sample}.p_ctg.clean.fasta"
-    threads:
-        config['threads']
     params:
         config['taxid']
     log:
@@ -99,8 +91,6 @@ rule solo_fcsgx_clean_hap2:
         hap2="results/Decontamination/Contaminants/Solo_Asm_Alt/{sample}.a_ctg.screen.check",
     output:
         hap2="results/Decontamination/Contaminants/Solo_Asm_Alt/{sample}.a_ctg.clean.fasta"
-    threads:
-        config['threads']
     params:
         config['taxid']
     log:

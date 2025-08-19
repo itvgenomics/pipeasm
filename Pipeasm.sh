@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 cat << 'EOF'
 
 ### Pipeasm - a tool for automated large genome assembly and analysis
@@ -179,17 +181,18 @@ if [ "$SETSLURM" = true ]; then
     # Run the Pipeline
     export SINGULARITY_CACHEDIR=$WORKDIR/singularity && \
     export TMPDIR=$WORKDIR/tmp && \
-    sed -i "s|<WORKDIR>|$WORKDIR|g" $WORKDIR/profiles/slurm/config.yaml && \
+    sed "s|{WORKDIR}|$WORKDIR|g; s|{THREADS}|$THREADS|g" $WORKDIR/config/slurm_params.yaml > $WORKDIR/profiles/slurm/config.yaml && \
     snakemake -d $WORKDIR --snakefile $SNAKEFILE \
-        --configfile $CONFIGFILE --use-singularity \
+        --configfile $CONFIGFILE \
         --profile $WORKDIR/profiles/slurm/ \
-        --rerun-incomplete --cores $THREADS $SETUNLOCK $SETNP
+        --cores $THREADS $SETUNLOCK $SETNP
 else
     # Run the Pipeline
     export SINGULARITY_CACHEDIR=$WORKDIR/singularity && \
     export TMPDIR=$WORKDIR/tmp && \
+    sed "s|{WORKDIR}|$WORKDIR|g; s|{THREADS}|$THREADS|g" $WORKDIR/config/local_params.yaml > $WORKDIR/profiles/local/config.yaml && \
     snakemake -d $WORKDIR --snakefile $SNAKEFILE \
-        --configfile $CONFIGFILE --use-singularity \
-        --singularity-args "-B $WORKDIR:/data --pwd /data" \
-        --rerun-incomplete --cores $THREADS $SETUNLOCK $SETNP
+        --configfile $CONFIGFILE \
+        --profile $WORKDIR/profiles/local/ \
+        --cores $THREADS $SETUNLOCK $SETNP
 fi

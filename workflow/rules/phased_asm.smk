@@ -5,8 +5,6 @@ rule phased_assembly:
         hic_r2="results/Trimming_QC/HiC/{sample}_R2.trimmed_paired.fastq.gz",
     output:
         expand("results/Assembly/Contigging/Phased_Asm/{{sample}}.hic.hap{hap}.p_ctg.gfa", hap=["1", "2"])
-    threads:
-        config["threads"]
     params:
         purgelevel= config['hifiasm']['purgelevel'],
         similarity= config['hifiasm']['similarity']

@@ -3,8 +3,6 @@ rule phased_gfastats_fasta_hap1:
         "results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap1.p_ctg.gfa"
     output:
         "results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap1.p_ctg.fa"
-    threads:
-        config["software_threads"]["gfastats"]
     params:
         params= config['gfastats']['params']
     log:
@@ -25,8 +23,6 @@ rule phased_gfastats_stats_hap1:
         "results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap1.p_ctg.fa"
     output:
         "results/Assembly/Genome_Stats/GFAstats/{sample}.hic.hap1.p_ctg.fa.stats"
-    threads:
-        config["software_threads"]["gfastats"]
     params:
         params= config['gfastats']['params']
     log:
@@ -46,8 +42,6 @@ rule phased_gfastats_fasta_hap2:
         "results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap2.p_ctg.gfa"
     output:
         "results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap2.p_ctg.fa"
-    threads:
-        config["software_threads"]["gfastats"]
     params:
         params= config['gfastats']['params']
     log:
@@ -68,8 +62,6 @@ rule phased_gfastats_stats_hap2:
         "results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap2.p_ctg.fa"
     output:
         "results/Assembly/Genome_Stats/GFAstats/{sample}.hic.hap2.p_ctg.fa.stats"
-    threads:
-        config["software_threads"]["gfastats"]
     params:
         params= config['gfastats']['params']
     log:
