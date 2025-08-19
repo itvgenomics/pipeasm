@@ -1,6 +1,7 @@
 rule solo_fcsadaptor_hap1:
     input:
-        "results/Assembly/Contigging/Solo_Asm/{sample}.p_ctg.fa"
+        fasta="results/Assembly/Contigging/Solo_Asm/{sample}.p_ctg.fa",
+        sif="resources/fcs-adaptor.sif"
     output:
         "results/Decontamination/FCS-Adaptor/Solo_Asm_Primary/cleaned_sequences/{sample}.p_ctg.fa"
     threads:
@@ -12,12 +13,13 @@ rule solo_fcsadaptor_hap1:
     shell:
         """
         bash -c 'export OMP_NUM_THREADS={threads} && \
-        bash workflow/scripts/run_fcsadaptor.sh --fasta-input {input} --output-dir results/Decontamination/FCS-Adaptor/Solo_Asm_Primary --euk >> {log} 2>&1'
+        bash workflow/scripts/run_fcsadaptor.sh --fasta-input {input} --output-dir results/Decontamination/FCS-Adaptor/Solo_Asm_Primary --euk --image {input.sif} >> {log} 2>&1'
         """
 
 rule solo_fcsadaptor_hap2:
     input:
-        "results/Assembly/Contigging/Solo_Asm/{sample}.a_ctg.fa"
+        fasta="results/Assembly/Contigging/Solo_Asm/{sample}.a_ctg.fa",
+        sif="resources/fcs-adaptor.sif"
     output:
         "results/Decontamination/FCS-Adaptor/Solo_Asm_Alt/cleaned_sequences/{sample}.a_ctg.fa",
     threads:
@@ -29,7 +31,7 @@ rule solo_fcsadaptor_hap2:
     shell:
         """
         bash -c 'export OMP_NUM_THREADS={threads} && \
-        bash workflow/scripts/run_fcsadaptor.sh --fasta-input {input} --output-dir results/Decontamination/FCS-Adaptor/Solo_Asm_Alt --euk >> {log} 2>&1'
+        bash workflow/scripts/run_fcsadaptor.sh --fasta-input {input.fasta} --output-dir results/Decontamination/FCS-Adaptor/Solo_Asm_Alt --euk --image {input.sif} >> {log} 2>&1'
         """
 
 rule solo_fcsgx:

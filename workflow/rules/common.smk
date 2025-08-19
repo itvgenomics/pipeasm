@@ -1,5 +1,8 @@
 import sys
 
+wildcard_constraints:
+    sample = r"[A-Za-z0-9_]+"
+
 ## Function to get all expected output files
 def get_output(sample_name):
 
@@ -143,6 +146,8 @@ def get_output(sample_name):
 
     if config['gxdb'] and config['run_asm'].lower() == "yes":
         out.append("resources/fcs-gx.sif")
+        out.append("resources/fcs-adaptor.sif")
+
 
         ## Check FCS-Adaptors output
         if config['solo_asm'].lower() == 'yes':

@@ -1,6 +1,7 @@
 rule phased_fcsadaptor_hap1:
     input:
-        "results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap1.p_ctg.fa"
+        fasta="results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap1.p_ctg.fa",
+        sif="resources/fcs-adaptor.sif"
     output:
         "results/Decontamination/FCS-Adaptor/Phased_Asm_Hap1/cleaned_sequences/{sample}.hic.hap1.p_ctg.fa"
     threads:
@@ -12,12 +13,13 @@ rule phased_fcsadaptor_hap1:
     shell:
         """
         bash -c 'export OMP_NUM_THREADS={threads} && \
-        bash workflow/scripts/run_fcsadaptor.sh --fasta-input {input} --output-dir results/Decontamination/FCS-Adaptor/Phased_Asm_Hap1 --euk >> {log} 2>&1'
+        bash workflow/scripts/run_fcsadaptor.sh --fasta-input {input.fasta} --output-dir results/Decontamination/FCS-Adaptor/Phased_Asm_Hap1 --euk --image {input.sif} --container-engine singularity >> {log} 2>&1'
         """
 
 rule phased_fcsadaptor_hap2:
     input:
-        "results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap2.p_ctg.fa"
+        fasta="results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap2.p_ctg.fa",
+        sif="resources/fcs-adaptor.sif"
     output:
         "results/Decontamination/FCS-Adaptor/Phased_Asm_Hap2/cleaned_sequences/{sample}.hic.hap2.p_ctg.fa"
     threads:
@@ -29,7 +31,7 @@ rule phased_fcsadaptor_hap2:
     shell:
         """
         bash -c 'export OMP_NUM_THREADS={threads} && \
-        bash workflow/scripts/run_fcsadaptor.sh --fasta-input {input} --output-dir results/Decontamination/FCS-Adaptor/Phased_Asm_Hap2 --euk >> {log} 2>&1'
+        bash workflow/scripts/run_fcsadaptor.sh --fasta-input {input.fasta} --output-dir results/Decontamination/FCS-Adaptor/Phased_Asm_Hap2 --euk --image {input.sif} --container-engine singularity >> {log} 2>&1'
         """
 
 rule phased_fcsgx:

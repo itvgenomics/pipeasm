@@ -29,6 +29,7 @@ SCAFFOLDING=false
 
 SETUNLOCK=""
 SETUNP=""
+SETSLURM="false"
 
 while [ "$1" != "" ]; do
     case $1 in
@@ -48,26 +49,29 @@ while [ "$1" != "" ]; do
         shift
         SNAKEFILE=$1
         ;;
-    --trimming_qc)
+    -trimming_qc)
         TRIMMING_QC=true
         FULL=false
         ;;
-    --kmer_eval)
+    -kmer_eval)
         KMER_EVAL=true
         FULL=false
         ;;
-    --assembly)
+    -assembly)
         ASSEMBLY=true
         FULL=false
         ;;
-    --scaffolding)
+    -scaffolding)
         SCAFFOLDING=true
         FULL=false
+        ;;
+    -slurm)
+        SETSLURM=true
         ;;
     -np)
         SETNP="-np"
         ;;
-    --unlock)
+    -unlock)
         SETUNLOCK="--unlock"
         ;;
     *)
@@ -90,10 +94,10 @@ ERROR: Missing one of the required arguments: -d (Work Directory), -t (# Threads
 #-t <int> = Number of threads to use
 
 # You can choose a Pipeasm step with:
-    --trimming_qc (for Trimming and Quality Control);
-    --kmer_eval (for k-mer Evaluation stats/plots);
-    --assembly (for all Assembly and Decontamination steps);
-    --scaffolding (for all Scaffolding and Hi-C Map steps);
+    -trimming_qc (for Trimming and Quality Control);
+    -kmer_eval (for k-mer Evaluation stats/plots);
+    -assembly (for all Assembly and Decontamination steps);
+    -scaffolding (for all Scaffolding and Hi-C Map steps);
 
 # Only the -d and -t flags are required if you want to use the Snakemake default parameters
 # You can perform a dry-run (build only the DAG, no rule will be run) with -np and unlock the directory, if needed, with --unlock
@@ -171,7 +175,21 @@ python $WORKDIR/workflow/scripts/singularity.py --config $CONFIGFILE
 
 echo "INFO: Running Pipeasm."
 
-# Run the Pipeline
-export SINGULARITY_CACHEDIR=$WORKDIR/singularity && \
-export TMPDIR=$WORKDIR/tmp && \
-snakemake -d $WORKDIR --snakefile $SNAKEFILE --configfile $CONFIGFILE --use-singularity --singularity-args "-B $WORKDIR:/data --pwd /data" --rerun-incomplete --cores $THREADS $SETUNLOCK $SETNP
+if [ "$SETSLURM" = true ]; then
+    # Run the Pipeline
+    export SINGULARITY_CACHEDIR=$WORKDIR/singularity && \
+    export TMPDIR=$WORKDIR/tmp && \
+    sed -i "s|<WORKDIR>|$WORKDIR|g" $WORKDIR/profiles/slurm/config.yaml && \
+    snakemake -d $WORKDIR --snakefile $SNAKEFILE \
+        --configfile $CONFIGFILE --use-singularity \
+        --profile $WORKDIR/profiles/slurm/ \
+        --rerun-incomplete --cores $THREADS $SETUNLOCK $SETNP
+else
+    # Run the Pipeline
+    export SINGULARITY_CACHEDIR=$WORKDIR/singularity && \
+    export TMPDIR=$WORKDIR/tmp && \
+    snakemake -d $WORKDIR --snakefile $SNAKEFILE \
+        --configfile $CONFIGFILE --use-singularity \
+        --singularity-args "-B $WORKDIR:/data --pwd /data" \
+        --rerun-incomplete --cores $THREADS $SETUNLOCK $SETNP
+fi
