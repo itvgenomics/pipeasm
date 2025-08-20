@@ -32,6 +32,8 @@ SCAFFOLDING=false
 SETUNLOCK=""
 SETUNP=""
 SETSLURM="false"
+PARTITION=""
+
 
 while [ "$1" != "" ]; do
     case $1 in
@@ -70,6 +72,10 @@ while [ "$1" != "" ]; do
     -slurm)
         SETSLURM=true
         ;;
+    -partition)
+        shift
+        PARTITION=$1
+        ;;
     -np)
         SETNP="-np"
         ;;
@@ -106,6 +112,11 @@ ERROR: Missing one of the required arguments: -d (Work Directory), -t (# Threads
 
 EOF
 
+    exit 1
+fi
+
+if [ "$SETSLURM" = true ] && [ -z "$PARTITION" ]; then
+    echo "ERROR: -partition flag is required when using -slurm."
     exit 1
 fi
 
@@ -182,7 +193,8 @@ if [ "$SETSLURM" = true ]; then
     export SINGULARITY_CACHEDIR=$WORKDIR/singularity && \
     export SINGULARITY_TMPDIR=$WORKDIR/tmp && \
     export TMPDIR=$WORKDIR/tmp && \
-    sed "s|{WORKDIR}|$WORKDIR|g; s|{THREADS}|$THREADS|g" $WORKDIR/config/slurm_params.yaml > $WORKDIR/profiles/slurm/config.yaml && \
+    sed "s|{WORKDIR}|$WORKDIR|g; s|{THREADS}|$THREADS|g; s|{PARTITION}|$PARTITION|g" \
+        $WORKDIR/config/slurm_params.yaml > $WORKDIR/profiles/slurm/config.yaml && \
     snakemake -d $WORKDIR --snakefile $SNAKEFILE \
         --configfile $CONFIGFILE \
         --profile $WORKDIR/profiles/slurm/ \
@@ -192,7 +204,8 @@ else
     export SINGULARITY_CACHEDIR=$WORKDIR/singularity && \
     export SINGULARITY_TMPDIR=$WORKDIR/tmp && \
     export TMPDIR=$WORKDIR/tmp && \
-    sed "s|{WORKDIR}|$WORKDIR|g; s|{THREADS}|$THREADS|g" $WORKDIR/config/local_params.yaml > $WORKDIR/profiles/local/config.yaml && \
+    sed "s|{WORKDIR}|$WORKDIR|g; s|{THREADS}|$THREADS|g" \
+        $WORKDIR/config/local_params.yaml > $WORKDIR/profiles/local/config.yaml && \
     snakemake -d $WORKDIR --snakefile $SNAKEFILE \
         --configfile $CONFIGFILE \
         --profile $WORKDIR/profiles/local/ \

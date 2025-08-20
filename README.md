@@ -108,8 +108,8 @@ The fields to be edited are the following:
 
   - Only the **-d** and **-t** flags are required if you want to run Pipeasm with default parameters. If you do not want to run the decontamination step, set **gxdb**, in the **config.yaml** file, **blank**.
   - You can perform a dry-run (build only the DAG, no rule will be run) with -np and unlock the directory, if needed, with --unlock
-  - If you want to change any default settings, such as the threads number and memory usage: Edit `config/local_params.yaml`. **DO NOT CHANGE THE {WORKDIR} and {THREADS} VARIABLES**.
-  
+  - If you want to change any default settings, such as the threads number and memory usage: Edit `config/local_params.yaml`. **DO NOT CHANGE THE {WORKDIR}/{THREADS}/{PARTITION} VARIABLES**. Change the `{PARTITION}` only if you want to set multiple slurm partitions.
+
 - You can choose a Pipeasm step with:
   -  `-trimming_qc` (for Trimming and Quality Control);
   -  `-kmer_eval` (for k-mer Evaluation stats/plots);

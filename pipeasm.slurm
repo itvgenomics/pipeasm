@@ -29,7 +29,8 @@ mkdir -p $SLURM_SUBMIT_DIR/singularity $SLURM_SUBMIT_DIR/tmp
 
 # Caminho dos arquivos do singularity para colocar no config.yaml (sif_dir): "/scratch/sif_files/pipeasm"
 # Caminho para colocar no gxdb: "/mnt/gen/opt/utils/lucas/S4-Databases/fcs-gx_testDB/gxdb"
-bash Pipeasm.sh -d . -c config/config.yaml -s workflow/Snakefile -t <threads> -slurm
+# Example command to run Pipeasm with slurm:
+bash Pipeasm.sh -d . -c config/config.yaml -s workflow/Snakefile -t <threads> -slurm -partition op1_slurm
 
 
 TEND=`echo "print time();" | perl`

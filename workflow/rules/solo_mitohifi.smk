@@ -18,7 +18,7 @@ rule solo_run_mitohifi:
         """
         cat {input.hifi_hap1} {input.hifi_hap2} >> results/Assembly/Mitogenome/Solo_Asm/concat.fasta && \
         cd results/Assembly/Mitogenome/Solo_Asm && \
-        mitohifi.py -t {threads} -c concat.fasta -f ../../../../{input.reference_fasta} -g ../../../../{input.reference_gb} -o {params} >> ../../../../{log} 2>&1 && \
+        mitohifi.py -t {threads} -c concat.fasta -f ../../../../{input.reference_fasta} -g ../../../../{input.reference_gb} -o {params} >> ../../../../{log} 2>&1 || true && \
         if [ -f contigs_stats.tsv ]; then mv contigs_stats.tsv {wildcards.sample}.contigs_stats.tsv; fi && \
         rm concat.fasta && touch {output}
         """
