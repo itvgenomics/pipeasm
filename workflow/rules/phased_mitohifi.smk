@@ -5,7 +5,7 @@ rule phased_run_mitohifi:
         reference_fasta="resources/{sample}.reference.fasta",
         reference_gb="resources/{sample}.reference.gb"
     output:
-        "results/Assembly/Mitogenome/Phased_Asm/mitohifi.check"
+        "results/Assembly/Mitogenome/Phased_Asm/{sample}.mitohifi.check"
     log:
         "logs/{sample}.run_mitohifi.log"
     benchmark:

@@ -138,10 +138,10 @@ def get_output(sample_name):
         out.append(expand("resources/{sample}.reference.gb", sample=sample_name))
 
         if config['solo_asm'].lower() == 'yes':
-            out.append(expand("results/Assembly/Mitogenome/Solo_Asm/mitohifi.check", sample=config["sample"]))
+            out.append(expand("results/Assembly/Mitogenome/Solo_Asm/{sample}.mitohifi.check", sample=config["sample"]))
 
         if config["hic_r1"] and config["hic_r2"]:
-            out.append(expand("results/Assembly/Mitogenome/Phased_Asm/mitohifi.check", sample=config["sample"]))
+            out.append(expand("results/Assembly/Mitogenome/Phased_Asm/{sample}.mitohifi.check", sample=config["sample"]))
 
 
     if config['gxdb'] and config['run_asm'].lower() == "yes":
