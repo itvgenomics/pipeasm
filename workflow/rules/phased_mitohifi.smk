@@ -20,5 +20,5 @@ rule phased_run_mitohifi:
         cd results/Assembly/Mitogenome/Phased_Asm && \
         mitohifi.py -t {threads} -c concat.fasta -f ../../../../{input.reference_fasta} -g ../../../../{input.reference_gb} -o {params} >> ../../../../{log} 2>&1 || true && \
         if [ -f contigs_stats.tsv ]; then mv contigs_stats.tsv {wildcards.sample}.contigs_stats.tsv; fi && \
-        rm concat.fasta && touch {output}
+        rm concat.fasta && touch {wildcards.sample}.mitohifi.check
         """
