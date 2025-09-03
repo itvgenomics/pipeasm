@@ -33,7 +33,7 @@ docker_images = [
     "itvdsbioinfo/meryl:1.3",
     "itvdsbioinfo/smudgeplot:0.3.0",
     "pipecraft/cutadapt:4.4",
-    "itvdsbioinfo/hifiasm:0.20.0",
+    "itvdsbioinfo/hifiasm:0.25.0",
     "nanoporetech/dorado:shae36d1b49fe470a60e006afad90bedd2fc2774a89",
     "staphb/nanoplot:1.41.6",
     "genomehubs/blobtoolkit:4.3.5",
