@@ -198,7 +198,7 @@ if [ "$SETSLURM" = true ]; then
     snakemake -d $WORKDIR --snakefile $SNAKEFILE \
         --configfile $CONFIGFILE \
         --profile $WORKDIR/profiles/slurm/ \
-        --cores $THREADS $SETUNLOCK $SETNP
+        $SETUNLOCK $SETNP
 else
     # Run the Pipeline
     export SINGULARITY_CACHEDIR=$WORKDIR/singularity && \
