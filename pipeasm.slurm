@@ -4,9 +4,9 @@
 #SBATCH --error=error.txt             # Standard error file
 #SBATCH --partition=op1_slurm    # Partition or queue name
 #SBATCH --nodes=1                     # Number of nodes
-#SBATCH --ntasks-per-node=1           # Number of tasks per node
 #SBATCH --mem=2G
 #SBATCH --cpus-per-task=4
+#SBATCH --time=96:00:00                # Time limit hrs:min:sec
 
 printf "Begin: `date`\n";
 TBEGIN=`echo "print time();" | perl`

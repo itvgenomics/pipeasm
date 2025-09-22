@@ -763,8 +763,8 @@ def abstract(sample):
 N Scaffolds -> Primary: {data_hap1[0]} Alternate: {data_hap2[0]}
 Assembled Bases (bp) -> Primary: {data_hap1[1]} Alternate: {data_hap2[1]}
 N50 -> Primary: {data_hap1[2]} Alternate: {data_hap2[2]}
-N Contigs -> Primary: {data_hap1[3]} Alternate: {data_hap2[3]}
-Largest scaffold (bp) -> Primary: {data_hap1[4]} Alternate: {data_hap2[4]}
+N Contigs -> Primary: {data_hap1[4]} Alternate: {data_hap2[4]}
+Largest scaffold (bp) -> Primary: {data_hap1[3]} Alternate: {data_hap2[3]}
 Busco (Prim. only) -> C(%): {data_busco[0]} D(%): {data_busco[1]} F(%): {data_busco[2]} M(%): {data_busco[3]} Genes:  {data_busco[4]}
 QV (Prim. only) -> {data_qv[3]}
 """
@@ -864,8 +864,8 @@ QV (Prim. only) -> {data_qv[3]}
 N Scaffolds -> Hap1: {data_hap1[0]} Hap2: {data_hap2[0]}
 Assembled Bases (bp) -> Hap1: {data_hap1[1]} Hap2: {data_hap2[1]}
 N50 -> Hap1: {data_hap1[2]} Hap2: {data_hap2[2]}
-N Contigs -> Hap1: {data_hap1[3]} Hap2: {data_hap2[3]}
-Largest scaffold (bp) -> Hap1: {data_hap1[4]} Hap2: {data_hap2[4]}
+N Contigs -> Hap1: {data_hap1[4]} Hap2: {data_hap2[4]}
+Largest scaffold (bp) -> Hap1: {data_hap1[3]} Hap2: {data_hap2[3]}
 Busco (Hap1. only) -> C(%): {data_busco[0]} D(%): {data_busco[1]} F(%): {data_busco[2]} M(%): {data_busco[3]} Genes:  {data_busco[4]}
 QV (Hap1. only) -> {data_qv[3]}
 """
@@ -966,8 +966,8 @@ QV (Hap1. only) -> {data_qv[3]}
 N Scaffolds -> Hap1: {data_hap1[0]} Hap2: {data_hap2[0]}
 Assembled Bases (bp) -> Hap1: {data_hap1[1]} Hap2: {data_hap2[1]}
 N50 -> Hap1: {data_hap1[2]} Hap2: {data_hap2[2]}
-N Contigs -> Hap1: {data_hap1[3]} Hap2: {data_hap2[3]}
-Largest scaffold (bp) -> Hap1: {data_hap1[4]} Hap2: {data_hap2[4]}
+N Contigs -> Hap1: {data_hap1[4]} Hap2: {data_hap2[4]}
+Largest scaffold (bp) -> Hap1: {data_hap1[3]} Hap2: {data_hap2[3]}
 Busco (Hap1. only) -> C(%): {data_busco[0]} D(%): {data_busco[1]} F(%): {data_busco[2]} M(%): {data_busco[3]} Genes:  {data_busco[4]}
 QV (Hap1. only) -> {data_qv[3]}
 """
