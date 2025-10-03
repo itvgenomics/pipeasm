@@ -130,6 +130,51 @@ The fields to be edited are the following:
 - Once the pipeline completes successfully, you can find the output files in the `results` output directory as specified.
 - Pipeasm provides a extensive report data located at `workflow/report` directory.
 
+#### Summary Files
+
+The main output files include:
+
+- **Assembly Metrics**
+  - `{sample}.gfastats.csv`: General assembly statistics including contig and scaffold counts, N50, and L50.
+  - `{sample}.merqury.csv`: K-mer-based assembly quality metrics for evaluating base-level accuracy.
+  - `{sample}.compleasm.csv`: Completeness assessment using conserved single-copy orthologs.
+  - `{sample}.genomescope2_model.csv` and `{sample}.genomescope2_summary.csv`: Genome characterization and heterozygosity estimates.
+  - `{sample}.fcsadaptor.csv` and `{sample}.fcsgx.csv`: Adapters and contamination statistics.
+
+- **Metrics**
+  - `{sample}.flagstats.csv`: Alignment statistics from mapped reads.
+  - `{sample}.hifi_nanoplot.csv`: HiFi read quality metrics and length distributions.
+  - `Files/{sample}.completeness.stats` and `Files/{sample}.contigs_stats.tsv`: Detailed statistics for contigs, scaffolds, and completeness.
+
+#### Visualizations
+
+The `Images` folder contains a range of figures to aid interpretation:
+
+- **Contact Maps**:
+  - `{sample}.final_contacts_Hap1FullMap.png` and `{sample}.final_contacts_Hap2FullMap.png`: Hi-C contact maps for haplotype assemblies.
+
+- **Assembly Spectra**:
+  - Merqury phased and solo assemblies visualized via spectra plots (`*.spectra-cn.st.png`, `*.spectra-asm.st.png`).
+
+- **Scaffolding and Snail Plots**:
+  - `*_snail.png` files provide circular visualizations of scaffolding quality and haplotype structure.
+
+- **Read Quality and Length Distribution**:
+  - HiFi read length and quality plots (`HiFi_*` files) including linear, log-transformed, and weighted histograms.
+
+- **Smudgeplots**:
+  - `{sample}_smudgeplot.pdf` and `{sample}_smudgeplot_log10.pdf` visualize k-mer multiplicity and genome ploidy/heterozygosity patterns.
+
+#### HTML Reports
+
+Interactive HTML reports are included in the `Files` folder for detailed examination of read quality:
+
+- `{sample}.trimmed_fastqc.html`
+- `{sample}_R1.trimmed_paired_fastqc.html`
+- `{sample}_R2.trimmed_paired_fastqc.html`
+
+These reports allow in-depth inspection of per-base quality, GC content, duplication rates, and other QC metrics.
+
 ### Additional Notes
 - Make sure to review and modify the Snakefile if necessary to fit your specific pipeline requirements.
 - Make sure conda is installed with singularity and snakemake in the active environment.
