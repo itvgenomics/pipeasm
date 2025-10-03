@@ -248,3 +248,23 @@ These reports allow in-depth inspection of per-base quality, GC content, duplica
         ├── HiFi_FastQC
         └── HiFi_NanoPlot
 ```
+
+# Changelog
+
+## Pipeasm 1.0.1 – Changelog
+
+### New Features
+- Added Slurm support:
+  - To modify default parameters, edit `profiles/slurm/config.yaml`.
+  - Set your partition using the `slurm_partition` variable.
+
+### Improvements
+- Enhanced handling when `mitoHiFi` fails to assemble the mitogenome.
+- Added `Singularity` temporary directory (`tmpdir`) handling in the `.sh` scripts.
+- Included YAHS FASTA outputs in the reports.
+- Updated `hifiasm` to version 0.25.0.
+
+### Bug Fixes
+- Fixed abstract text formatting.
+- Corrected file checking and `fcs-adaptor` Singularity image issues.
+- Fixed `fcs` stderr output.
