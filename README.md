@@ -180,26 +180,71 @@ These reports allow in-depth inspection of per-base quality, GC content, duplica
 - Make sure conda is installed with singularity and snakemake in the active environment.
 - We are providing a [PBS](https://www.openpbs.org/) example file to run Pipeasm in a cloud/HPC environment. See `pipeasm.pbs`.
 
-### Example Repository Structure
+### Example of the Results Structure
 ```
-├── config
-│   └── config.yaml
-├── resources
-│   ├── pacbio_adapters.txt
-│   └── TruSeq3-PE.fa
-├── workflow
-│   ├── scripts
-│   ├── rules
-│   ├── report
-│   ├── singularity
-│   └── snakefile
-├── results
-│   ├── Trimming_QC
-│   ├── Assembly
-│   ├── Decontamination
-│   └── Scaffolding
-├── README.md
-├── pipeasm.pbs
-├── benchmarks
-└── logs
+├── Assembly
+│ ├── Contigging
+│ │ ├── Phased_Asm
+│ │ └── Solo_Asm
+│ ├── Genome_Stats
+│ │ ├── Compleasm
+│ │ │ ├── Phased_Asm_Hap1
+│ │ │ ├── Phased_Asm_Hap2
+│ │ │ ├── Solo_Asm_Alt
+│ │ │ └── Solo_Asm_Primary
+│ │ ├── GFAstats
+│ │ ├── HiFi_GenomeScope2
+│ │ ├── KAT
+│ │ ├── Merqury
+│ │ │ ├── Phased_Asm
+│ │ │ └── Solo_Asm
+│ │ ├── Smudgeplot
+│ │ └── SnailPlot
+│ │     ├── Phased_Asm
+│ │     │ ├── Phased-Hap1
+│ │     │ └── Phased-Hap2
+│ │     └── Solo_Asm
+│ │         ├── 00-Solo-Hap1
+│ │         └── 01-Solo-Hap2
+│ └── Mitogenome
+│     ├── Phased_Asm
+│     └── Solo_Asm
+├── Decontamination
+│ ├── Contaminants
+│ │ ├── Phased_Asm_Hap1
+│ │ ├── Phased_Asm_Hap2
+│ │ ├── Solo_Asm_Alt
+│ │ └── Solo_Asm_Primary
+│ └── FCS-Adaptor
+│     ├── Phased_Asm_Hap1
+│     ├── Phased_Asm_Hap2
+│     ├── Solo_Asm_Alt
+│     └── Solo_Asm_Primary
+├── Scaffolding
+│ ├── Final_Contacts
+│ │ ├── Hap1
+│ │ └── Hap2
+│ ├── Initial_Contacts
+│ │ ├── Hap1
+│ │ └── Hap2
+│ ├── Scaffolding_stats
+│ │ ├── Compleasm
+│ │ │ ├── Hap1
+│ │ │ └── Hap2
+│ │ ├── GFAstats
+│ │ ├── Merqury
+│ │ └── SnailPlot
+│ │     ├── Hap1
+│ │     └── Hap2
+│ └── YAHS_Scaffolding
+│     ├── Hap1
+│     └── Hap2
+└── Trimming_QC
+    ├── HiC
+    ├── HiFi
+    ├── Meryl_DB
+    └── QC
+        ├── HiC_FastQC
+        ├── HiFi_FastQC
+        └── HiFi_NanoPlot
 ```
