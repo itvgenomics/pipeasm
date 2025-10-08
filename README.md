@@ -6,6 +6,49 @@
 
 Pipeasm is the streamlining of the VGP and DToL assembly pipelines. The pipeline is written in Snakemake, a powerful workflow management system for creating and executing data analysis pipelines, and both container daemons Docker and Singularity. This document will guide you through the installation process of these software on Linux.
 
+## How Pipeasm works?
+
+Pipeasm is a Snakemake-based workflow that integrates a suite of tools to process and assemble genomic data, producing comprehensive reports and statistics. The pipeline is organized into six main steps, as shown in the schematic diagram.
+
+<p align="center">
+  <img src="https://github.com/itvgenomics/pipeasm/blob/main/workflow.png" alt="Workflow"/>
+</p>
+
+1. **Trimming and Quality Control (QC)**
+- Pipeasm can use **PacBio high-fidelity (HiFi-CCS) long reads**, **Oxford Nanopore Long-Reads (ONT)**, and **chromatin-contact (Hi-C) Illumina short reads**.
+- **Trimming**: It uses `Cutadapt` for HiFi reads, `Fastp` for Hi-C reads and `Dorado` for ONT reads, to remove adapters and primers.
+- **Quality Assessment**: `FastQC` and `Nanoplot` perform quality control on the reads.
+
+2. **K-mer Profiling**
+- After trimming, the pipeline performs a series of analyses on the HiFi long reads to gather detailed genomic statistics.
+- **K-mer Counting**: `Meryl` counts and evaluates K-mers.
+- **Genome Statistics**: `GenomeScope2` estimates genome size, heterozygosity, and repeat content.
+- **Ploidy Identification**: `SmudgePlot` identifies ploidy levels through K-mer distribution analysis.
+- **Graphical Representation**: `KAT-GCP` provides graphical representations of K-mer spectra to help identify genomic features and contaminants.
+
+3. **Assembly**
+- This is the core of the pipeline where the genome is assembled.
+- **Hifiasm** produces haplotype-resolved genomes, which is crucial for creating accurate and contiguous assemblies.
+- **Mitogenome Assembly**: `MitoHiFi` recovers the mitochondrial genome.
+
+4. **Assembly Statistics**
+- After assembly, the pipeline generates a fasta file and collects detailed statistics on the assembled genome.
+- **Summaries and Statistics**: `GFAstats` generates the fasta file and provides statistics like contig lengths, N50 values, and scaffold counts.
+- **Completeness Evaluation**: `Compleasm` assesses gene-space completeness by comparing the assembled genome against BUSCO databases.
+- **Quality Assessment**: `Merqury` counts assembled K-mers and compares them to the Meryl database.
+- **Visualization**: `Snailplot`, which is a part of BlobToolkit , provides a visual overview of the assembled genome.
+
+5. **Decontamination**
+- This step eliminates remaining contaminants from the assembled genome.
+- `FCS Adaptor` removes adapters, and `FCS-GX` targets other contaminants.
+
+6. **Hi-C Mapping and Scaffolding**
+- This final stage links contigs into longer, chromosome-scale scaffolds.
+- **Mapping**: `BWA-MEM2` is used for genome indexing and mapping Hi-C reads.
+- **Sorting and Filtering**: Aligned reads are sorted with `SAMtools`, and low-quality and duplicated reads are filtered and merged using `Bellerophon`.
+- **Scaffolding**: `YAHS` links the contigs into longer scaffolds, enhancing the assembly.
+- **Visualization**: `Pretext` tools (Map and Snapshot) convert the mapping results into visual representations of Hi-C contact maps
+
 ## How to Install Pipeasm Enviroment on Linux
 
 ### Prerequisites
@@ -103,11 +146,14 @@ The fields to be edited are the following:
   - **-d** </path/to/work/dir> (Required) = Path to your working directory where all the workflow file are
   - **-c** </path/to/config.yaml> (Optional) = Overwrite the default configuration file with all nedded parameters (config/config.yaml)
   - **-s** </path/to/snakefile> (Optional) = Overwrite the default snakefile path (workflow/snakefile)
-  - **-t** {int} (Required) = Number of threads to use
-  - **-slurm** (Optional) = Use the `config/slurm_params.yaml` file to run the workflow with SLURM job submission using Snakemake’s profile system. This enables use of SLURM-specific resource configuration, submission rules, and cluster-specific options. If you want to change any default SLURM settings, such as the partition: Edit `config/slurm_params.yaml` and set the appropriate value for the slurm_partition variable
+  - **-t** {int} (Required) = Number of threads to use. If running in **SLURM** mode, this value determines how many jobs will be submitted to the queue.
+  - **-slurm** (Optional) = Use the `config/slurm_params.yaml` file to run the workflow with SLURM job submission using Snakemake’s profile system. This enables use of SLURM-specific resource configuration, submission rules, and cluster-specific options. If you want to change any default SLURM settings, such as the partition: Edit `config/slurm_params.yaml` and set the appropriate value for the `slurm_partition` variable
+  - **-partition** {string} (Required when **-slurm** is used) — Specifies the SLURM partition (queue) to which the jobs will be submitted.
+  - **-np** (Optional) = Perform a dry run to see what jobs will be executed without actually running them.
+  - **-unlock** (Optional) = Unlock the working directory if Snakemake has somehow locked it.
 
   - Only the **-d** and **-t** flags are required if you want to run Pipeasm with default parameters. If you do not want to run the decontamination step, set **gxdb**, in the **config.yaml** file, **blank**.
-  - You can perform a dry-run (build only the DAG, no rule will be run) with -np and unlock the directory, if needed, with --unlock
+  - You can perform a dry-run (build only the DAG, no rule will be run) with `-np` and unlock the directory, if needed, with `-unlock`
   - If you want to change any default settings, such as the threads number and memory usage: Edit `config/local_params.yaml`. **DO NOT CHANGE THE {WORKDIR}/{THREADS}/{PARTITION} VARIABLES**. Change the `{PARTITION}` only if you want to set multiple slurm partitions.
 
 - You can choose a Pipeasm step with:
