@@ -176,6 +176,20 @@ The fields to be edited are the following:
 - Once the pipeline completes successfully, you can find the output files in the `results` output directory as specified.
 - Pipeasm provides a extensive report data located at `workflow/report` directory.
 
+## How to Test the Pipeline
+
+We provide a test dataset, a ready-to-use configuration file, and all expected output files to help you quickly test and validate your Pipeasm installation.
+These resources are available on [Zenodo](https://zenodo.org/records/17243106?preview=1&token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjVjOGUxMjg0LTAwN2QtNDhjNS1hMzNkLTU1YmQ2MTk5ZTg1OSIsImRhdGEiOnt9LCJyYW5kb20iOiIzMjBhNWYxNDljMzYyZjEwNWViZjFhMzc4ZDEyOGQ5NCJ9.7I3jRicRK4SHlNNR3t8t7E2F9KdhpPezdm8GGyN_Aqc4sD-Q1YypdMQD0qEB8bdv9C1wB9I0BCUzTlBRPW5kQA.
+
+This Zenodo repository contains, for the *Panthera onca* (mPanOnc):
+
+1. Example HiFi and Hi-C read files for testing.
+2. A pre-configured config.yaml file tailored for the test dataset.
+3. Complete expected output files and reports from a successful run — useful for verifying your results match the reference outputs.
+
+You can use this dataset to ensure that your installation of Snakemake, Singularity, and all dependent containers are working properly before running your own genomic data.
+
+
 #### Summary Files
 
 The main output files include:
