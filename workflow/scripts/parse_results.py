@@ -86,8 +86,8 @@ def copy_files(sample):
     for file in files:
         if os.path.exists(file):
             print(f"Copying file: {file}")
+            file_name = os.path.basename(file)
             if ".png" in file or ".svg" in file or ".pdf" in file:
-                file_name = os.path.basename(file)
                 if "HiFi" in file:
                     shutil.copy(file, f"workflow/report/images/HiFi_{file_name}")
                 elif "HiC" in file:
