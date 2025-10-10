@@ -179,7 +179,7 @@ The fields to be edited are the following:
 ## How to Test the Pipeline
 
 We provide a test dataset, a ready-to-use configuration file, and all expected output files to help you quickly test and validate your Pipeasm installation.
-These resources are available on [Zenodo](https://zenodo.org/records/17243106?preview=1&token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjVjOGUxMjg0LTAwN2QtNDhjNS1hMzNkLTU1YmQ2MTk5ZTg1OSIsImRhdGEiOnt9LCJyYW5kb20iOiIzMjBhNWYxNDljMzYyZjEwNWViZjFhMzc4ZDEyOGQ5NCJ9.7I3jRicRK4SHlNNR3t8t7E2F9KdhpPezdm8GGyN_Aqc4sD-Q1YypdMQD0qEB8bdv9C1wB9I0BCUzTlBRPW5kQA.
+These resources are available on [Zenodo](https://zenodo.org/records/17243106?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6ImVjYjM1NWJjLTg1YzYtNDljOC1hMTYxLWFhNDEwNzM5ZDkyZSIsImRhdGEiOnt9LCJyYW5kb20iOiJhMzk0NDQ1NjdhYWY2MDBhZjM3ODExNjllODc0OWQ0OSJ9.b65MGFEuokHENviKgaDa9ITTpS9dOPRyCHzDSUAiikQDkW0CQDI5nUyAbWaHntvjqqNU847jdc9B5_7uEbSBcw).
 
 This Zenodo repository contains, for the *Panthera onca* (mPanOnc):
 
