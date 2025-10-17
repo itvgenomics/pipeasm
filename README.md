@@ -6,6 +6,12 @@
 
 Pipeasm is the streamlining of the VGP and DToL assembly pipelines. The pipeline is written in Snakemake, a powerful workflow management system for creating and executing data analysis pipelines, and both container daemons Docker and Singularity. This document will guide you through the installation process of these software on Linux.
 
+## How to cite Pipeasm (preprint)
+
+```
+Silva, B. M., Trindade, F. J., Canesin, L. E. C., Souza, G., Aleixo, A., Nunes, G. L., Oliveira, R. R. M. Pipeasm: a tool for automated large chromosome-scale genome assembly and evaluation. bioRxiv 2024.10.21.598381; doi: https://doi.org/10.1101/2024.10.21.598381
+```
+
 ## How Pipeasm works?
 
 Pipeasm is a Snakemake-based workflow that integrates a suite of tools to process and assemble genomic data, producing comprehensive reports and statistics. The pipeline is organized into six main steps, as shown in the schematic diagram.
