@@ -20,6 +20,11 @@ buscodb: ''
 # (Required) Set to 'Yes' for both solo and phased assemblies, or 'No' for phased only.
 solo_asm: 'No'
 
+# Set to 'Yes' if Hi-C data is from a different species; otherwise 'No'.
+# This will run Hifiasm with solo assembly primary mode and run YAHS scaffolding only on this assembly.
+# The final pretext map will still be generated before and after scaffolding.
+diff_species_hic: "Yes"
+
 # (Required) Directory for storing Singularity image files.
 # E.g.: "/scratch/sif_files/pipeasm"
 sif_dir: ''

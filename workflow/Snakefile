@@ -20,7 +20,7 @@ if config["ont_reads"]:
 	include: "rules/ont_files.smk"
 	include: "rules/ont_trimming_qc.smk"
 
-if config['solo_asm'].lower() == 'yes':
+if config['solo_asm'].lower() == 'yes' or config["diff_species_hic"].lower() == 'yes':
 
 	if config["ont_reads"]:
 		include: "rules/ont_solo_asm.smk"
@@ -43,12 +43,14 @@ if config["hic_r1"] and config["hic_r2"]:
 	else:
 		include: "rules/phased_asm.smk"
 
-	include: "rules/phased_stats.smk"
-	include: "rules/phased_completeness.smk"
-	include: "rules/phased_merqury.smk"
-	include: "rules/phased_asm_plots.smk"
-	include: "rules/phased_decontamination.smk"
-	include: "rules/phased_mitohifi.smk"
+	if config["diff_species_hic"].lower() == 'no':
+		include: "rules/phased_stats.smk"
+		include: "rules/phased_completeness.smk"
+		include: "rules/phased_merqury.smk"
+		include: "rules/phased_asm_plots.smk"
+		include: "rules/phased_decontamination.smk"
+		include: "rules/phased_mitohifi.smk"
+
 	include: "rules/hic_initital_contacts.smk"
 	include: "rules/hic_scaffolding.smk"
 	include: "rules/hic_final_contacts.smk"

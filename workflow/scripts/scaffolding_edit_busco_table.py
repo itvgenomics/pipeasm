@@ -9,6 +9,9 @@ def parse_scaffolding_summary(sample, hap):
     elif hap == 2:
         with open(f"results/Scaffolding/Scaffolding_stats/Compleasm/Hap2/{sample}.summary.txt", "r") as file:
             file_content = file.read()
+    elif hap == "prim":
+        with open(f"results/Scaffolding/Scaffolding_stats/Compleasm/{sample}.summary.txt", "r") as file:
+            file_content = file.read()
 
     # Regular expression patterns
     lineage_pattern = r"## lineage:\s*(\w+)"
@@ -66,10 +69,34 @@ def edit_scaffolding_table(buscodb, n_busco, sample, hap):
         ) as outfile:
             outfile.writelines(updated_content)
 
-# Hap1
-buscodb, n_busco = parse_scaffolding_summary(snakemake.config['sample'], 1)
-edit_scaffolding_table(buscodb, n_busco, snakemake.config['sample'], 1)
+    elif hap == "prim":
+        # Open the file and read existing content
+        with open(
+            f"results/Scaffolding/Scaffolding_stats/Compleasm/{buscodb}/full_table_busco_format.tsv",
+            "r",
+        ) as file:
+            existing_content = file.readlines()
 
-# Hap2
-buscodb, n_busco = parse_scaffolding_summary(snakemake.config['sample'], 2)
-edit_scaffolding_table(buscodb, n_busco, snakemake.config['sample'], 2)
+        # Prepend the new lines to the existing content
+        updated_content = [line1 + "\n", line2 + "\n"] + existing_content
+
+        # Write the updated content back to the file
+        with open(
+            f"results/Scaffolding/Scaffolding_stats/Compleasm/{sample}.full_table_busco_format_edit.tsv",
+            "w",
+        ) as outfile:
+            outfile.writelines(updated_content)
+
+
+if snakemake.config['diff_species_hic'].lower() == 'yes':
+    # Primary assembly
+    buscodb, n_busco = parse_scaffolding_summary(snakemake.config['sample'], "prim")
+    edit_scaffolding_table(buscodb, n_busco, snakemake.config['sample'], "prim")
+else:
+    # Hap1
+    buscodb, n_busco = parse_scaffolding_summary(snakemake.config['sample'], 1)
+    edit_scaffolding_table(buscodb, n_busco, snakemake.config['sample'], 1)
+
+    # Hap2
+    buscodb, n_busco = parse_scaffolding_summary(snakemake.config['sample'], 2)
+    edit_scaffolding_table(buscodb, n_busco, snakemake.config['sample'], 2)

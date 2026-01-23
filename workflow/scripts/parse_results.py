@@ -44,10 +44,13 @@ def copy_files(sample):
         f"results/Assembly/Genome_Stats/KAT/{sample}.mx.png",
         f"results/Scaffolding/Initial_Contacts/Hap1/{sample}_Hap1FullMap.png",
         f"results/Scaffolding/Initial_Contacts/Hap2/{sample}_Hap2FullMap.png",
+        f"results/Scaffolding/Initial_Contacts/{sample}_primFullMap.png",
         f"results/Scaffolding/Final_Contacts/Hap1/{sample}.final_contacts_Hap1FullMap.png",
         f"results/Scaffolding/Final_Contacts/Hap2/{sample}.final_contacts_Hap2FullMap.png",
+        f"results/Scaffolding/Final_Contacts/{sample}.final_contacts_primFullMap.png",
         f"results/Scaffolding/Scaffolding_stats/SnailPlot/Hap1/{sample}_Scaffolding_Hap1.snail.png",
         f"results/Scaffolding/Scaffolding_stats/SnailPlot/Hap2/{sample}_Scaffolding_Hap2.snail.png",
+        f"results/Scaffolding/Scaffolding_stats/SnailPlot/{sample}_Scaffolding_prim.snail.png",
         f"results/Trimming_QC/QC/ONT_NanoPlot/{sample}LengthvsQualityScatterPlot_dot.svg",
         f"results/Trimming_QC/QC/ONT_NanoPlot/{sample}LengthvsQualityScatterPlot_kde.svg",
         f"results/Trimming_QC/QC/ONT_NanoPlot/{sample}Non_weightedHistogramReadlength.svg",
@@ -66,10 +69,13 @@ def copy_files(sample):
         f"results/Assembly/Contigging/Solo_Asm/{sample}.a_ctg.gfa",
         f"results/Scaffolding/Initial_Contacts/Hap1/{sample}.merged.bam.pretext",
         f"results/Scaffolding/Initial_Contacts/Hap2/{sample}.merged.bam.pretext",
+        f"results/Scaffolding/Initial_Contacts/{sample}.merged.bam.pretext",
         f"results/Scaffolding/Final_Contacts/Hap1/{sample}.merged.bam.pretext",
         f"results/Scaffolding/Final_Contacts/Hap2/{sample}.merged.bam.pretext",
+        f"results/Scaffolding/Final_Contacts/{sample}.merged.bam.pretext",
         f"results/Scaffolding/YAHS_Scaffolding/Hap1/{sample}.yahs_scaffolds_final.fa",
         f"results/Scaffolding/YAHS_Scaffolding/Hap2/{sample}.yahs_scaffolds_final.fa",
+        f"results/Scaffolding/YAHS_Scaffolding/{sample}.yahs_scaffolds_final.fa",
 
     ]
 
@@ -108,16 +114,22 @@ def copy_files(sample):
                     shutil.copy(file, f"workflow/report/files/Hifiasm_Hap1_{file_name}")
                 elif "Initial_Contacts" in file and "Hap2" in file:
                     shutil.copy(file, f"workflow/report/files/Hifiasm_Hap2_{file_name}")
+                elif "Initial_Contacts" in file and "prim" in file:
+                    shutil.copy(file, f"workflow/report/files/Hifiasm_{file_name}")
                 elif "Final_Contacts" in file and "Hap1" in file:
                     shutil.copy(file, f"workflow/report/files/YAHS_Hap1_{file_name}")
                 elif "Final_Contacts" in file and "Hap2" in file:
                     shutil.copy(file, f"workflow/report/files/YAHS_Hap2_{file_name}")
+                elif "Final_Contacts" in file and "prim" in file:
+                    shutil.copy(file, f"workflow/report/files/YAHS_{file_name}")
 
             elif "YAHS_Scaffolding" in file:
                 if "Hap1" in file:
                     shutil.copy(file, f"workflow/report/files/Hap1_{file_name}")
                 elif "Hap2" in file:
                     shutil.copy(file, f"workflow/report/files/Hap2_{file_name}")
+                else:
+                    shutil.copy(file, f"workflow/report/files/{file_name}")
 
             else:
                 shutil.copy(file, "workflow/report/files")
@@ -970,6 +982,70 @@ N Contigs -> Hap1: {data_hap1[4]} Hap2: {data_hap2[4]}
 Largest scaffold (bp) -> Hap1: {data_hap1[3]} Hap2: {data_hap2[3]}
 Busco (Hap1. only) -> C(%): {data_busco[0]} D(%): {data_busco[1]} F(%): {data_busco[2]} M(%): {data_busco[3]} Genes:  {data_busco[4]}
 QV (Hap1. only) -> {data_qv[3]}
+"""
+
+        with open(f"workflow/report/{sample}.abstract.txt", "a") as output:
+            output.write(abstract_text)
+
+    if os.path.exists(
+        f"results/Scaffolding/Scaffolding_stats/GFAstats/{sample}.yahs_scaffolds_final.fa.stats"
+    ):
+        data_prim = []
+        with open(
+            f"results/Scaffolding/Scaffolding_stats/GFAstats/{sample}.yahs_scaffolds_final.fa.stats",
+            "r",
+        ) as file:
+            # Iterate through each line
+            for line in file:
+                # Use regular expression to search for lines containing patterns
+                match = re.search(r"# scaffolds: (\d+)", line)
+                if match:
+                    number = match.group(1)
+                    data_prim.append(number)
+                match = re.search(r"Scaffold N50: (\d+)", line)
+                if match:
+                    number = match.group(1)
+                    data_prim.append(number)
+                match = re.search(r"Total scaffold length: (\d+)", line)
+                if match:
+                    number = match.group(1)
+                    data_prim.append(number)
+                match = re.search(r"# contigs: (\d+)", line)
+                if match:
+                    number = match.group(1)
+                    data_prim.append(number)
+                match = re.search(r"Largest scaffold: (\d+)", line)
+                if match:
+                    number = match.group(1)
+                    data_prim.append(number)
+
+        data_busco = []
+        with open(
+            f"results/Scaffolding/Scaffolding_stats/Compleasm/{sample}.summary.txt",
+            "r",
+        ) as file:
+
+            # Iterate through each line
+            for line in file:
+                # Use regular expression to search for lines containing "S:", "D:", "F:", "M:", "N:"
+                match = re.search(r"(S|D|F|M|N):(\d+\.\d+)%", line)
+                if match:
+                    # Extract the percentage and the letter (S, D, F, M, or N)
+                    percentage = float(match.group(2))
+                    # Append the percentage to the percentages list
+                    data_busco.append(percentage)
+
+                if "N:" in line:
+                    n_number = line.split("N:")[1].replace("\n", "")
+                    data_busco.append(n_number)
+
+        abstract_text = f"""--- After YASH Scaffolding ---
+N Scaffolds -> Primary: {data_prim[0]}
+Assembled Bases (bp) -> Primary: {data_prim[1]}
+N50 -> Primary: {data_prim[2]}
+N Contigs -> Primary: {data_prim[4]}
+Largest scaffold (bp) -> Primary: {data_prim[3]}
+Busco (Prim. only) -> C(%): {data_busco[0]} D(%): {data_busco[1]} F(%): {data_busco[2]} M(%): {data_busco[3]} Genes:  {data_busco[4]}
 """
 
         with open(f"workflow/report/{sample}.abstract.txt", "a") as output:

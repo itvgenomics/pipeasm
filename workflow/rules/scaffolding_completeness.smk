@@ -41,3 +41,25 @@ rule scaffolding_compleasm_hap2:
         -l {params} -t {threads} -L {input.buscodbpath} >> {log} 2>&1 && \
         mv results/Scaffolding/Scaffolding_stats/Compleasm/Hap2/summary.txt {output}')
         """
+
+rule scaffolding_compleasm_prim:
+    input:
+        fasta="results/Scaffolding/YAHS_Scaffolding/{sample}.yahs_scaffolds_final.fa",
+        buscodbpath=directory("resources/{sample}_buscodb")
+    output:
+        "results/Scaffolding/Scaffolding_stats/Compleasm/{sample}.summary.txt"
+    params:
+        buscodb= config['buscodb']
+    log:
+        "logs/{sample}.scaffolding_compleasm_prim.log"
+    benchmark:
+        "benchmarks/{sample}.scaffolding_compleasm_prim.txt"
+    singularity:
+        f"{config["sif_dir"]}/compleasm.sif"
+    shell:
+        """
+        (bash -c 'compleasm run -a {input.fasta} \
+        -o results/Scaffolding/Scaffolding_stats/Compleasm \
+        -l {params} -t {threads} -L {input.buscodbpath} >> {log} 2>&1 && \
+        mv results/Scaffolding/Scaffolding_stats/Compleasm/summary.txt {output}')
+        """

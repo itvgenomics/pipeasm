@@ -37,3 +37,23 @@ rule yahs_scaffolding_hap2:
         samtools faidx {input.fasta} >> {log} 2>&1 && \
         yahs {params.yahs} -o results/Scaffolding/YAHS_Scaffolding/Hap2/{wildcards.sample}.yahs {input.fasta} {input.merged_bam} >> {log} 2>&1
         """
+
+rule yahs_scaffolding_prim:
+    input:
+        fasta=lambda wildcards: "results/Decontamination/Contaminants/Solo_Asm_Primary/{sample}.p_ctg.clean.fasta" if config["gxdb"] else "results/Assembly/Contigging/Solo_Asm/{sample}.p_ctg.fa",
+        merged_bam="results/Scaffolding/Initial_Contacts/{sample}.merged.bam",
+    output:
+        "results/Scaffolding/YAHS_Scaffolding/{sample}.yahs_scaffolds_final.fa"
+    params:
+        yahs=config['yahs']
+    log:
+        "logs/{sample}.yahs_scaffolding_prim.txt"
+    benchmark:
+        "benchmarks/{sample}.yahs_scaffolding_prim.txt"
+    singularity:
+       f"{config["sif_dir"]}/yahs.sif"
+    shell:
+        """
+        samtools faidx {input.fasta} >> {log} 2>&1 && \
+        yahs {params.yahs} -o results/Scaffolding/YAHS_Scaffolding/{wildcards.sample}.yahs {input.fasta} {input.merged_bam} >> {log} 2>&1
+        """

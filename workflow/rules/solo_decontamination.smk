@@ -11,7 +11,7 @@ rule solo_fcsadaptor_hap1:
     shell:
         """
         bash -c 'export OMP_NUM_THREADS={threads} && \
-        bash workflow/scripts/run_fcsadaptor.sh --fasta-input {input} --output-dir results/Decontamination/FCS-Adaptor/Solo_Asm_Primary --euk --image {input.sif} >> {log} 2>&1'
+        bash workflow/scripts/run_fcsadaptor.sh --fasta-input {input.fasta} --output-dir results/Decontamination/FCS-Adaptor/Solo_Asm_Primary --euk --image {input.sif} --container-engine singularity >> {log} 2>&1'
         """
 
 rule solo_fcsadaptor_hap2:
@@ -27,7 +27,7 @@ rule solo_fcsadaptor_hap2:
     shell:
         """
         bash -c 'export OMP_NUM_THREADS={threads} && \
-        bash workflow/scripts/run_fcsadaptor.sh --fasta-input {input.fasta} --output-dir results/Decontamination/FCS-Adaptor/Solo_Asm_Alt --euk --image {input.sif} >> {log} 2>&1'
+        bash workflow/scripts/run_fcsadaptor.sh --fasta-input {input.fasta} --output-dir results/Decontamination/FCS-Adaptor/Solo_Asm_Alt --euk --image {input.sif} --container-engine singularity >> {log} 2>&1'
         """
 
 rule solo_fcsgx:
