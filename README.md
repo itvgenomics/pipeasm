@@ -6,11 +6,13 @@
 
 Pipeasm is the streamlining of the VGP and DToL assembly pipelines. The pipeline is written in Snakemake, a powerful workflow management system for creating and executing data analysis pipelines, and both container daemons Docker and Singularity. This document will guide you through the installation process of these software on Linux.
 
-## How to cite Pipeasm (preprint)
+## How to cite Pipeasm
 
 ```
-Silva, B. M., Trindade, F. J., Canesin, L. E. C., Souza, G., Aleixo, A., Nunes, G. L., Oliveira, R. R. M. Pipeasm: a tool for automated large chromosome-scale genome assembly and evaluation. bioRxiv 2024.10.21.598381; doi: https://doi.org/10.1101/2024.10.21.598381
+Bruno Marques Silva, Fernanda de Jesus Trindade, Lucas Eduardo Costa Canesin, Giordano Souza, Alexandre Aleixo, Gisele Nunes, Renato Renison Moreira-Oliveira, Pipeasm: a tool for automated large chromosome-scale genome assembly and evaluation, Bioinformatics Advances, Volume 6, Issue 1, 2026, vbaf326, https://doi.org/10.1093/bioadv/vbaf326
 ```
+
+Check out [here](https://doi.org/10.1093/bioadv/vbaf326).
 
 ## How Pipeasm works?
 
@@ -123,7 +125,7 @@ The fields to be edited are the following:
 | Field    | Example | Description | Field Requirement |
 | -------- | ------- | ------- | ------- |
 | species | 'Hypocnemis striata' | Name of the species to be assembled. This will be used to search a complete mitochondrial genome to be used as reference in MitoHiFi. | Required |
-| sample | 'bHypStr1.1' | This is the DToL_ID naming the assembly for each species. You can check the documentation and get the corresponding ID for your species [here](https://id.tol.sanger.ac.uk) | Required |
+| sample | 'bHypStr1' | This is the DToL_ID naming the assembly for each species. Please avoid special characters. You can check the documentation and get the corresponding ID for your species [here](https://id.tol.sanger.ac.uk) | Required |
 | hifi_reads | '/absolute/path/to/raw_data/hifi/bHypStr1.fastq.gz' | Full path to your HiFI raw reads. Make sure to get all your reads into a single `fastq.gz` file | Required |
 | hic_r1 | '/absolute/path/to/raw_data/hic/bHypStr1.R1.fastq.gz' | Full path to your HiC forward raw reads. Make sure to get all your forward reads into a single `fastq.gz` file | Optional |
 | hic_r2 | '/absolute/path/to/raw_data/hic/bHypStr1.R2.fastq.gz' | Full path to your HiC reverse raw reads. Make sure to get all your reverse reads into a single `fastq.gz` file | Optional |
