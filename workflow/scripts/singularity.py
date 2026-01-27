@@ -37,7 +37,7 @@ docker_images = [
     "nanoporetech/dorado:shae36d1b49fe470a60e006afad90bedd2fc2774a89",
     "staphb/nanoplot:1.41.6",
     "genomehubs/blobtoolkit:4.3.5",
-    "huangnengcsu/compleasm:v0.2.5",
+    "huangnengcsu/compleasm:v0.2.7",
     "itvdsbioinfo/merqury:1.3",
     "ghcr.io/marcelauliano/mitohifi:master",
     "staphb/gfastats:1.3.6",
