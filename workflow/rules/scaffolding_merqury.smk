@@ -20,7 +20,8 @@ rule scaffolding_merqury:
 	shell:
 		"""
 		mkdir -p {params.outdir} && \
-		MerquryFK -v -X250 -Ptmp -T{threads} {input.fastk} {input.hap1} {input.hap2} {params.outdir}/{wildcards.sample} >> {log} 2>&1 && \
-		mv {params.outdir}/{wildcards.sample}.hap1.spectra-cn.st.png {params.outdir}/{wildcards.sample}.{wildcards.sample}.yahs_hap1.spectra-cn.st.png && \
-		mv {params.outdir}/{wildcards.sample}.hap2.spectra-cn.st.png {params.outdir}/{wildcards.sample}.{wildcards.sample}.yahs_hap2.spectra-cn.st.png
+		cp {input.hap1} {params.outdir}/{wildcards.sample}.yahs_hap1.fa && \
+		cp {input.hap2} {params.outdir}/{wildcards.sample}.yahs_hap2.fa && \
+		MerquryFK -v -X250 -Ptmp -lfs -T{threads} {input.fastk} {params.outdir}/{wildcards.sample}.yahs_hap1.fa {params.outdir}/{wildcards.sample}.yahs_hap2.fa {params.outdir}/{wildcards.sample} >> {log} 2>&1 && \
+		rm -rf {params.outdir}/{wildcards.sample}.yahs_hap1.fa {params.outdir}/{wildcards.sample}.yahs_hap2.fa
 		"""

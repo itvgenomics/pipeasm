@@ -10,7 +10,7 @@ rule download_buscodb:
     shell:
         """
         bash -c 'mkdir {output} && \
-        compleasm download {params} --library_path {output} 2> {log}'
+        compleasm download {params} --library_path {output} >> {log} 2>&1'
         """
 
 # rule remove_buscodb:
