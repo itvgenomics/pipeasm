@@ -79,7 +79,7 @@ def get_output(sample_name):
 
     ## Check Assembly outputs
     if config['run_asm'].lower() == "yes":
-        if (config['solo_asm'].lower() == 'yes' or config['diff_species_hic'].lower()) == 'yes':
+        if config['solo_asm'].lower() == 'yes' or config['diff_species_hic'].lower() == 'yes':
             out.append(expand("results/Assembly/Contigging/Solo_Asm/{sample}.p_ctg.gfa", sample=config["sample"]))
             out.append(expand("results/Assembly/Contigging/Solo_Asm/{sample}.a_ctg.gfa", sample=config["sample"]))
 
@@ -87,7 +87,7 @@ def get_output(sample_name):
             out.extend(expand("results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap{hap}.p_ctg.gfa", sample=config["sample"], hap=["1", "2"]))
 
         ## Check Assembly stats files
-        if (config['solo_asm'].lower() == 'yes' or config['diff_species_hic'].lower()) == 'yes':
+        if config['solo_asm'].lower() == 'yes' or config['diff_species_hic'].lower() == 'yes':
             out.append(expand("results/Assembly/Contigging/Solo_Asm/{sample}.p_ctg.fa", sample=config["sample"]))
             out.append(expand("results/Assembly/Genome_Stats/GFAstats/{sample}.p_ctg.fa.stats", sample=config["sample"]))
             out.append(expand("results/Assembly/Contigging/Solo_Asm/{sample}.a_ctg.fa", sample=config["sample"]))
@@ -98,7 +98,7 @@ def get_output(sample_name):
             out.extend(expand("results/Assembly/Genome_Stats/GFAstats/{sample}.hic.hap{hap}.p_ctg.fa.stats", sample=config["sample"], hap=["1", "2"]))
 
         ## Check Assembly evaluation
-        if (config['solo_asm'].lower() == 'yes' or config['diff_species_hic'].lower()) == 'yes':
+        if config['solo_asm'].lower() == 'yes' or config['diff_species_hic'].lower() == 'yes':
          out.extend(expand("results/Assembly/Genome_Stats/MerquryFK/Solo_Asm/{sample}.completeness.stats", sample=config["sample"]))
 
         if config["hic_r1"] and config["hic_r2"] and config['diff_species_hic'].lower() == 'no':
@@ -110,7 +110,7 @@ def get_output(sample_name):
         # ## Check completeness
         # out.extend(expand("logs/{sample}_buscodb.check", sample=config["sample"]))
 
-        if (config['solo_asm'].lower() == 'yes' or config['diff_species_hic'].lower()) == 'yes':
+        if config['solo_asm'].lower() == 'yes' or config['diff_species_hic'].lower() == 'yes':
             out.extend(expand("results/Assembly/Genome_Stats/Compleasm/Solo_Asm_Primary/{sample}.summary.txt", sample=config["sample"]))
             out.extend(expand("results/Assembly/Genome_Stats/Compleasm/Solo_Asm_Alt/{sample}.summary.txt", sample=config["sample"]))
 
@@ -119,7 +119,7 @@ def get_output(sample_name):
             out.extend(expand("results/Assembly/Genome_Stats/Compleasm/Phased_Asm_Hap2/{sample}.summary.txt", sample=config["sample"]))
 
         ## Check SnailPlot files
-        if (config['solo_asm'].lower() == 'yes' or config['diff_species_hic'].lower()) == 'yes':
+        if config['solo_asm'].lower() == 'yes' or config['diff_species_hic'].lower() == 'yes':
             out.append(expand("results/Assembly/Genome_Stats/Compleasm/Solo_Asm_Primary/{sample}.full_table_busco_format_edit.tsv", sample=config["sample"]))
             out.append(expand("results/Assembly/Genome_Stats/SnailPlot/Solo_Asm/00-Solo-Hap1/{sample}.bloobtools.create.check", sample=config["sample"]))
             out.append(expand("results/Assembly/Genome_Stats/SnailPlot/Solo_Asm/00-Solo-Hap1/{sample}_Solo_Hap1.snail.png", sample=config["sample"]))
@@ -139,23 +139,25 @@ def get_output(sample_name):
 
 
         ## Check Mitogenomes references
-        out.append(expand("resources/{sample}.reference.fasta", sample=sample_name))
-        out.append(expand("resources/{sample}.reference.gb", sample=sample_name))
+        if config['run_mitohifi'].lower() == 'yes':
+            out.append(expand("resources/{sample}.reference.fasta", sample=sample_name))
+            out.append(expand("resources/{sample}.reference.gb", sample=sample_name))
 
-        if (config['solo_asm'].lower() == 'yes' or config['diff_species_hic'].lower()) == 'yes':
-            out.append(expand("results/Assembly/Mitogenome/Solo_Asm/{sample}.mitohifi.check", sample=config["sample"]))
+        if config['solo_asm'].lower() == 'yes' or config['diff_species_hic'].lower() == 'yes':
+            if config['run_mitohifi'].lower() == 'yes':
+                out.append(expand("results/Assembly/Mitogenome/Solo_Asm/{sample}.mitohifi.check", sample=config["sample"]))
 
         if config["hic_r1"] and config["hic_r2"] and config['diff_species_hic'].lower() == 'no':
-            out.append(expand("results/Assembly/Mitogenome/Phased_Asm/{sample}.mitohifi.check", sample=config["sample"]))
+            if config['run_mitohifi'].lower() == 'yes':
+                out.append(expand("results/Assembly/Mitogenome/Phased_Asm/{sample}.mitohifi.check", sample=config["sample"]))
 
 
     if config['gxdb'] and config['run_asm'].lower() == "yes":
         out.append("resources/fcs-gx.sif")
         out.append("resources/fcs-adaptor.sif")
 
-
         ## Check FCS-Adaptors output
-        if (config['solo_asm'].lower() == 'yes' or config['diff_species_hic'].lower()) == 'yes':
+        if config['solo_asm'].lower() == 'yes' or config['diff_species_hic'].lower() == 'yes':
             out.append(expand("results/Decontamination/FCS-Adaptor/Solo_Asm_Primary/cleaned_sequences/{sample}.p_ctg.fa", sample=config["sample"]))
             out.append(expand("results/Decontamination/FCS-Adaptor/Solo_Asm_Alt/cleaned_sequences/{sample}.a_ctg.fa", sample=config["sample"]))
 
@@ -164,7 +166,7 @@ def get_output(sample_name):
             out.append(expand("results/Decontamination/FCS-Adaptor/Phased_Asm_Hap2/cleaned_sequences/{sample}.hic.hap2.p_ctg.fa", sample=config["sample"]))
 
         ## Check FCS-GX output
-        if (config['solo_asm'].lower() == 'yes' or config['diff_species_hic'].lower()) == 'yes':
+        if config['solo_asm'].lower() == 'yes' or config['diff_species_hic'].lower() == 'yes':
             out.append(expand("results/Decontamination/Contaminants/Solo_Asm_Primary/{sample}.p_ctg.screen.check", sample=config["sample"]))
             out.append(expand("results/Decontamination/Contaminants/Solo_Asm_Primary/{sample}.p_ctg.clean.fasta", sample=config["sample"]))
             out.append(expand("results/Decontamination/Contaminants/Solo_Asm_Alt/{sample}.a_ctg.screen.check", sample=config["sample"]))

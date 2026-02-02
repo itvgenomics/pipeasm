@@ -20,7 +20,5 @@ rule solo_merqury:
 	shell:
 		"""
 		mkdir -p {params.outdir} && \
-		MerquryFK -v -X250 -Ptmp -lfs -T{threads} {input.fastk} {input.hap1} {input.hap2} {params.outdir}/{wildcards.sample} >> {log} 2>&1 && \
-		mv {params.outdir}/{wildcards.sample}.hap1.spectra-cn.st.png {params.outdir}/{wildcards.sample}.{wildcards.sample}.p_ctg.spectra-cn.st.png && \
-		mv {params.outdir}/{wildcards.sample}.hap2.spectra-cn.st.png {params.outdir}/{wildcards.sample}.{wildcards.sample}.a_ctg.spectra-cn.st.png
+		MerquryFK -v -X250 -Ptmp -lfs -T{threads} {input.fastk} {input.hap1} {input.hap2} {params.outdir}/{wildcards.sample} >> {log} 2>&1
 		"""

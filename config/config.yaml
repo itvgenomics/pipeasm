@@ -1,6 +1,4 @@
 ## Samples information and input and output
-# (Required) Scientific name of the species. Used for naming and mito annotation reference. Must be present on NCBI taxonomy database. This name is used to seach a mithocondrial reference.
-species: ''
 # (Required) Unique identifier of the sample, e.g., DToL ID.
 sample: ''
 # (Required) Absolute path to your HiFi reads, merged into a single .fastq.gz file.
@@ -11,14 +9,22 @@ hic_r1: ''
 hic_r2: ''
 # (Optional) Absolute path to Oxford Nanopore reads in .fastq.gz format.
 ont_reads: ''
-# (Required) Genetic code for mitochondrial genome annotation (e.g., 2 for vertebrates).
-geneticcode:
 # (Required) NCBI Taxonomy ID; use a similar species if unavailable. Important for the decontamination step.
 taxid:
 # (Required) BUSCO lineage name, e.g., "aves", based on closest taxonomic group. Do not use the "_odb10" suffix.
 buscodb: ''
 # (Required) Set to 'Yes' for both solo and phased assemblies, or 'No' for phased only.
 solo_asm: 'No'
+
+# Set to 'Yes' to run MitoHiFi for mitochondrial genome assembly; 'No' to skip.
+run_mitohifi: 'No'
+# (Optional) Scientific name of the species. Used for naming and mito annotation reference. Must be present on NCBI taxonomy database.
+# This name is used to seach a mithocondrial reference.
+# Required if run_mitohifi is 'Yes'.
+species: ''
+# (Optional) Genetic code for mitochondrial genome annotation (e.g., 2 for vertebrates).
+# Required if run_mitohifi is 'Yes'.
+geneticcode:
 
 # Set to 'Yes' if Hi-C data is from a different species; otherwise 'No'.
 # This will run Hifiasm with solo assembly primary mode and run YAHS scaffolding only on this assembly.

@@ -109,9 +109,9 @@ rule katcomp:
         f"{config["sif_dir"]}/fkutils.sif"
     shell:
         """
-        mkdir -p fkutils/KatComp fkutils/KatGC && \
-        FastK {params.kmer} -T{threads} -Ptmp {params.default} {input.hap1} -Nfkutils/KatComp/{wildcards.sample}.Hap1 && \
-        FastK {params.kmer} -T{threads} -Ptmp {params.default} {input.hap2} -Nfkutils/KatComp/{wildcards.sample}.Hap2 && \
+        mkdir -p {params.outdir} && \
+        FastK {params.kmer} -T{threads} -Ptmp {params.default} {input.hap1} -N{params.outdir}/{wildcards.sample}.Hap1 >> {log} 2>&1 && \
+        FastK {params.kmer} -T{threads} -Ptmp {params.default} {input.hap2} -N{params.outdir}/{wildcards.sample}.Hap2 >> {log} 2>&1 && \
         cd {params.outdir} && \
-        KatComp -lfs -T16 {wildcards.sample}.Hap1.ktab {wildcards.sample}.Hap2.ktab {wildcards.sample} >> {log} 2>&1
+        KatComp -lfs -T16 {wildcards.sample}.Hap1.ktab {wildcards.sample}.Hap2.ktab {wildcards.sample} >> ../../../../{log} 2>&1
         """

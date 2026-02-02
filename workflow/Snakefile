@@ -4,7 +4,6 @@
 ##### Input and functions #####
 
 ##### Check Files ####
-
 include: "rules/singularity.smk"
 include: "rules/common.smk"
 include: "rules/prepare_buscodb.smk"
@@ -21,7 +20,6 @@ if config["ont_reads"]:
 	include: "rules/ont_trimming_qc.smk"
 
 if config['solo_asm'].lower() == 'yes' or config["diff_species_hic"].lower() == 'yes':
-
 	if config["ont_reads"]:
 		include: "rules/ont_solo_asm.smk"
 	else:
