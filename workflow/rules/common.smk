@@ -57,23 +57,25 @@ def get_output(sample_name):
 
     ## Check the HiFi reads kmer evaluation
     if config['run_kmer_evaluation'].lower() == "yes":
-        out.append(expand("results/Trimming_QC/Meryl_DB/{sample}.trimmed.meryl.histo", sample=config["sample"]))
+        out.append(expand("results/Trimming_QC/FastK/{sample}.hist", sample=config["sample"]))
+        out.append(expand("results/Trimming_QC/FastK/{sample}.ktab", sample=config["sample"]))
 
-        genomescope2_out = [expand("results/Assembly/Genome_Stats/HiFi_GenomeScope2/{sample}_linear_plot.png", sample=config["sample"]),
-                            expand("results/Assembly/Genome_Stats/HiFi_GenomeScope2/{sample}_log_plot.png", sample=config["sample"]),
-                            expand("results/Assembly/Genome_Stats/HiFi_GenomeScope2/{sample}_transformed_linear_plot.png", sample=config["sample"]),
-                            expand("results/Assembly/Genome_Stats/HiFi_GenomeScope2/{sample}_transformed_log_plot.png", sample=config["sample"]),
-                            expand("results/Assembly/Genome_Stats/HiFi_GenomeScope2/{sample}_model.txt", sample=config["sample"]),]
+        genomescope2_out = [expand("results/Assembly/Genome_Stats/GeneScopeFK/{sample}_linear_plot.png", sample=config["sample"]),
+                            expand("results/Assembly/Genome_Stats/GeneScopeFK/{sample}_log_plot.png", sample=config["sample"]),
+                            expand("results/Assembly/Genome_Stats/GeneScopeFK/{sample}_transformed_linear_plot.png", sample=config["sample"]),
+                            expand("results/Assembly/Genome_Stats/GeneScopeFK/{sample}_transformed_log_plot.png", sample=config["sample"]),
+                            expand("results/Assembly/Genome_Stats/GeneScopeFK/{sample}_model.txt", sample=config["sample"]),]
 
         for file in genomescope2_out:
             out.append(file)
 
         ## Check SmudgePlot Files
-        out.append(expand("results/Assembly/Genome_Stats/Smudgeplot/{sample}_smudgeplot_log10.pdf", sample=config["sample"]))
-        out.append(expand("results/Assembly/Genome_Stats/Smudgeplot/{sample}_smudgeplot.pdf", sample=config["sample"]))
+        out.append(expand("results/Assembly/Genome_Stats/Smudgeplot/{sample}_smudgeplot_log10.png", sample=config["sample"]))
+        out.append(expand("results/Assembly/Genome_Stats/Smudgeplot/{sample}_smudgeplot.png", sample=config["sample"]))
 
-        ## Check KAT GCP Plot
-        out.append(expand("results/Assembly/Genome_Stats/KAT/{sample}.mx.png", sample=config["sample"]))
+        ## Check KATGC Plot
+        out.append(expand("results/Assembly/Genome_Stats/KatGC/{sample}.st.png", sample=config["sample"]))
+
 
     ## Check Assembly outputs
     if config['run_asm'].lower() == "yes":
@@ -97,10 +99,13 @@ def get_output(sample_name):
 
         ## Check Assembly evaluation
         if (config['solo_asm'].lower() == 'yes' or config['diff_species_hic'].lower()) == 'yes':
-         out.extend(expand("results/Assembly/Genome_Stats/Merqury/Solo_Asm/{sample}.completeness.stats", sample=config["sample"]))
+         out.extend(expand("results/Assembly/Genome_Stats/MerquryFK/Solo_Asm/{sample}.completeness.stats", sample=config["sample"]))
 
         if config["hic_r1"] and config["hic_r2"] and config['diff_species_hic'].lower() == 'no':
-            out.extend(expand("results/Assembly/Genome_Stats/Merqury/Phased_Asm/{sample}.completeness.stats", sample=config["sample"]))
+            out.extend(expand("results/Assembly/Genome_Stats/MerquryFK/Phased_Asm/{sample}.completeness.stats", sample=config["sample"]))
+
+        ## Check KATCOMP Plot
+            out.append(expand("results/Assembly/Genome_Stats/KatComp/{sample}.st.png", sample=config["sample"]))
 
         # ## Check completeness
         # out.extend(expand("logs/{sample}_buscodb.check", sample=config["sample"]))
@@ -285,10 +290,10 @@ def get_output(sample_name):
 
         ## Check Scaffolding Evaluation
         if config["hic_r1"] and config["hic_r2"] and config['diff_species_hic'].lower() == 'no':
-            out.append(expand("results/Scaffolding/Scaffolding_stats/Merqury/{sample}.completeness.stats", sample=config["sample"]))
-            out.append(expand("results/Scaffolding/Scaffolding_stats/Merqury/{sample}.{sample}.yahs_hap1.spectra-cn.st.png", sample=config["sample"]))
-            out.append(expand("results/Scaffolding/Scaffolding_stats/Merqury/{sample}.{sample}.yahs_hap2.spectra-cn.st.png", sample=config["sample"]))
-            out.append(expand("results/Scaffolding/Scaffolding_stats/Merqury/{sample}.spectra-asm.st.png", sample=config["sample"]))
-            out.append(expand("results/Scaffolding/Scaffolding_stats/Merqury/{sample}.spectra-cn.st.png", sample=config["sample"]))
+            out.append(expand("results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.completeness.stats", sample=config["sample"]))
+            out.append(expand("results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.{sample}.yahs_hap1.spectra-cn.st.png", sample=config["sample"]))
+            out.append(expand("results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.{sample}.yahs_hap2.spectra-cn.st.png", sample=config["sample"]))
+            out.append(expand("results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.spectra-asm.st.png", sample=config["sample"]))
+            out.append(expand("results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.spectra-cn.st.png", sample=config["sample"]))
 
     return out

@@ -41,5 +41,5 @@ rule qc_trim_hic:
 		mkdir -p tmp && \
 		(fastqc -t {threads} --dir tmp --svg \
 		-o {params.outdir} {input} >> {log} 2>&1 \
-		&& rm -r .cache .java)
+		&& rm -rf .cache .java)
 		"""

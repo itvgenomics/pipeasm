@@ -14,6 +14,7 @@ set-threads:
   download_mito_reference: 1
   check_hic_files: 1
   check_ont_files: 1
+  fastk: 31
   final_contacts_bwa_mem2_index_hap1: 2
   final_contacts_bwa_mem2_index_hap2: 2
   final_contacts_bwa_mem2_index_prim: 2
@@ -68,12 +69,9 @@ set-threads:
   trimming_hic: 10
   qc_trim_hic: 8
   check_hifi_files: 1
-  meryl_count: 31
-  meryl_union: 31
-  meryl_histo: 31
-  genomescope2_pacbio: 8
+  genescopeFK: 8
   smudgeplot: 31
-  katgcp: 31
+  katgc: 31
   trimming_pacbio: 31
   trimming_ont: 31
   qc_trim_pacbio: 8
@@ -152,6 +150,11 @@ set-resources:
   check_ont_files:
     slurm_partition: {PARTITION}
     mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  fastk:
+    slurm_partition: {PARTITION}
+    mem_mb: 32000
     runtime: 4320
     nodes: 1
   final_contacts_bwa_mem2_index_hap1:
@@ -424,22 +427,7 @@ set-resources:
     mem_mb: 2000
     runtime: 4320
     nodes: 1
-  meryl_count:
-    slurm_partition: {PARTITION}
-    mem_mb: 300000
-    runtime: 4320
-    nodes: 1
-  meryl_union:
-    slurm_partition: {PARTITION}
-    mem_mb: 300000
-    runtime: 4320
-    nodes: 1
-  meryl_histo:
-    slurm_partition: {PARTITION}
-    mem_mb: 200000
-    runtime: 4320
-    nodes: 1
-  genomescope2_pacbio:
+  genescopeFK:
     slurm_partition: {PARTITION}
     mem_mb: 20000
     runtime: 4320
@@ -449,7 +437,7 @@ set-resources:
     mem_mb: 150000
     runtime: 4320
     nodes: 1
-  katgcp:
+  katgc:
     slurm_partition: {PARTITION}
     mem_mb: 200000
     runtime: 4320

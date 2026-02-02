@@ -229,7 +229,7 @@ The `Images` folder contains a range of figures to aid interpretation:
   - HiFi read length and quality plots (`HiFi_*` files) including linear, log-transformed, and weighted histograms.
 
 - **Smudgeplots**:
-  - `{sample}_smudgeplot.pdf` and `{sample}_smudgeplot_log10.pdf` visualize k-mer multiplicity and genome ploidy/heterozygosity patterns.
+  - `{sample}_smudgeplot.png` and `{sample}_smudgeplot_log10.png` visualize k-mer multiplicity and genome ploidy/heterozygosity patterns.
 
 #### HTML Reports
 
@@ -259,7 +259,7 @@ These reports allow in-depth inspection of per-base quality, GC content, duplica
 │ │ │ ├── Solo_Asm_Alt
 │ │ │ └── Solo_Asm_Primary
 │ │ ├── GFAstats
-│ │ ├── HiFi_GenomeScope2
+│ │ ├── GeneScopeFK
 │ │ ├── KAT
 │ │ ├── Merqury
 │ │ │ ├── Phased_Asm

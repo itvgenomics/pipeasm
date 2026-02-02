@@ -21,27 +21,28 @@ def copy_files(sample):
         f"results/Trimming_QC/QC/HiC_FastQC/{sample}_R1.trimmed_paired_fastqc.zip",
         f"results/Trimming_QC/QC/HiC_FastQC/{sample}_R2.trimmed_paired_fastqc.html",
         f"results/Trimming_QC/QC/HiC_FastQC/{sample}_R2.trimmed_paired_fastqc.zip",
-        f"results/Assembly/Genome_Stats/HiFi_GenomeScope2/{sample}_linear_plot.png",
-        f"results/Assembly/Genome_Stats/HiFi_GenomeScope2/{sample}_log_plot.png",
-        f"results/Assembly/Genome_Stats/HiFi_GenomeScope2/{sample}_transformed_linear_plot.png",
-        f"results/Assembly/Genome_Stats/HiFi_GenomeScope2/{sample}_transformed_log_plot.png",
-        f"results/Assembly/Genome_Stats/Merqury/Solo_Asm/{sample}.{sample}.p_ctg.spectra-cn.st.png",
-        f"results/Assembly/Genome_Stats/Merqury/Solo_Asm/{sample}.{sample}.a_ctg.spectra-cn.st.png",
-        f"results/Assembly/Genome_Stats/Merqury/Solo_Asm/{sample}.spectra-asm.st.png",
-        f"results/Assembly/Genome_Stats/Merqury/Solo_Asm/{sample}.spectra-cn.st.png",
-        f"results/Assembly/Genome_Stats/Merqury/Phased_Asm/{sample}.{sample}.hic.hap1.p_ctg.spectra-cn.st.png",
-        f"results/Assembly/Genome_Stats/Merqury/Phased_Asm/{sample}.{sample}.hic.hap2.p_ctg.spectra-cn.st.png",
-        f"results/Assembly/Genome_Stats/Merqury/Phased_Asm/{sample}.spectra-asm.st.png",
-        f"results/Assembly/Genome_Stats/Merqury/Phased_Asm/{sample}.spectra-cn.st.png",
+        f"results/Assembly/Genome_Stats/GeneScopeFK/{sample}_linear_plot.png",
+        f"results/Assembly/Genome_Stats/GeneScopeFK/{sample}_log_plot.png",
+        f"results/Assembly/Genome_Stats/GeneScopeFK/{sample}_transformed_linear_plot.png",
+        f"results/Assembly/Genome_Stats/GeneScopeFK/{sample}_transformed_log_plot.png",
+        f"results/Assembly/Genome_Stats/MerquryFK/Solo_Asm/{sample}.{sample}.p_ctg.spectra-cn.st.png",
+        f"results/Assembly/Genome_Stats/MerquryFK/Solo_Asm/{sample}.{sample}.a_ctg.spectra-cn.st.png",
+        f"results/Assembly/Genome_Stats/MerquryFK/Solo_Asm/{sample}.spectra-asm.st.png",
+        f"results/Assembly/Genome_Stats/MerquryFK/Solo_Asm/{sample}.spectra-cn.st.png",
+        f"results/Assembly/Genome_Stats/MerquryFK/Phased_Asm/{sample}.{sample}.hic.hap1.p_ctg.spectra-cn.st.png",
+        f"results/Assembly/Genome_Stats/MerquryFK/Phased_Asm/{sample}.{sample}.hic.hap2.p_ctg.spectra-cn.st.png",
+        f"results/Assembly/Genome_Stats/MerquryFK/Phased_Asm/{sample}.spectra-asm.st.png",
+        f"results/Assembly/Genome_Stats/MerquryFK/Phased_Asm/{sample}.spectra-cn.st.png",
         f"results/Assembly/Genome_Stats/SnailPlot/Solo_Asm/00-Solo-Hap1/{sample}_Solo_Hap1.snail.png",
         f"results/Assembly/Genome_Stats/SnailPlot/Solo_Asm/01-Solo-Hap2/{sample}_Solo_Hap2.snail.png",
         f"results/Assembly/Genome_Stats/SnailPlot/Phased_Asm/Phased-Hap1/{sample}_Phased_Hap1.snail.png",
         f"results/Assembly/Genome_Stats/SnailPlot/Phased_Asm/Phased-Hap2/{sample}_Phased_Hap2.snail.png",
         f"results/Assembly/Mitogenome/Solo_Asm/{sample}.contigs_stats.tsv",
         f"results/Assembly/Mitogenome/Phased_Asm/{sample}.contigs_stats.tsv",
-        f"results/Assembly/Genome_Stats/Smudgeplot/{sample}_smudgeplot_log10.pdf",
-        f"results/Assembly/Genome_Stats/Smudgeplot/{sample}_smudgeplot.pdf",
-        f"results/Assembly/Genome_Stats/KAT/{sample}.mx.png",
+        f"results/Assembly/Genome_Stats/Smudgeplot/{sample}_smudgeplot_log10.png",
+        f"results/Assembly/Genome_Stats/Smudgeplot/{sample}_smudgeplot.png",
+        f"results/Assembly/Genome_Stats/KatGC/{sample}.st.png",
+        f"results/Assembly/Genome_Stats/KatComp/{sample}.st.png",
         f"results/Scaffolding/Initial_Contacts/Hap1/{sample}_Hap1FullMap.png",
         f"results/Scaffolding/Initial_Contacts/Hap2/{sample}_Hap2FullMap.png",
         f"results/Scaffolding/Initial_Contacts/{sample}_primFullMap.png",
@@ -58,11 +59,11 @@ def copy_files(sample):
         f"results/Trimming_QC/QC/ONT_NanoPlot/{sample}WeightedHistogramReadlength.svg",
         f"results/Trimming_QC/QC/ONT_NanoPlot/{sample}WeightedLogTransformed_HistogramReadlength.svg",
         f"results/Trimming_QC/QC/ONT_NanoPlot/{sample}Yield_By_Length.svg",
-        f"results/Scaffolding/Scaffolding_stats/Merqury/{sample}.completeness.stats",
-		f"results/Scaffolding/Scaffolding_stats/Merqury/{sample}.{sample}.yahs_hap1.spectra-cn.st.png",
-		f"results/Scaffolding/Scaffolding_stats/Merqury/{sample}.{sample}.yahs_hap2.spectra-cn.st.png",
-		f"results/Scaffolding/Scaffolding_stats/Merqury/{sample}.spectra-asm.st.png",
-		f"results/Scaffolding/Scaffolding_stats/Merqury/{sample}.spectra-cn.st.png",
+        f"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.completeness.stats",
+		f"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.{sample}.yahs_hap1.spectra-cn.st.png",
+		f"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.{sample}.yahs_hap2.spectra-cn.st.png",
+		f"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.spectra-asm.st.png",
+		f"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.spectra-cn.st.png",
         f"results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap1.p_ctg.fa",
         f"results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap2.p_ctg.fa",
         f"results/Assembly/Contigging/Solo_Asm/{sample}.p_ctg.gfa",
@@ -106,6 +107,10 @@ def copy_files(sample):
                     shutil.copy(file, f"workflow/report/images/Phased_{file_name}")
                 elif "Scaffolding_stats/Merqury" in file:
                     shutil.copy(file, f"workflow/report/images/Scaffolding_{file_name}")
+                elif "KatGC" in file:
+                    shutil.copy(file, f"workflow/report/images/KatGC_{file_name}")
+                elif "KatComp" in file:
+                    shutil.copy(file, f"workflow/report/images/KatComp_{file_name}")
                 else:
                     shutil.copy(file, "workflow/report/images")
 
@@ -274,7 +279,7 @@ def parse_nanoplot(sample):
         df.to_csv(f"workflow/report/{sample}.ont_nanoplot.csv", index=False)
 
 def parse_genomescope2(sample):
-    genomescope2_file = f"results/Assembly/Genome_Stats/HiFi_GenomeScope2/{sample}_model.txt"
+    genomescope2_file = f"results/Assembly/Genome_Stats/GeneScopeFK/{sample}_model.txt"
 
     if os.path.exists(genomescope2_file):
         # Read the text from the file
@@ -310,7 +315,7 @@ def parse_genomescope2(sample):
 
         # Read the text from the file
         with open(
-            f"results/Assembly/Genome_Stats/HiFi_GenomeScope2/{sample}_summary.txt",
+            f"results/Assembly/Genome_Stats/GeneScopeFK/{sample}_summary.txt",
             "r",
         ) as file:
             content = file.read()
@@ -343,10 +348,10 @@ def parse_merqury(sample):
     qv_columns = ["asm", "kmer_asm_uniq", "kmer_both", "qv", "error_rate"]
 
     # File paths
-    solo_completeness_path = f"results/Assembly/Genome_Stats/Merqury/Solo_Asm/{sample}.completeness.stats"
-    phased_completeness_path = f"results/Assembly/Genome_Stats/Merqury/Phased_Asm/{sample}.completeness.stats"
-    solo_qv_path = f"results/Assembly/Genome_Stats/Merqury/Solo_Asm/{sample}.qv"
-    phased_qv_path = f"results/Assembly/Genome_Stats/Merqury/Phased_Asm/{sample}.qv"
+    solo_completeness_path = f"results/Assembly/Genome_Stats/MerquryFK/Solo_Asm/{sample}.completeness.stats"
+    phased_completeness_path = f"results/Assembly/Genome_Stats/MerquryFK/Phased_Asm/{sample}.completeness.stats"
+    solo_qv_path = f"results/Assembly/Genome_Stats/MerquryFK/Solo_Asm/{sample}.qv"
+    phased_qv_path = f"results/Assembly/Genome_Stats/MerquryFK/Phased_Asm/{sample}.qv"
 
     # Read HiFi completeness data if the file exists
     if os.path.exists(solo_completeness_path):
@@ -765,7 +770,7 @@ def abstract(sample):
 
         data_qv = []
         with open(
-            f"results/Assembly/Genome_Stats/Merqury/Solo_Asm/{sample}.qv", "r"
+            f"results/Assembly/Genome_Stats/MerquryFK/Solo_Asm/{sample}.qv", "r"
         ) as file:
             for line in file:
                 data_qv = line.split("\t")
@@ -866,7 +871,7 @@ QV (Prim. only) -> {data_qv[3]}
 
         data_qv = []
         with open(
-            f"results/Assembly/Genome_Stats/Merqury/Phased_Asm/{sample}.qv", "r"
+            f"results/Assembly/Genome_Stats/MerquryFK/Phased_Asm/{sample}.qv", "r"
         ) as file:
             for line in file:
                 data_qv = line.split("\t")
@@ -968,7 +973,7 @@ QV (Hap1. only) -> {data_qv[3]}
 
         data_qv = []
         with open(
-            f"results/Scaffolding/Scaffolding_stats/Merqury/{sample}.qv", "r"
+            f"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.qv", "r"
         ) as file:
             for line in file:
                 data_qv = line.split("\t")

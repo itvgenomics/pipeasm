@@ -23,7 +23,7 @@ solo_asm: 'No'
 # Set to 'Yes' if Hi-C data is from a different species; otherwise 'No'.
 # This will run Hifiasm with solo assembly primary mode and run YAHS scaffolding only on this assembly.
 # The final pretext map will still be generated before and after scaffolding.
-diff_species_hic: "Yes"
+diff_species_hic: "No"
 
 # (Required) Directory for storing Singularity image files.
 # E.g.: "/scratch/sif_files/pipeasm"
@@ -55,27 +55,22 @@ nanoplot:
   args: "--tsv_stats --format svg"  # Output format and statistical tables.
   plots: "--plots kde hex dot"  # Types of plots to generate.
 
-## Meryl parameters
-# Used for counting k-mers with Meryl. You can change `k=` to adjust k-mer size and 'memory=' the max RAM usage.
-meryl:
-  kmer: "k=31 memory=256g"
+## FastK parameters
+# Used for counting k-mers with FastK.
+fastk:
+  default: "-v -M32 -t1"
+  kmer: "-k31"
 
-## Genomescope2 parameters
+## GeneScopeFK parameters
 # Used for estimating genome properties from k-mer histogram.
-genomescope2:
+genescopeFK:
   kmer: "-k 31"  # K-mer size (should match meryl).
   ploidy: "-p 2"  # Ploidy level; usually 2 for diploids.
 
 ## Parameters for SmudgePlot
 # Used to infer ploidy from k-mer pairs.
 smudgeplot:
-  fastk: "-v -t1 -k31"  # FastK k-mer options (k size and verbosity).
-  ploidyplot: "-e10 -k -v"  # Plotting options for SmudgePlot.
-
-## Parameters for KAT GCP
-# K-mer copy number profiling using KAT.
-katgcp:
-  kmer: "-m 31"  # K-mer size.
+  minsize: "-L 12"  # Minimum size of k-mer pairs to consider.
 
 ## Hifiasm parameters
 # Assembly-specific flags; advanced users can tweak these for purge and similarity tuning.

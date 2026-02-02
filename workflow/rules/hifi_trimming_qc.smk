@@ -36,7 +36,7 @@ rule qc_trim_pacbio:
 		mkdir -p tmp && \
 		(fastqc -t {threads} --dir tmp -a {params.adapt_txt} --svg \
 		-o {params.outdir} {input} >> {log} 2>&1 \
-		&& rm -r .cache .java)
+		&& rm -rf .cache .java)
 		"""
 
 rule qc_nanoplot_pacbio:

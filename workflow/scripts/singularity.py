@@ -28,17 +28,13 @@ docker_images = [
     "itvdsbioinfo/yahs:1.2a.2",
     "staphb/fastp:0.23.4",
     "staphb/fastqc:0.12.1",
-    "abner12/genomescope:2.0",
-    "itvdsbioinfo/kat:2.4.0",
-    "itvdsbioinfo/meryl:1.3",
-    "itvdsbioinfo/smudgeplot:0.3.0",
+    "itvdsbioinfo/fkutils:1.2",
     "pipecraft/cutadapt:4.4",
     "itvdsbioinfo/hifiasm:0.25.0",
     "nanoporetech/dorado:shae36d1b49fe470a60e006afad90bedd2fc2774a89",
     "staphb/nanoplot:1.41.6",
     "genomehubs/blobtoolkit:4.3.5",
     "huangnengcsu/compleasm:v0.2.7",
-    "itvdsbioinfo/merqury:1.3",
     "ghcr.io/marcelauliano/mitohifi:master",
     "staphb/gfastats:1.3.6",
 ]
@@ -64,8 +60,5 @@ for image in docker_images:
     command = f"singularity pull {output_file} docker://{image}"
 
     # Execute the command
-    try:
-        subprocess.run(command, shell=True, check=True)
-        print(f"INFO: Successfully pulled {image} to {output_file}")
-    except subprocess.CalledProcessError as e:
-        print(f"ERROR: Error pulling {image}: {e}")
+    subprocess.run(command, shell=True, check=True)
+    print(f"INFO: Successfully pulled {image} to {output_file}")

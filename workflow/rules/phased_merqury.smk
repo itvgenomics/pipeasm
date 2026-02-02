@@ -1,27 +1,26 @@
 rule phased_merqury:
 	input:
-		meryl="results/Trimming_QC/Meryl_DB/{sample}.trimmed.union.meryl",
 		hap1="results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap1.p_ctg.fa",
 		hap2="results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap2.p_ctg.fa",
+		fastk="results/Trimming_QC/FastK/{sample}.ktab"
 	output:
-		"results/Assembly/Genome_Stats/Merqury/Phased_Asm/{sample}.completeness.stats",
-		"results/Assembly/Genome_Stats/Merqury/Phased_Asm/{sample}.{sample}.hic.hap1.p_ctg.spectra-cn.st.png",
-		"results/Assembly/Genome_Stats/Merqury/Phased_Asm/{sample}.{sample}.hic.hap2.p_ctg.spectra-cn.st.png",
-		"results/Assembly/Genome_Stats/Merqury/Phased_Asm/{sample}.spectra-asm.st.png",
-		"results/Assembly/Genome_Stats/Merqury/Phased_Asm/{sample}.spectra-cn.st.png"
+		"results/Assembly/Genome_Stats/MerquryFK/Phased_Asm/{sample}.completeness.stats",
+		"results/Assembly/Genome_Stats/MerquryFK/Phased_Asm/{sample}.{sample}.hic.hap1.p_ctg.spectra-cn.st.png",
+		"results/Assembly/Genome_Stats/MerquryFK/Phased_Asm/{sample}.{sample}.hic.hap2.p_ctg.spectra-cn.st.png",
+		"results/Assembly/Genome_Stats/MerquryFK/Phased_Asm/{sample}.spectra-asm.st.png",
+		"results/Assembly/Genome_Stats/MerquryFK/Phased_Asm/{sample}.spectra-cn.st.png"
 	log:
 		"logs/{sample}.phased_merqury.log"
 	benchmark:
 		"benchmarks/{sample}.phased_merqury.txt"
 	params:
-		"results/Assembly/Genome_Stats/Merqury/Phased_Asm"
+		outdir="results/Assembly/Genome_Stats/MerquryFK/Phased_Asm"
 	singularity:
-		f"{config["sif_dir"]}/merqury.sif"
+		f"{config["sif_dir"]}/fkutils.sif"
 	shell:
 		"""
-		bash -c 'export OMP_NUM_THREADS={threads} && \
-		export MERQURY=/opt/conda/share/merqury && \
-		mkdir -p {params} && \
-		cd {params} && \
-		merqury.sh ../../../../../{input.meryl} ../../../../../{input.hap1} ../../../../../{input.hap2} {wildcards.sample} >> ../../../../../{log} 2>&1'
+		mkdir -p {params.outdir} && \
+		MerquryFK -v -X250 -Ptmp -T{threads} {input.fastk} {input.hap1} {input.hap2} {params.outdir}/{wildcards.sample} >> {log} 2>&1 && \
+		mv {params.outdir}/{wildcards.sample}.hap1.spectra-cn.st.png {params.outdir}/{wildcards.sample}.{wildcards.sample}.hic.hap1.p_ctg.spectra-cn.st.png && \
+		mv {params.outdir}/{wildcards.sample}.hap2.spectra-cn.st.png {params.outdir}/{wildcards.sample}.{wildcards.sample}.hic.hap2.p_ctg.spectra-cn.st.png
 		"""
