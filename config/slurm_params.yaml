@@ -18,54 +18,71 @@ set-threads:
   final_contacts_bwa_mem2_index_hap1: 2
   final_contacts_bwa_mem2_index_hap2: 2
   final_contacts_bwa_mem2_index_prim: 2
+  final_contacts_bwa_mem2_index_alt: 2
   final_contacts_bwa_mem2_mapping_hap1_r1: 31
   final_contacts_bwa_mem2_mapping_hap1_r2: 31
   final_contacts_bwa_mem2_mapping_prim_r1: 31
   final_contacts_bwa_mem2_mapping_prim_r2: 31
+  final_contacts_bwa_mem2_mapping_alt_r1: 31
+  final_contacts_bwa_mem2_mapping_alt_r2: 31
   final_contacts_bwa_mem2_mapping_hap2_r1: 31
   final_contacts_bwa_mem2_mapping_hap2_r2: 31
   final_contacts_bellerophon_merge_hap1: 2
   final_contacts_bellerophon_merge_hap2: 2
   final_contacts_bellerophon_merge_prim: 2
+  final_contacts_bellerophon_merge_alt: 2
   final_contacts_samtools_flagstats_hap1: 4
   final_contacts_samtools_flagstats_hap2: 4
   final_contacts_samtools_flagstats_prim: 4
+  final_contacts_samtools_flagstats_alt: 4
   final_contacts_pretext_map_snapshot_hap1: 2
   final_contacts_pretext_map_snapshot_hap2: 2
   final_contacts_pretext_map_snapshot_prim: 2
+  final_contacts_pretext_map_snapshot_alt: 2
   final_contacts_samtools_flagstats_bam_r1_hap1: 4
   final_contacts_samtools_flagstats_bam_r2_hap1: 4
   final_contacts_samtools_flagstats_bam_r1_prim: 4
   final_contacts_samtools_flagstats_bam_r2_prim: 4
+  final_contacts_samtools_flagstats_bam_r1_alt: 4
+  final_contacts_samtools_flagstats_bam_r2_alt: 4
   final_contacts_samtools_flagstats_bam_r1_hap2: 4
   final_contacts_samtools_flagstats_bam_r2_hap2: 4
   initial_contacts_bwa_mem2_index_hap1: 2
   initial_contacts_bwa_mem2_index_hap2: 2
   initial_contacts_bwa_mem2_index_prim: 2
+  initial_contacts_bwa_mem2_index_alt: 2
   initial_contacts_bwa_mem2_mapping_hap1_r1: 31
   initial_contacts_bwa_mem2_mapping_hap1_r2: 31
   initial_contacts_bwa_mem2_mapping_hap2_r1: 31
   initial_contacts_bwa_mem2_mapping_hap2_r2: 31
   initial_contacts_bwa_mem2_mapping_prim_r1: 31
   initial_contacts_bwa_mem2_mapping_prim_r2: 31
+  initial_contacts_bwa_mem2_mapping_alt_r1: 31
+  initial_contacts_bwa_mem2_mapping_alt_r2: 31
   initial_contacts_bellerophon_merge_hap1: 2
   initial_contacts_bellerophon_merge_hap2: 2
   initial_contacts_bellerophon_merge_prim: 2
+  initial_contacts_bellerophon_merge_alt: 2
   initial_contacts_samtools_flagstats_hap1: 4
   initial_contacts_samtools_flagstats_hap2: 4
   initial_contacts_samtools_flagstats_prim: 4
+  initial_contacts_samtools_flagstats_alt: 4
   initial_contacts_pretext_map_snapshot_hap1: 2
   initial_contacts_pretext_map_snapshot_hap2: 2
   initial_contacts_pretext_map_snapshot_prim: 2
+  initial_contacts_pretext_map_snapshot_alt: 2
   initial_contacts_samtools_flagstats_bam_r1_hap1: 4
   initial_contacts_samtools_flagstats_bam_r2_hap1: 4
   initial_contacts_samtools_flagstats_bam_r1_hap2: 4
   initial_contacts_samtools_flagstats_bam_r2_hap2: 4
   initial_contacts_samtools_flagstats_bam_r1_prim: 4
   initial_contacts_samtools_flagstats_bam_r2_prim: 4
+  initial_contacts_samtools_flagstats_bam_r1_alt: 4
+  initial_contacts_samtools_flagstats_bam_r2_alt: 4
   yahs_scaffolding_hap1: 4
   yahs_scaffolding_hap2: 4
   yahs_scaffolding_prim: 4
+  yahs_scaffolding_alt: 4
   trimming_hic: 10
   qc_trim_hic: 8
   check_hifi_files: 1
@@ -103,6 +120,7 @@ set-threads:
   scaffolding_compleasm_hap1: 31
   scaffolding_compleasm_hap2: 31
   scaffolding_compleasm_prim: 31
+  scaffolding_compleasm_alt: 31
   scaffolding_edit_busco_table: 1
   scaffolding_edit_busco_table_prim: 1
   scaffolding_run_snailplot_create_hap1: 1
@@ -111,9 +129,12 @@ set-threads:
   scaffolding_run_snailplot_plot_hap2: 1
   scaffolding_run_snailplot_create_prim: 1
   scaffolding_run_snailplot_plot_prim: 1
+  scaffolding_run_snailplot_create_alt: 1
+  scaffolding_run_snailplot_plot_alt: 1
   scaffolding_gfastats_stats_hap1: 1
   scaffolding_gfastats_stats_hap2: 1
   scaffolding_gfastats_stats_prim: 1
+  scaffolding_gfastats_stats_alt: 1
   build_sifs: 1
   solo_assembly: 31
   solo_edit_busco_table: 1
@@ -135,6 +156,7 @@ set-threads:
   solo_gfastats_fasta_alt: 1
   solo_gfastats_stats_alt: 1
   scaffolding_merqury: 31
+  scaffolding_merqury_alt: 31
 
 set-resources:
   download_mito_reference:
@@ -172,6 +194,11 @@ set-resources:
     mem_mb: 240000
     runtime: 4320
     nodes: 1
+  final_contacts_bwa_mem2_index_alt:
+    slurm_partition: {PARTITION}
+    mem_mb: 240000
+    runtime: 4320
+    nodes: 1
   final_contacts_bwa_mem2_mapping_hap1_r1:
     slurm_partition: {PARTITION}
     mem_mb: 200000
@@ -183,6 +210,11 @@ set-resources:
     runtime: 4320
     nodes: 1
   final_contacts_bwa_mem2_mapping_prim_r1:
+    slurm_partition: {PARTITION}
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  final_contacts_bwa_mem2_mapping_alt_r1:
     slurm_partition: {PARTITION}
     mem_mb: 200000
     runtime: 4320
@@ -202,6 +234,11 @@ set-resources:
     mem_mb: 200000
     runtime: 4320
     nodes: 1
+  final_contacts_bwa_mem2_mapping_alt_r2:
+    slurm_partition: {PARTITION}
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
   final_contacts_bellerophon_merge_hap1:
     slurm_partition: {PARTITION}
     mem_mb: 2000
@@ -213,6 +250,11 @@ set-resources:
     runtime: 4320
     nodes: 1
   final_contacts_bellerophon_merge_prim:
+    slurm_partition: {PARTITION}
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  final_contacts_bellerophon_merge_alt:
     slurm_partition: {PARTITION}
     mem_mb: 2000
     runtime: 4320
@@ -232,6 +274,11 @@ set-resources:
     mem_mb: 2000
     runtime: 4320
     nodes: 1
+  final_contacts_samtools_flagstats_alt:
+    slurm_partition: {PARTITION}
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
   final_contacts_pretext_map_snapshot_hap1:
     slurm_partition: {PARTITION}
     mem_mb: 20000
@@ -243,6 +290,11 @@ set-resources:
     runtime: 4320
     nodes: 1
   final_contacts_pretext_map_snapshot_prim:
+    slurm_partition: {PARTITION}
+    mem_mb: 20000
+    runtime: 4320
+    nodes: 1
+  final_contacts_pretext_map_snapshot_alt:
     slurm_partition: {PARTITION}
     mem_mb: 20000
     runtime: 4320
@@ -263,6 +315,16 @@ set-resources:
     runtime: 4320
     nodes: 1
   final_contacts_samtools_flagstats_bam_r2_prim:
+    slurm_partition: {PARTITION}
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  final_contacts_samtools_flagstats_bam_r1_alt:
+    slurm_partition: {PARTITION}
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  final_contacts_samtools_flagstats_bam_r2_alt:
     slurm_partition: {PARTITION}
     mem_mb: 2000
     runtime: 4320
@@ -288,6 +350,11 @@ set-resources:
     runtime: 4320
     nodes: 1
   initial_contacts_bwa_mem2_index_prim:
+    slurm_partition: {PARTITION}
+    mem_mb: 240000
+    runtime: 4320
+    nodes: 1
+  initial_contacts_bwa_mem2_index_alt:
     slurm_partition: {PARTITION}
     mem_mb: 240000
     runtime: 4320
@@ -322,6 +389,16 @@ set-resources:
     mem_mb: 200000
     runtime: 4320
     nodes: 1
+  initial_contacts_bwa_mem2_mapping_alt_r1:
+    slurm_partition: {PARTITION}
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  initial_contacts_bwa_mem2_mapping_alt_r2:
+    slurm_partition: {PARTITION}
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
   initial_contacts_bellerophon_merge_hap1:
     slurm_partition: {PARTITION}
     mem_mb: 2000
@@ -333,6 +410,11 @@ set-resources:
     runtime: 4320
     nodes: 1
   initial_contacts_bellerophon_merge_prim:
+    slurm_partition: {PARTITION}
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  initial_contacts_bellerophon_merge_alt:
     slurm_partition: {PARTITION}
     mem_mb: 2000
     runtime: 4320
@@ -352,6 +434,11 @@ set-resources:
     mem_mb: 2000
     runtime: 4320
     nodes: 1
+  initial_contacts_samtools_flagstats_alt:
+    slurm_partition: {PARTITION}
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
   initial_contacts_pretext_map_snapshot_hap1:
     slurm_partition: {PARTITION}
     mem_mb: 20000
@@ -363,6 +450,11 @@ set-resources:
     runtime: 4320
     nodes: 1
   initial_contacts_pretext_map_snapshot_prim:
+    slurm_partition: {PARTITION}
+    mem_mb: 20000
+    runtime: 4320
+    nodes: 1
+  initial_contacts_pretext_map_snapshot_alt:
     slurm_partition: {PARTITION}
     mem_mb: 20000
     runtime: 4320
@@ -397,6 +489,16 @@ set-resources:
     mem_mb: 2000
     runtime: 4320
     nodes: 1
+  initial_contacts_samtools_flagstats_bam_r1_alt:
+    slurm_partition: {PARTITION}
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
+  initial_contacts_samtools_flagstats_bam_r2_alt:
+    slurm_partition: {PARTITION}
+    mem_mb: 2000
+    runtime: 4320
+    nodes: 1
   yahs_scaffolding_hap1:
     slurm_partition: {PARTITION}
     mem_mb: 80000
@@ -408,6 +510,11 @@ set-resources:
     runtime: 4320
     nodes: 1
   yahs_scaffolding_prim:
+    slurm_partition: {PARTITION}
+    mem_mb: 80000
+    runtime: 4320
+    nodes: 1
+  yahs_scaffolding_alt:
     slurm_partition: {PARTITION}
     mem_mb: 80000
     runtime: 4320
@@ -597,6 +704,11 @@ set-resources:
     mem_mb: 200000
     runtime: 4320
     nodes: 1
+  scaffolding_compleasm_alt:
+    slurm_partition: {PARTITION}
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
   scaffolding_edit_busco_table:
     slurm_partition: {PARTITION}
     mem_mb: 2000
@@ -637,6 +749,16 @@ set-resources:
     mem_mb: 8000
     runtime: 4320
     nodes: 1
+  scaffolding_run_snailplot_create_alt:
+    slurm_partition: {PARTITION}
+    mem_mb: 8000
+    runtime: 4320
+    nodes: 1
+  scaffolding_run_snailplot_plot_alt:
+    slurm_partition: {PARTITION}
+    mem_mb: 8000
+    runtime: 4320
+    nodes: 1
   scaffolding_gfastats_stats_hap1:
     slurm_partition: {PARTITION}
     mem_mb: 16000
@@ -648,6 +770,11 @@ set-resources:
     runtime: 4320
     nodes: 1
   scaffolding_gfastats_stats_prim:
+    slurm_partition: {PARTITION}
+    mem_mb: 16000
+    runtime: 4320
+    nodes: 1
+  scaffolding_gfastats_stats_alt:
     slurm_partition: {PARTITION}
     mem_mb: 16000
     runtime: 4320
@@ -728,6 +855,11 @@ set-resources:
     runtime: 4320
     nodes: 1
   scaffolding_merqury:
+    slurm_partition: {PARTITION}
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  scaffolding_merqury_alt:
     slurm_partition: {PARTITION}
     mem_mb: 200000
     runtime: 4320

@@ -38,15 +38,34 @@ rule scaffolding_gfastats_stats_hap2:
 
 rule scaffolding_gfastats_stats_prim:
     input:
-        "results/Scaffolding/YAHS_Scaffolding/{sample}.yahs_scaffolds_final.fa"
+        "results/Scaffolding/YAHS_Scaffolding/Primary/{sample}.yahs_scaffolds_final.fa"
     output:
-        "results/Scaffolding/Scaffolding_stats/GFAstats/{sample}.yahs_scaffolds_final.fa.stats"
+        "results/Scaffolding/Scaffolding_stats/GFAstats/{sample}.yahs_scaffolds_final_prim.fa.stats"
     params:
         params= config['gfastats']['params']
     log:
         "logs/{sample}.scaffolding_gfastats_stats_prim.log"
     benchmark:
         "benchmarks/{sample}.scaffolding_gfastats_stats_prim.txt"
+    singularity:
+        f"{config["sif_dir"]}/gfastats.sif"
+    shell:
+        """
+        bash -c 'gfastats -f {input} \
+        -j {threads} > {output} 2> {log}'
+        """
+
+rule scaffolding_gfastats_stats_alt:
+    input:
+        "results/Scaffolding/YAHS_Scaffolding/Alternative/{sample}.yahs_scaffolds_final.fa"
+    output:
+        "results/Scaffolding/Scaffolding_stats/GFAstats/{sample}.yahs_scaffolds_final_alt.fa.stats"
+    params:
+        params= config['gfastats']['params']
+    log:
+        "logs/{sample}.scaffolding_gfastats_stats_alt.log"
+    benchmark:
+        "benchmarks/{sample}.scaffolding_gfastats_stats_alt.txt"
     singularity:
         f"{config["sif_dir"]}/gfastats.sif"
     shell:

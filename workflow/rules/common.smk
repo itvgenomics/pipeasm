@@ -185,6 +185,7 @@ def get_output(sample_name):
             if config['gxdb']:
                 if config['diff_species_hic'].lower() == 'yes':
                     out.append(expand("results/Decontamination/Contaminants/Solo_Asm_Primary/{sample}.p_ctg.clean.fasta.bwt.2bit.64", sample=config["sample"]))
+                    out.append(expand("results/Decontamination/Contaminants/Solo_Asm_Alt/{sample}.a_ctg.clean.fasta.bwt.2bit.64", sample=config["sample"]))
                 else:
                     out.append(expand("results/Decontamination/Contaminants/Phased_Asm_Hap1/{sample}.hic.hap1.p_ctg.clean.fasta.bwt.2bit.64", sample=config["sample"]))
                     out.append(expand("results/Decontamination/Contaminants/Phased_Asm_Hap2/{sample}.hic.hap2.p_ctg.clean.fasta.bwt.2bit.64", sample=config["sample"]))
@@ -192,6 +193,7 @@ def get_output(sample_name):
             else:
                 if config['diff_species_hic'].lower() == 'yes':
                     out.append(expand("results/Assembly/Contigging/Solo_Asm/{sample}.p_ctg.fa.bwt.2bit.64", sample=config["sample"]))
+                    out.append(expand("results/Assembly/Contigging/Solo_Asm/{sample}.a_ctg.fa.bwt.2bit.64", sample=config["sample"]))
                 else:
                     out.append(expand("results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap1.p_ctg.fa.bwt.2bit.64", sample=config["sample"]))
                     out.append(expand("results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap2.p_ctg.fa.bwt.2bit.64", sample=config["sample"]))
@@ -199,14 +201,22 @@ def get_output(sample_name):
 
             ## Check HiC initial contact maps
             if config['diff_species_hic'].lower() == 'yes':
-                out.append(expand("results/Scaffolding/Initial_Contacts/{sample}.R1.bam", sample=config["sample"]))
-                out.append(expand("results/Scaffolding/Initial_Contacts/{sample}.R2.bam", sample=config["sample"]))
-                out.append(expand("results/Scaffolding/Initial_Contacts/{sample}.R1.bam.flagstats", sample=config["sample"]))
-                out.append(expand("results/Scaffolding/Initial_Contacts/{sample}.R2.bam.flagstats", sample=config["sample"]))
-                out.append(expand("results/Scaffolding/Initial_Contacts/{sample}.merged.bam", sample=config["sample"]))
-                out.append(expand("results/Scaffolding/Initial_Contacts/{sample}.merged.bam.flagstats", sample=config["sample"]))
-                out.append(expand("results/Scaffolding/Initial_Contacts/{sample}.merged.bam.hic_stats", sample=config["sample"]))
-                out.append(expand("results/Scaffolding/Initial_Contacts/{sample}.merged.bam.pretext", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Initial_Contacts/Primary/{sample}.R1.bam", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Initial_Contacts/Primary/{sample}.R2.bam", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Initial_Contacts/Primary/{sample}.R1.bam.flagstats", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Initial_Contacts/Primary/{sample}.R2.bam.flagstats", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Initial_Contacts/Primary/{sample}.merged.bam", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Initial_Contacts/Primary/{sample}.merged.bam.flagstats", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Initial_Contacts/Primary/{sample}.merged.bam.hic_stats", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Initial_Contacts/Primary/{sample}.merged.bam.pretext", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Initial_Contacts/Alternative/{sample}.R1.bam", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Initial_Contacts/Alternative/{sample}.R2.bam", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Initial_Contacts/Alternative/{sample}.R1.bam.flagstats", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Initial_Contacts/Alternative/{sample}.R2.bam.flagstats", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Initial_Contacts/Alternative/{sample}.merged.bam", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Initial_Contacts/Alternative/{sample}.merged.bam.flagstats", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Initial_Contacts/Alternative/{sample}.merged.bam.hic_stats", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Initial_Contacts/Alternative/{sample}.merged.bam.pretext", sample=config["sample"]))
             else:
                 out.append(expand("results/Scaffolding/Initial_Contacts/Hap1/{sample}.R1.bam", sample=config["sample"]))
                 out.append(expand("results/Scaffolding/Initial_Contacts/Hap1/{sample}.R2.bam", sample=config["sample"]))
@@ -227,21 +237,31 @@ def get_output(sample_name):
 
             ## Check YAHS output
             if config['diff_species_hic'].lower() == 'yes':
-                out.append(expand("results/Scaffolding/YAHS_Scaffolding/{sample}.yahs_scaffolds_final.fa", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/YAHS_Scaffolding/Primary/{sample}.yahs_scaffolds_final.fa", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/YAHS_Scaffolding/Alternative/{sample}.yahs_scaffolds_final.fa", sample=config["sample"]))
             else:
                 out.append(expand("results/Scaffolding/YAHS_Scaffolding/Hap1/{sample}.yahs_scaffolds_final.fa", sample=config["sample"]))
                 out.append(expand("results/Scaffolding/YAHS_Scaffolding/Hap2/{sample}.yahs_scaffolds_final.fa", sample=config["sample"]))
 
             ## Check HiC final contact maps
             if config['diff_species_hic'].lower() == 'yes':
-                out.append(expand("results/Scaffolding/Final_Contacts/{sample}.R1.bam", sample=config["sample"]))
-                out.append(expand("results/Scaffolding/Final_Contacts/{sample}.R2.bam", sample=config["sample"]))
-                out.append(expand("results/Scaffolding/Final_Contacts/{sample}.R1.bam.flagstats", sample=config["sample"]))
-                out.append(expand("results/Scaffolding/Final_Contacts/{sample}.R2.bam.flagstats", sample=config["sample"]))
-                out.append(expand("results/Scaffolding/Final_Contacts/{sample}.merged.bam", sample=config["sample"]))
-                out.append(expand("results/Scaffolding/Final_Contacts/{sample}.merged.bam.flagstats", sample=config["sample"]))
-                out.append(expand("results/Scaffolding/Final_Contacts/{sample}.merged.bam.hic_stats", sample=config["sample"]))
-                out.append(expand("results/Scaffolding/Final_Contacts/{sample}.merged.bam.pretext", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Final_Contacts/Primary/{sample}.R1.bam", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Final_Contacts/Primary/{sample}.R2.bam", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Final_Contacts/Primary/{sample}.R1.bam.flagstats", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Final_Contacts/Primary/{sample}.R2.bam.flagstats", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Final_Contacts/Primary/{sample}.merged.bam", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Final_Contacts/Primary/{sample}.merged.bam.flagstats", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Final_Contacts/Primary/{sample}.merged.bam.hic_stats", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Final_Contacts/Primary/{sample}.merged.bam.pretext", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Final_Contacts/Alternative/{sample}.R1.bam", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Final_Contacts/Alternative/{sample}.R2.bam", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Final_Contacts/Alternative/{sample}.R1.bam.flagstats", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Final_Contacts/Alternative/{sample}.R2.bam.flagstats", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Final_Contacts/Alternative/{sample}.merged.bam", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Final_Contacts/Alternative/{sample}.merged.bam.flagstats", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Final_Contacts/Alternative/{sample}.merged.bam.hic_stats", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Final_Contacts/Alternative/{sample}.merged.bam.pretext", sample=config["sample"]))
+
             else:
                 out.append(expand("results/Scaffolding/Final_Contacts/Hap1/{sample}.R1.bam", sample=config["sample"]))
                 out.append(expand("results/Scaffolding/Final_Contacts/Hap1/{sample}.R2.bam", sample=config["sample"]))
@@ -263,14 +283,16 @@ def get_output(sample_name):
         ## Check Scaffolding stats files
         if config["hic_r1"] and config["hic_r2"]:
             if config['diff_species_hic'].lower() == 'yes':
-                out.append(expand("results/Scaffolding/Scaffolding_stats/GFAstats/{sample}.yahs_scaffolds_final.fa.stats", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Scaffolding_stats/GFAstats/{sample}.yahs_scaffolds_final_prim.fa.stats", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Scaffolding_stats/GFAstats/{sample}.yahs_scaffolds_final_alt.fa.stats", sample=config["sample"]))
             else:
                 out.extend(expand("results/Scaffolding/Scaffolding_stats/GFAstats/{sample}.yahs_scaffolds_hap{hap}.fa.stats", sample=config["sample"], hap=["1", "2"]))
 
         ## Check Scaffolding completeness
         if config["hic_r1"] and config["hic_r2"]:
             if config['diff_species_hic'].lower() == 'yes':
-                out.extend(expand("results/Scaffolding/Scaffolding_stats/Compleasm/{sample}.summary.txt", sample=config["sample"]))
+                out.extend(expand("results/Scaffolding/Scaffolding_stats/Compleasm/Primary/{sample}.summary.txt", sample=config["sample"]))
+                out.extend(expand("results/Scaffolding/Scaffolding_stats/Compleasm/Alternative/{sample}.summary.txt", sample=config["sample"]))
             else:
                 out.extend(expand("results/Scaffolding/Scaffolding_stats/Compleasm/Hap1/{sample}.summary.txt", sample=config["sample"]))
                 out.extend(expand("results/Scaffolding/Scaffolding_stats/Compleasm/Hap2/{sample}.summary.txt", sample=config["sample"]))
@@ -278,9 +300,13 @@ def get_output(sample_name):
         ## Check Scaffolding SnailPlot files
         if config["hic_r1"] and config["hic_r2"]:
             if config['diff_species_hic'].lower() == 'yes':
-                out.append(expand("results/Scaffolding/Scaffolding_stats/Compleasm/{sample}.full_table_busco_format_edit.tsv", sample=config["sample"]))
-                out.append(expand("results/Scaffolding/Scaffolding_stats/SnailPlot/{sample}.bloobtools.create.check", sample=config["sample"]))
-                out.append(expand("results/Scaffolding/Scaffolding_stats/SnailPlot/{sample}_Scaffolding_prim.snail.png", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Scaffolding_stats/Compleasm/Primary/{sample}.full_table_busco_format_edit.tsv", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Scaffolding_stats/SnailPlot/Primary/{sample}.bloobtools.create.check", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Scaffolding_stats/SnailPlot/Primary/{sample}_Scaffolding_prim.snail.png", sample=config["sample"]))
+
+                out.append(expand("results/Scaffolding/Scaffolding_stats/Compleasm/Alternative/{sample}.full_table_busco_format_edit.tsv", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Scaffolding_stats/SnailPlot/Alternative/{sample}.bloobtools.create.check", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Scaffolding_stats/SnailPlot/Alternative/{sample}_Scaffolding_alt.snail.png", sample=config["sample"]))
             else:
                 out.append(expand("results/Scaffolding/Scaffolding_stats/Compleasm/Hap1/{sample}.full_table_busco_format_edit.tsv", sample=config["sample"]))
                 out.append(expand("results/Scaffolding/Scaffolding_stats/SnailPlot/Hap1/{sample}.bloobtools.create.check", sample=config["sample"]))
@@ -291,11 +317,18 @@ def get_output(sample_name):
                 out.append(expand("results/Scaffolding/Scaffolding_stats/SnailPlot/Hap2/{sample}_Scaffolding_Hap2.snail.png", sample=config["sample"]))
 
         ## Check Scaffolding Evaluation
-        if config["hic_r1"] and config["hic_r2"] and config['diff_species_hic'].lower() == 'no':
-            out.append(expand("results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.completeness.stats", sample=config["sample"]))
-            out.append(expand("results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.{sample}.yahs_hap1.spectra-cn.st.png", sample=config["sample"]))
-            out.append(expand("results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.{sample}.yahs_hap2.spectra-cn.st.png", sample=config["sample"]))
-            out.append(expand("results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.spectra-asm.st.png", sample=config["sample"]))
-            out.append(expand("results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.spectra-cn.st.png", sample=config["sample"]))
+        if config["hic_r1"] and config["hic_r2"]:
+            if config['diff_species_hic'].lower() == 'no':
+                out.append(expand("results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.completeness.stats", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.{sample}.yahs_hap1.spectra-cn.st.png", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.{sample}.yahs_hap2.spectra-cn.st.png", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.spectra-asm.st.png", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.spectra-cn.st.png", sample=config["sample"]))
+            else:
+                out.append(expand("results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.completeness.stats", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.{sample}.yahs_prim.spectra-cn.st.png", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.{sample}.yahs_alt.spectra-cn.st.png", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.spectra-asm.st.png", sample=config["sample"]))
+                out.append(expand("results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.spectra-cn.st.png", sample=config["sample"]))
 
     return out

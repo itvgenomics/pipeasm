@@ -12,9 +12,11 @@ rule scaffolding_edit_busco_table:
 
 rule scaffolding_edit_busco_table_prim:
     input:
-        "results/Scaffolding/Scaffolding_stats/Compleasm/{sample}.summary.txt",
+        "results/Scaffolding/Scaffolding_stats/Compleasm/Primary/{sample}.summary.txt",
+        "results/Scaffolding/Scaffolding_stats/Compleasm/Alternative/{sample}.summary.txt",
     output:
-        "results/Scaffolding/Scaffolding_stats/Compleasm/{sample}.full_table_busco_format_edit.tsv",
+        "results/Scaffolding/Scaffolding_stats/Compleasm/Primary/{sample}.full_table_busco_format_edit.tsv",
+        "results/Scaffolding/Scaffolding_stats/Compleasm/Alternative/{sample}.full_table_busco_format_edit.tsv",
     log:
         "logs/{sample}.scaffolding_edit_busco_table_prim.log"
     script:
@@ -106,10 +108,10 @@ rule scaffolding_run_snailplot_plot_hap2:
 
 rule scaffolding_run_snailplot_create_prim:
     input:
-        fasta="results/Scaffolding/YAHS_Scaffolding/{sample}.yahs_scaffolds_final.fa",
-        busco="results/Scaffolding/Scaffolding_stats/Compleasm/{sample}.full_table_busco_format_edit.tsv"
+        fasta="results/Scaffolding/YAHS_Scaffolding/Primary/{sample}.yahs_scaffolds_final.fa",
+        busco="results/Scaffolding/Scaffolding_stats/Compleasm/Primary/{sample}.full_table_busco_format_edit.tsv"
     output:
-        "results/Scaffolding/Scaffolding_stats/SnailPlot/{sample}.bloobtools.create.check"
+        "results/Scaffolding/Scaffolding_stats/SnailPlot/Primary/{sample}.bloobtools.create.check"
     log:
         "logs/{sample}.scaffolding_run_snailplot_create_prim.log"
     benchmark:
@@ -121,19 +123,19 @@ rule scaffolding_run_snailplot_create_prim:
         blobtools create --replace \
         --fasta {input.fasta} \
         --busco {input.busco} \
-        results/Scaffolding/Scaffolding_stats/SnailPlot/{wildcards.sample} >> {log} 2>&1 && \
-        mv results/Scaffolding/Scaffolding_stats/SnailPlot/{wildcards.sample}/* results/Scaffolding/Scaffolding_stats/SnailPlot/ && \
-        rm -r results/Scaffolding/Scaffolding_stats/SnailPlot/{wildcards.sample}/ && \
-        touch results/Scaffolding/Scaffolding_stats/SnailPlot/{wildcards.sample}.bloobtools.create.check
+        results/Scaffolding/Scaffolding_stats/SnailPlot/Primary/{wildcards.sample} >> {log} 2>&1 && \
+        mv results/Scaffolding/Scaffolding_stats/SnailPlot/Primary/{wildcards.sample}/* results/Scaffolding/Scaffolding_stats/SnailPlot/Primary/ && \
+        rm -r results/Scaffolding/Scaffolding_stats/SnailPlot/Primary/{wildcards.sample}/ && \
+        touch results/Scaffolding/Scaffolding_stats/SnailPlot/Primary/{wildcards.sample}.bloobtools.create.check
         """
 
 rule scaffolding_run_snailplot_plot_prim:
     input:
-        fasta="results/Scaffolding/YAHS_Scaffolding/{sample}.yahs_scaffolds_final.fa",
-        busco="results/Scaffolding/Scaffolding_stats/Compleasm/{sample}.full_table_busco_format_edit.tsv",
-        create_check="results/Scaffolding/Scaffolding_stats/SnailPlot/{sample}.bloobtools.create.check"
+        fasta="results/Scaffolding/YAHS_Scaffolding/Primary/{sample}.yahs_scaffolds_final.fa",
+        busco="results/Scaffolding/Scaffolding_stats/Compleasm/Primary/{sample}.full_table_busco_format_edit.tsv",
+        create_check="results/Scaffolding/Scaffolding_stats/SnailPlot/Primary/{sample}.bloobtools.create.check"
     output:
-        "results/Scaffolding/Scaffolding_stats/SnailPlot/{sample}_Scaffolding_prim.snail.png"
+        "results/Scaffolding/Scaffolding_stats/SnailPlot/Primary/{sample}_Scaffolding_prim.snail.png"
     log:
         "logs/{sample}.scaffolding_run_snailplot_plot_prim.log"
     benchmark:
@@ -142,6 +144,48 @@ rule scaffolding_run_snailplot_plot_prim:
         f"{config["sif_dir"]}/blobtoolkit.sif"
     shell:
         """
-        blobtools view --plot --view snail results/Scaffolding/Scaffolding_stats/SnailPlot/ >> {log} 2>&1 && \
-        mv SnailPlot.snail.png results/Scaffolding/Scaffolding_stats/SnailPlot/{wildcards.sample}_Scaffolding_prim.snail.png
+        blobtools view --plot --view snail results/Scaffolding/Scaffolding_stats/SnailPlot/Primary/ >> {log} 2>&1 && \
+        mv Primary.snail.png results/Scaffolding/Scaffolding_stats/SnailPlot/Primary/{wildcards.sample}_Scaffolding_prim.snail.png
+        """
+
+rule scaffolding_run_snailplot_create_alt:
+    input:
+        fasta="results/Scaffolding/YAHS_Scaffolding/Alternative/{sample}.yahs_scaffolds_final.fa",
+        busco="results/Scaffolding/Scaffolding_stats/Compleasm/Alternative/{sample}.full_table_busco_format_edit.tsv"
+    output:
+        "results/Scaffolding/Scaffolding_stats/SnailPlot/Alternative/{sample}.bloobtools.create.check"
+    log:
+        "logs/{sample}.scaffolding_run_snailplot_create_alt.log"
+    benchmark:
+        "benchmarks/{sample}.scaffolding_run_snailplot_create_alt.txt"
+    singularity:
+        f"{config["sif_dir"]}/blobtoolkit.sif"
+    shell:
+        """
+        blobtools create --replace \
+        --fasta {input.fasta} \
+        --busco {input.busco} \
+        results/Scaffolding/Scaffolding_stats/SnailPlot/Alternative/{wildcards.sample} >> {log} 2>&1 && \
+        mv results/Scaffolding/Scaffolding_stats/SnailPlot/Alternative/{wildcards.sample}/* results/Scaffolding/Scaffolding_stats/SnailPlot/Alternative/ && \
+        rm -r results/Scaffolding/Scaffolding_stats/SnailPlot/Alternative/{wildcards.sample}/ && \
+        touch results/Scaffolding/Scaffolding_stats/SnailPlot/Alternative/{wildcards.sample}.bloobtools.create.check
+        """
+
+rule scaffolding_run_snailplot_plot_alt:
+    input:
+        fasta="results/Scaffolding/YAHS_Scaffolding/Alternative/{sample}.yahs_scaffolds_final.fa",
+        busco="results/Scaffolding/Scaffolding_stats/Compleasm/Alternative/{sample}.full_table_busco_format_edit.tsv",
+        create_check="results/Scaffolding/Scaffolding_stats/SnailPlot/Alternative/{sample}.bloobtools.create.check"
+    output:
+        "results/Scaffolding/Scaffolding_stats/SnailPlot/Alternative/{sample}_Scaffolding_alt.snail.png"
+    log:
+        "logs/{sample}.scaffolding_run_snailplot_plot_alt.log"
+    benchmark:
+        "benchmarks/{sample}.scaffolding_run_snailplot_plot_alt.txt"
+    singularity:
+        f"{config["sif_dir"]}/blobtoolkit.sif"
+    shell:
+        """
+        blobtools view --plot --view snail results/Scaffolding/Scaffolding_stats/SnailPlot/Alternative/ >> {log} 2>&1 && \
+        mv Alternative.snail.png results/Scaffolding/Scaffolding_stats/SnailPlot/Alternative/{wildcards.sample}_Scaffolding_alt.snail.png
         """

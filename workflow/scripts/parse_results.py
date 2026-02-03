@@ -45,13 +45,16 @@ def copy_files(sample):
         f"results/Assembly/Genome_Stats/KatComp/{sample}.st.png",
         f"results/Scaffolding/Initial_Contacts/Hap1/{sample}_Hap1FullMap.png",
         f"results/Scaffolding/Initial_Contacts/Hap2/{sample}_Hap2FullMap.png",
-        f"results/Scaffolding/Initial_Contacts/{sample}_primFullMap.png",
+        f"results/Scaffolding/Initial_Contacts/Primary/{sample}_primFullMap.png",
+        f"results/Scaffolding/Initial_Contacts/Alternative/{sample}_altFullMap.png",
         f"results/Scaffolding/Final_Contacts/Hap1/{sample}.final_contacts_Hap1FullMap.png",
         f"results/Scaffolding/Final_Contacts/Hap2/{sample}.final_contacts_Hap2FullMap.png",
-        f"results/Scaffolding/Final_Contacts/{sample}.final_contacts_primFullMap.png",
+        f"results/Scaffolding/Final_Contacts/Primary/{sample}.final_contacts_primFullMap.png",
+        f"results/Scaffolding/Final_Contacts/Alternative/{sample}.final_contacts_altFullMap.png",
         f"results/Scaffolding/Scaffolding_stats/SnailPlot/Hap1/{sample}_Scaffolding_Hap1.snail.png",
         f"results/Scaffolding/Scaffolding_stats/SnailPlot/Hap2/{sample}_Scaffolding_Hap2.snail.png",
-        f"results/Scaffolding/Scaffolding_stats/SnailPlot/{sample}_Scaffolding_prim.snail.png",
+        f"results/Scaffolding/Scaffolding_stats/SnailPlot/Primary/{sample}_Scaffolding_prim.snail.png",
+        f"results/Scaffolding/Scaffolding_stats/SnailPlot/Alternative/{sample}_Scaffolding_alt.snail.png",
         f"results/Trimming_QC/QC/ONT_NanoPlot/{sample}LengthvsQualityScatterPlot_dot.svg",
         f"results/Trimming_QC/QC/ONT_NanoPlot/{sample}LengthvsQualityScatterPlot_kde.svg",
         f"results/Trimming_QC/QC/ONT_NanoPlot/{sample}Non_weightedHistogramReadlength.svg",
@@ -60,24 +63,28 @@ def copy_files(sample):
         f"results/Trimming_QC/QC/ONT_NanoPlot/{sample}WeightedLogTransformed_HistogramReadlength.svg",
         f"results/Trimming_QC/QC/ONT_NanoPlot/{sample}Yield_By_Length.svg",
         f"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.completeness.stats",
-		f"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.{sample}.yahs_hap1.spectra-cn.st.png",
-		f"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.{sample}.yahs_hap2.spectra-cn.st.png",
-		f"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.spectra-asm.st.png",
-		f"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.spectra-cn.st.png",
+        f"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.{sample}.yahs_hap1.spectra-cn.st.png",
+        f"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.{sample}.yahs_hap2.spectra-cn.st.png",
+        f"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.spectra-asm.st.png",
+        f"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.spectra-cn.st.png",
+        f"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.{sample}.yahs_prim.spectra-cn.st.png",
+        f"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.{sample}.yahs_alt.spectra-cn.st.png",
         f"results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap1.p_ctg.fa",
         f"results/Assembly/Contigging/Phased_Asm/{sample}.hic.hap2.p_ctg.fa",
         f"results/Assembly/Contigging/Solo_Asm/{sample}.p_ctg.gfa",
         f"results/Assembly/Contigging/Solo_Asm/{sample}.a_ctg.gfa",
         f"results/Scaffolding/Initial_Contacts/Hap1/{sample}.merged.bam.pretext",
         f"results/Scaffolding/Initial_Contacts/Hap2/{sample}.merged.bam.pretext",
-        f"results/Scaffolding/Initial_Contacts/{sample}.merged.bam.pretext",
+        f"results/Scaffolding/Initial_Contacts/Primary/{sample}.merged.bam.pretext",
+        f"results/Scaffolding/Initial_Contacts/Alternative/{sample}.merged.bam.pretext",
         f"results/Scaffolding/Final_Contacts/Hap1/{sample}.merged.bam.pretext",
         f"results/Scaffolding/Final_Contacts/Hap2/{sample}.merged.bam.pretext",
-        f"results/Scaffolding/Final_Contacts/{sample}.merged.bam.pretext",
+        f"results/Scaffolding/Final_Contacts/Primary/{sample}.merged.bam.pretext",
+        f"results/Scaffolding/Final_Contacts/Alternative/{sample}.merged.bam.pretext",
         f"results/Scaffolding/YAHS_Scaffolding/Hap1/{sample}.yahs_scaffolds_final.fa",
         f"results/Scaffolding/YAHS_Scaffolding/Hap2/{sample}.yahs_scaffolds_final.fa",
-        f"results/Scaffolding/YAHS_Scaffolding/{sample}.yahs_scaffolds_final.fa",
-
+        f"results/Scaffolding/YAHS_Scaffolding/Primary/{sample}.yahs_scaffolds_final.fa",
+        f"results/Scaffolding/YAHS_Scaffolding/Alternative{sample}.yahs_scaffolds_final.fa",
     ]
 
     directories = [
@@ -119,20 +126,28 @@ def copy_files(sample):
                     shutil.copy(file, f"workflow/report/files/Hifiasm_Hap1_{file_name}")
                 elif "Initial_Contacts" in file and "Hap2" in file:
                     shutil.copy(file, f"workflow/report/files/Hifiasm_Hap2_{file_name}")
-                elif "Initial_Contacts" in file and "prim" in file:
-                    shutil.copy(file, f"workflow/report/files/Hifiasm_{file_name}")
+                elif "Initial_Contacts" in file and "Primary" in file:
+                    shutil.copy(file, f"workflow/report/files/Hifiasm_Primary_{file_name}")
+                elif "Initial_Contacts" in file and "Alternative" in file:
+                    shutil.copy(file, f"workflow/report/files/Hifiasm_Alternative_{file_name}")
                 elif "Final_Contacts" in file and "Hap1" in file:
                     shutil.copy(file, f"workflow/report/files/YAHS_Hap1_{file_name}")
                 elif "Final_Contacts" in file and "Hap2" in file:
                     shutil.copy(file, f"workflow/report/files/YAHS_Hap2_{file_name}")
-                elif "Final_Contacts" in file and "prim" in file:
-                    shutil.copy(file, f"workflow/report/files/YAHS_{file_name}")
+                elif "Final_Contacts" in file and "Primary" in file:
+                    shutil.copy(file, f"workflow/report/files/YAHS_Primary_{file_name}")
+                elif "Final_Contacts" in file and "Alternative" in file:
+                    shutil.copy(file, f"workflow/report/files/YAHS_Alternative_{file_name}")
 
             elif "YAHS_Scaffolding" in file:
                 if "Hap1" in file:
                     shutil.copy(file, f"workflow/report/files/Hap1_{file_name}")
                 elif "Hap2" in file:
                     shutil.copy(file, f"workflow/report/files/Hap2_{file_name}")
+                elif "Primary" in file:
+                    shutil.copy(file, f"workflow/report/files/Primary_{file_name}")
+                elif "Alternative" in file:
+                    shutil.copy(file, f"workflow/report/files/Alternative_{file_name}")
                 else:
                     shutil.copy(file, f"workflow/report/files/{file_name}")
 
@@ -681,6 +696,88 @@ def parse_compleasm(sample):
 
         all_data.append(data)
 
+    if os.path.exists(
+        f"results/Scaffolding/Scaffolding_stats/Compleasm/Primary/{sample}.summary.txt"
+    ):
+        # Open the text file and read line by line
+        with open(
+            f"results/Scaffolding/Scaffolding_stats/Compleasm/Primary/{sample}.summary.txt",
+            "r",
+        ) as file:
+
+            # Initialize empty lists to store data
+            s_values = []
+            d_values = []
+            f_values = []
+            m_values = []
+            n_values = []
+
+            for line in file:
+                if line.startswith("## lineage:"):
+                    # Extract file name
+                    asm = "Scaffolding_prim"
+                elif line.startswith(("S:", "D:", "F:", "M:", "N:")):
+                    # Extract values
+                    # parts = line.strip().split(",")
+                    value = line.split(":")[1].replace("\n", "")
+                    if line.startswith("S:"):
+                        s_values.append(value)
+                    elif line.startswith("D:"):
+                        d_values.append(value)
+                    elif line.startswith("F:"):
+                        f_values.append(value)
+                    elif line.startswith("M:"):
+                        m_values.append(value)
+                    elif line.startswith("N:"):
+                        n_values.append(value)
+
+        # Create pandas DataFrame
+        data = {
+            "asm": asm,
+            "Complete and Single Copy": s_values,
+            "Complete and Duplicated:": d_values,
+            "Fragmented:": f_values,
+            "Missing:": m_values,
+            "Total Genes:": n_values,
+        }
+
+        all_data.append(data)
+
+    if os.path.exists(
+        f"results/Scaffolding/Scaffolding_stats/Compleasm/Alternative/{sample}.summary.txt"
+    ):
+        # Open the text file and read line by line
+        with open(
+            f"results/Scaffolding/Scaffolding_stats/Compleasm/Alternative/{sample}.summary.txt",
+            "r",
+        ) as file:
+
+            # Initialize empty lists to store data
+            s_values = []
+            d_values = []
+            f_values = []
+            m_values = []
+            n_values = []
+
+            for line in file:
+                if line.startswith("## lineage:"):
+                    # Extract file name
+                    asm = "Scaffolding_alt"
+                elif line.startswith(("S:", "D:", "F:", "M:", "N:")):
+                    # Extract values
+                    # parts = line.strip().split(",")
+                    value = line.split(":")[1].replace("\n", "")
+                    if line.startswith("S:"):
+                        s_values.append(value)
+                    elif line.startswith("D:"):
+                        d_values.append(value)
+                    elif line.startswith("F:"):
+                        f_values.append(value)
+                    elif line.startswith("M:"):
+                        m_values.append(value)
+                    elif line.startswith("N:"):
+                        n_values.append(value)
+
     df = pd.DataFrame(all_data)
 
     df.to_csv(f"workflow/report/{sample}.compleasm.csv", index=False)
@@ -993,11 +1090,11 @@ QV (Hap1. only) -> {data_qv[3]}
             output.write(abstract_text)
 
     if os.path.exists(
-        f"results/Scaffolding/Scaffolding_stats/GFAstats/{sample}.yahs_scaffolds_final.fa.stats"
+        f"results/Scaffolding/Scaffolding_stats/GFAstats/{sample}.yahs_scaffolds_final_prim.fa.stats"
     ):
-        data_prim = []
+        data_hap1 = []
         with open(
-            f"results/Scaffolding/Scaffolding_stats/GFAstats/{sample}.yahs_scaffolds_final.fa.stats",
+            f"results/Scaffolding/Scaffolding_stats/GFAstats/{sample}.yahs_scaffolds_final_prim.fa.stats",
             "r",
         ) as file:
             # Iterate through each line
@@ -1006,27 +1103,56 @@ QV (Hap1. only) -> {data_qv[3]}
                 match = re.search(r"# scaffolds: (\d+)", line)
                 if match:
                     number = match.group(1)
-                    data_prim.append(number)
+                    data_hap1.append(number)
                 match = re.search(r"Scaffold N50: (\d+)", line)
                 if match:
                     number = match.group(1)
-                    data_prim.append(number)
+                    data_hap1.append(number)
                 match = re.search(r"Total scaffold length: (\d+)", line)
                 if match:
                     number = match.group(1)
-                    data_prim.append(number)
+                    data_hap1.append(number)
                 match = re.search(r"# contigs: (\d+)", line)
                 if match:
                     number = match.group(1)
-                    data_prim.append(number)
+                    data_hap1.append(number)
                 match = re.search(r"Largest scaffold: (\d+)", line)
                 if match:
                     number = match.group(1)
-                    data_prim.append(number)
+                    data_hap1.append(number)
+
+        data_hap2 = []
+        with open(
+            f"results/Scaffolding/Scaffolding_stats/GFAstats/{sample}.yahs_scaffolds_final_alt.fa.stats",
+            "r",
+        ) as file:
+            # Iterate through each line
+            for line in file:
+                # Use regular expression to search for lines containing patterns
+                match = re.search(r"# scaffolds: (\d+)", line)
+                if match:
+                    number = match.group(1)
+                    data_hap2.append(number)
+                match = re.search(r"Scaffold N50: (\d+)", line)
+                if match:
+                    number = match.group(1)
+                    data_hap2.append(number)
+                match = re.search(r"Total scaffold length: (\d+)", line)
+                if match:
+                    number = match.group(1)
+                    data_hap2.append(number)
+                match = re.search(r"# contigs: (\d+)", line)
+                if match:
+                    number = match.group(1)
+                    data_hap2.append(number)
+                match = re.search(r"Largest scaffold: (\d+)", line)
+                if match:
+                    number = match.group(1)
+                    data_hap2.append(number)
 
         data_busco = []
         with open(
-            f"results/Scaffolding/Scaffolding_stats/Compleasm/{sample}.summary.txt",
+            f"results/Scaffolding/Scaffolding_stats/Compleasm/Primary/{sample}.summary.txt",
             "r",
         ) as file:
 
@@ -1044,13 +1170,22 @@ QV (Hap1. only) -> {data_qv[3]}
                     n_number = line.split("N:")[1].replace("\n", "")
                     data_busco.append(n_number)
 
+        data_qv = []
+        with open(
+            f"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.qv", "r"
+        ) as file:
+            for line in file:
+                data_qv = line.split("\t")
+                break
+
         abstract_text = f"""--- After YASH Scaffolding ---
-N Scaffolds -> Primary: {data_prim[0]}
-Assembled Bases (bp) -> Primary: {data_prim[1]}
-N50 -> Primary: {data_prim[2]}
-N Contigs -> Primary: {data_prim[4]}
-Largest scaffold (bp) -> Primary: {data_prim[3]}
-Busco (Prim. only) -> C(%): {data_busco[0]} D(%): {data_busco[1]} F(%): {data_busco[2]} M(%): {data_busco[3]} Genes:  {data_busco[4]}
+N Scaffolds -> Hap1: {data_hap1[0]} Hap2: {data_hap2[0]}
+Assembled Bases (bp) -> Hap1: {data_hap1[1]} Hap2: {data_hap2[1]}
+N50 -> Hap1: {data_hap1[2]} Hap2: {data_hap2[2]}
+N Contigs -> Hap1: {data_hap1[4]} Hap2: {data_hap2[4]}
+Largest scaffold (bp) -> Hap1: {data_hap1[3]} Hap2: {data_hap2[3]}
+Busco (Hap1. only) -> C(%): {data_busco[0]} D(%): {data_busco[1]} F(%): {data_busco[2]} M(%): {data_busco[3]} Genes:  {data_busco[4]}
+QV (Hap1. only) -> {data_qv[3]}
 """
 
         with open(f"workflow/report/{sample}.abstract.txt", "a") as output:
@@ -1273,6 +1408,60 @@ def parse_gfastats(sample):
 
         df_completo = pd.concat([df_completo, df_scaf_hap2])
 
+    if os.path.exists(
+        f"results/Scaffolding/Scaffolding_stats/GFAstats/{sample}.yahs_scaffolds_final_prim.fa.stats"
+    ):
+        # Read the text file
+        with open(
+            f"results/Scaffolding/Scaffolding_stats/GFAstats/{sample}.yahs_scaffolds_final_prim.fa.stats",
+            "r",
+        ) as file:
+            lines = file.readlines()
+
+        # Initialize a dictionary to store extracted data
+        data = {}
+
+        # Iterate through each line and extract key-value pairs
+        data["asm"] = "Scaffolding_Prim"
+        for line in lines:
+            match = pattern.match(line)
+            if match:
+                key = match.group(1).strip()
+                value = match.group(2).strip()
+                data[key] = value
+
+        # Create a DataFrame from the extracted data
+        df_scaf_prim = pd.DataFrame([data])
+
+        df_scaf_prim = df_scaf_prim[columns_to_keep]
+
+        df_completo = pd.concat([df_completo, df_scaf_prim])
+
+        with open(
+            f"results/Scaffolding/Scaffolding_stats/GFAstats/{sample}.yahs_scaffolds_final_alt.fa.stats",
+            "r",
+        ) as file:
+            lines = file.readlines()
+
+        # Initialize a dictionary to store extracted data
+        data = {}
+
+        # Iterate through each line and extract key-value pairs
+        data["asm"] = "Scaffolding_Alt"
+        for line in lines:
+            match = pattern.match(line)
+            if match:
+                key = match.group(1).strip()
+                value = match.group(2).strip()
+                data[key] = value
+
+        # Create a DataFrame from the extracted data
+        df_scaf_alt = pd.DataFrame([data])
+
+        df_scaf_alt = df_scaf_alt[columns_to_keep]
+
+        df_completo = pd.concat([df_completo, df_scaf_alt])
+
     df_completo.to_csv(f"workflow/report/{sample}.gfastats.csv", index=False)
 
 def parse_fcsadaptors(sample):
@@ -1357,7 +1546,19 @@ def parse_flagstats(sample):
              f"results/Scaffolding/Final_Contacts/Hap1/{sample}.merged.bam.flagstats",
              f"results/Scaffolding/Final_Contacts/Hap2/{sample}.R1.bam.flagstats",
              f"results/Scaffolding/Final_Contacts/Hap2/{sample}.R2.bam.flagstats",
-             f"results/Scaffolding/Final_Contacts/Hap2/{sample}.merged.bam.flagstats"]
+             f"results/Scaffolding/Final_Contacts/Hap2/{sample}.merged.bam.flagstats",
+             f"results/Scaffolding/Initial_Contacts/Primary/{sample}.R1.bam.flagstats",
+             f"results/Scaffolding/Initial_Contacts/Primary/{sample}.R2.bam.flagstats",
+             f"results/Scaffolding/Initial_Contacts/Primary/{sample}.merged.bam.flagstats",
+             f"results/Scaffolding/Initial_Contacts/Alternative/{sample}.R1.bam.flagstats",
+             f"results/Scaffolding/Initial_Contacts/Alternative/{sample}.R2.bam.flagstats",
+             f"results/Scaffolding/Initial_Contacts/Alternative/{sample}.merged.bam.flagstats",
+             f"results/Scaffolding/Final_Contacts/Primary/{sample}.R1.bam.flagstats",
+             f"results/Scaffolding/Final_Contacts/Primary/{sample}.R2.bam.flagstats",
+             f"results/Scaffolding/Final_Contacts/Primary/{sample}.merged.bam.flagstats",
+             f"results/Scaffolding/Final_Contacts/Alternative/{sample}.R1.bam.flagstats",
+             f"results/Scaffolding/Final_Contacts/Alternative/{sample}.R2.bam.flagstats",
+             f"results/Scaffolding/Final_Contacts/Alternative/{sample}.merged.bam.flagstats"]
 
     names = ["Initial_Contacts_Hap1_R1",
              "Initial_Contacts_Hap1_R2",
@@ -1370,7 +1571,19 @@ def parse_flagstats(sample):
              "Final_Contacts_Hap1_Merged",
              "Final_Contacts_Hap2_R1",
              "Final_Contacts_Hap2_R2",
-             "Final_Contacts_Hap2_Merged"]
+             "Final_Contacts_Hap2_Merged",
+             "Initial_Contacts_Prim_R1",
+             "Initial_Contacts_Prim_R2",
+             "Initial_Contacts_Prim_Merged",
+             "Initial_Contacts_Alt_R1",
+             "Initial_Contacts_Alt_R2",
+             "Initial_Contacts_Alt_Merged",
+             "Final_Contacts_Prim_R1",
+             "Final_Contacts_Prim_R2",
+             "Final_Contacts_Prim_Merged",
+             "Final_Contacts_Alt_R1",
+             "Final_Contacts_Alt_R2",
+             "Final_Contacts_Alt_Merged"]
 
     df_completo = pd.DataFrame()
 

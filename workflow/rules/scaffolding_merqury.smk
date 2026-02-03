@@ -1,3 +1,6 @@
+ruleorder:
+    scaffolding_merqury > scaffolding_merqury_prim
+
 rule scaffolding_merqury:
 	input:
 		hap1="results/Scaffolding/YAHS_Scaffolding/Hap1/{sample}.yahs_scaffolds_final.fa",
@@ -24,4 +27,32 @@ rule scaffolding_merqury:
 		cp {input.hap2} {params.outdir}/{wildcards.sample}.yahs_hap2.fa && \
 		MerquryFK -v -X250 -Ptmp -lfs -T{threads} {input.fastk} {params.outdir}/{wildcards.sample}.yahs_hap1.fa {params.outdir}/{wildcards.sample}.yahs_hap2.fa {params.outdir}/{wildcards.sample} >> {log} 2>&1 && \
 		rm -rf {params.outdir}/{wildcards.sample}.yahs_hap1.fa {params.outdir}/{wildcards.sample}.yahs_hap2.fa
+		"""
+
+rule scaffolding_merqury_prim:
+	input:
+		hap1="results/Scaffolding/YAHS_Scaffolding/Primary/{sample}.yahs_scaffolds_final.fa",
+		hap2="results/Scaffolding/YAHS_Scaffolding/Alternative/{sample}.yahs_scaffolds_final.fa",
+		fastk="results/Trimming_QC/FastK/{sample}.ktab"
+	output:
+		"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.completeness.stats",
+		"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.{sample}.yahs_prim.spectra-cn.st.png",
+		"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.{sample}.yahs_alt.spectra-cn.st.png",
+		"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.spectra-asm.st.png",
+		"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.spectra-cn.st.png"
+	log:
+		"logs/{sample}.scaffolding_merqury_prim.log"
+	benchmark:
+		"benchmarks/{sample}.scaffolding_merqury_prim.txt"
+	params:
+		outdir="results/Scaffolding/Scaffolding_stats/MerquryFK"
+	singularity:
+		f"{config["sif_dir"]}/fkutils.sif"
+	shell:
+		"""
+		mkdir -p {params.outdir} && \
+		cp {input.hap1} {params.outdir}/{wildcards.sample}.yahs_prim.fa && \
+		cp {input.hap2} {params.outdir}/{wildcards.sample}.yahs_alt.fa && \
+		MerquryFK -v -X250 -Ptmp -lfs -T{threads} {input.fastk} {params.outdir}/{wildcards.sample}.yahs_prim.fa {params.outdir}/{wildcards.sample}.yahs_alt.fa {params.outdir}/{wildcards.sample} >> {log} 2>&1 && \
+		rm -rf {params.outdir}/{wildcards.sample}.yahs_prim.fa {params.outdir}/{wildcards.sample}.yahs_alt.fa
 		"""

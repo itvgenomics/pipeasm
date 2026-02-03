@@ -10,7 +10,10 @@ def parse_scaffolding_summary(sample, hap):
         with open(f"results/Scaffolding/Scaffolding_stats/Compleasm/Hap2/{sample}.summary.txt", "r") as file:
             file_content = file.read()
     elif hap == "prim":
-        with open(f"results/Scaffolding/Scaffolding_stats/Compleasm/{sample}.summary.txt", "r") as file:
+        with open(f"results/Scaffolding/Scaffolding_stats/Compleasm/Primary/{sample}.summary.txt", "r") as file:
+            file_content = file.read()
+    elif hap == "alt":
+        with open(f"results/Scaffolding/Scaffolding_stats/Compleasm/Alternative/{sample}.summary.txt", "r") as file:
             file_content = file.read()
 
     # Regular expression patterns
@@ -72,7 +75,7 @@ def edit_scaffolding_table(buscodb, n_busco, sample, hap):
     elif hap == "prim":
         # Open the file and read existing content
         with open(
-            f"results/Scaffolding/Scaffolding_stats/Compleasm/{buscodb}/full_table_busco_format.tsv",
+            f"results/Scaffolding/Scaffolding_stats/Compleasm/Primary/{buscodb}/full_table_busco_format.tsv",
             "r",
         ) as file:
             existing_content = file.readlines()
@@ -82,16 +85,37 @@ def edit_scaffolding_table(buscodb, n_busco, sample, hap):
 
         # Write the updated content back to the file
         with open(
-            f"results/Scaffolding/Scaffolding_stats/Compleasm/{sample}.full_table_busco_format_edit.tsv",
+            f"results/Scaffolding/Scaffolding_stats/Compleasm/Primary/{sample}.full_table_busco_format_edit.tsv",
             "w",
         ) as outfile:
             outfile.writelines(updated_content)
 
+    elif hap == "alt":
+        # Open the file and read existing content
+        with open(
+            f"results/Scaffolding/Scaffolding_stats/Compleasm/Alternative/{buscodb}/full_table_busco_format.tsv",
+            "r",
+        ) as file:
+            existing_content = file.readlines()
+
+        # Prepend the new lines to the existing content
+        updated_content = [line1 + "\n", line2 + "\n"] + existing_content
+
+        # Write the updated content back to the file
+        with open(
+            f"results/Scaffolding/Scaffolding_stats/Compleasm/Alternative/{sample}.full_table_busco_format_edit.tsv",
+            "w",
+        ) as outfile:
+            outfile.writelines(updated_content)
 
 if snakemake.config['diff_species_hic'].lower() == 'yes':
     # Primary assembly
     buscodb, n_busco = parse_scaffolding_summary(snakemake.config['sample'], "prim")
     edit_scaffolding_table(buscodb, n_busco, snakemake.config['sample'], "prim")
+
+    # Alternative assembly
+    buscodb, n_busco = parse_scaffolding_summary(snakemake.config['sample'], "alt")
+    edit_scaffolding_table(buscodb, n_busco, snakemake.config['sample'], "alt")
 else:
     # Hap1
     buscodb, n_busco = parse_scaffolding_summary(snakemake.config['sample'], 1)
