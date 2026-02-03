@@ -778,6 +778,18 @@ def parse_compleasm(sample):
                     elif line.startswith("N:"):
                         n_values.append(value)
 
+            # Create pandas DataFrame
+            data = {
+                "asm": asm,
+                "Complete and Single Copy": s_values,
+                "Complete and Duplicated:": d_values,
+                "Fragmented:": f_values,
+                "Missing:": m_values,
+                "Total Genes:": n_values,
+            }
+
+            all_data.append(data)
+
     df = pd.DataFrame(all_data)
 
     df.to_csv(f"workflow/report/{sample}.compleasm.csv", index=False)
