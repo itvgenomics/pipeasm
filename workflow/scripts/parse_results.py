@@ -84,7 +84,7 @@ def copy_files(sample):
         f"results/Scaffolding/YAHS_Scaffolding/Hap1/{sample}.yahs_scaffolds_final.fa",
         f"results/Scaffolding/YAHS_Scaffolding/Hap2/{sample}.yahs_scaffolds_final.fa",
         f"results/Scaffolding/YAHS_Scaffolding/Primary/{sample}.yahs_scaffolds_final.fa",
-        f"results/Scaffolding/YAHS_Scaffolding/Alternative{sample}.yahs_scaffolds_final.fa",
+        f"results/Scaffolding/YAHS_Scaffolding/Alternative/{sample}.yahs_scaffolds_final.fa",
     ]
 
     directories = [
