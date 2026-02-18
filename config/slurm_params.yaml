@@ -89,6 +89,7 @@ set-threads:
   genescopeFK: 8
   smudgeplot: 31
   katgc: 31
+  katcomp: 31
   trimming_pacbio: 31
   trimming_ont: 31
   qc_trim_pacbio: 8
@@ -545,6 +546,11 @@ set-resources:
     runtime: 4320
     nodes: 1
   katgc:
+    slurm_partition: {PARTITION}
+    mem_mb: 200000
+    runtime: 4320
+    nodes: 1
+  katcomp:
     slurm_partition: {PARTITION}
     mem_mb: 200000
     runtime: 4320

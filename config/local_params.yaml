@@ -87,6 +87,7 @@ set-threads:
   genescopeFK: 8
   smudgeplot: 31
   katgc: 31
+  katcomp: 31
   trimming_pacbio: 31
   trimming_ont: 31
   qc_trim_pacbio: 8
