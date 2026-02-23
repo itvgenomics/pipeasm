@@ -3,8 +3,10 @@ set -e
 
 cat << 'EOF'
 
-### Pipeasm - a tool for automated large genome assembly and analysis
-#Authors: Trindade F., Silva B. M., Canesin L., Souza Junior R. O., Oliveira R. 2024
+### Pipeasm: a tool for automated large chromosome-scale genome assembly and evaluation
+#Version: 1.1.0
+#Authors: Bruno Marques Silva, Fernanda de Jesus Trindade, Lucas Eduardo Costa Canesin, Giordano Souza, Alexandre Aleixo, Gisele Nunes, Renato Renison Moreira-Oliveira
+#Bioinformatics Advances, Volume 6, Issue 1, 2026, vbaf326, https://doi.org/10.1093/bioadv/vbaf326
 
 ###    Copyright (C) 2024  Renato Oliveira
 ###
