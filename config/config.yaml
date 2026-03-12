@@ -43,7 +43,7 @@ gxdb:
 ## Fastp parameters
 # Parameters used for read trimming and QC via fastp.
 fastp:
-  flags: '--cut_tail --detect_adapter_for_pe --dont_eval_duplication'  # Main fastp flags for adapter detection and trimming.
+  flags: '--cut_tail --detect_adapter_for_pe --dont_eval_duplication --trim_poly_g'  # Main fastp flags for adapter detection and trimming.
   min_len: '--length_required 35'  # Minimum read length to keep after trimming.
   crop: '--trim_front1 5'  # Trim 5 bases from start of read1.
   quality: '--cut_mean_quality 24'  # Trim based on mean quality (Q24 threshold).
