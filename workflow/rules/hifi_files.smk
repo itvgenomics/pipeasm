@@ -2,7 +2,7 @@ rule check_hifi_files:
     input:
         config['hifi_reads']
     output:
-        "results/Trimming_QC/HiFi/{sample}.fastq.gz"
+        temp("results/Trimming_QC/HiFi/{sample}.fastq.gz")
     shell:
         """
         mkdir -p results/Trimming_QC/HiFi && \

@@ -3,8 +3,8 @@ rule check_hic_files:
         r1=config['hic_r1'],
         r2=config['hic_r2']
     output:
-        "results/Trimming_QC/HiC/{sample}_R1.fastq.gz",
-        "results/Trimming_QC/HiC/{sample}_R2.fastq.gz"
+        temp("results/Trimming_QC/HiC/{sample}_R1.fastq.gz"),
+        temp("results/Trimming_QC/HiC/{sample}_R2.fastq.gz")
     shell:
         """
         mkdir -p results/Trimming_QC/HiC && \

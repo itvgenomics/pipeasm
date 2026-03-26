@@ -7,16 +7,6 @@ wildcard_constraints:
 def get_output(sample_name):
 
     out = []
-
-    ## Check if the input files exists
-    out.extend(expand("results/Trimming_QC/HiFi/{sample}.fastq.gz", sample=sample_name))
-
-    if config['hic_r1'] and config['hic_r2']:
-        out.extend(expand("results/Trimming_QC/HiC/{sample}_R{pair}.fastq.gz", sample=sample_name, pair=["1","2"]))
-
-    if config['ont_reads']:
-        out.extend(expand("results/Trimming_QC/ONT/{sample}_ONT.fastq.gz", sample=sample_name))
-
     ## Check the Trimming and QC output files
     if config['run_trimming_qc'].lower() == "yes":
 

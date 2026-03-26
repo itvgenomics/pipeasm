@@ -582,17 +582,17 @@ set-resources:
     nodes: 1
   phased_assembly:
     slurm_partition: {PARTITION}
-    mem_mb: 700000
+    mem_mb: 500000
     runtime: 4320
     nodes: 1
   ont_phased_assembly:
     slurm_partition: {PARTITION}
-    mem_mb: 700000
+    mem_mb: 500000
     runtime: 4320
     nodes: 1
   ont_solo_assembly:
     slurm_partition: {PARTITION}
-    mem_mb: 700000
+    mem_mb: 500000
     runtime: 4320
     nodes: 1
   phased_edit_busco_table:
@@ -792,7 +792,7 @@ set-resources:
     nodes: 1
   solo_assembly:
     slurm_partition: {PARTITION}
-    mem_mb: 700000
+    mem_mb: 500000
     runtime: 4320
     nodes: 1
   solo_edit_busco_table:
