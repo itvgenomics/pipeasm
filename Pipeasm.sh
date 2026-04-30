@@ -36,6 +36,8 @@ SETUNP=""
 SETSLURM="false"
 PARTITION=""
 
+USED_T=false
+USED_J=false
 
 while [ "$1" != "" ]; do
     case $1 in
@@ -50,6 +52,12 @@ while [ "$1" != "" ]; do
     -t)
         shift
         THREADS=$1
+        USED_T=true
+        ;;
+    -j)
+        shift
+        THREADS=$1
+        USED_J=true
         ;;
     -s)
         shift
@@ -92,6 +100,17 @@ while [ "$1" != "" ]; do
     shift
 done
 
+if [ "$SETSLURM" = true ]; then
+    if [ "$USED_J" = false ]; then
+        echo "ERROR: When using -slurm, you must use -j (not -t) to set the number of jobs submitted to the queue."
+        exit 1
+    fi
+    if [ "$USED_T" = true ]; then
+        echo "ERROR: -t is not allowed with -slurm. Use -j instead."
+        exit 1
+    fi
+fi
+
 # Ensure THREADS and WORKDIR have values
 if [ -z "$WORKDIR" ] || [ -z "$THREADS" ]; then
     cat << 'EOF'
@@ -102,6 +121,7 @@ ERROR: Missing one of the required arguments: -d (Work Directory), -t (# Threads
 #-c </path/to/config.yaml> = Overwrite the default configuration file with all nedded parameters (config/config.yaml).
 #-s </path/to/snakefile> = Overwrite the default snakefile path (workflow/Snakefile)
 #-t <int> = Number of threads to use
+#-j <int> = Number of jobs submitted to the queue (only for -slurm)
 
 # You can choose a Pipeasm step with:
     -trimming_qc (for Trimming and Quality Control);

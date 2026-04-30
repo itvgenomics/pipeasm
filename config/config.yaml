@@ -90,7 +90,8 @@ gfastats:
   params: "-o fa --discover-paths"  # Output in FASTA format with extra stats.
 
 ## Bellerophon parameters
-# Used for contamination removal; keep quality thresholds here.
+# Filter mapped reads where the mapping spans a junction, retaining the 5-prime read.
+# Keep quality thresholds here.
 bellerophon: "--quality 10"
 
 ## Pretext parameters
@@ -102,3 +103,11 @@ pretext:
 ## YAHS parameters
 # Auto-scaffolding with Hi-C data.
 yahs: "-e GATC,GANTC,CTNAG,TTAA --no-mem-check -v 1"  # Enzyme cut sites and verbosity.
+run_trimming_qc: "Yes"
+run_kmer_evaluation: "Yes"
+run_asm: "Yes"
+run_auto_scaffolding: "Yes"
+run_trimming_qc: "Yes"
+run_kmer_evaluation: "Yes"
+run_asm: "Yes"
+run_auto_scaffolding: "Yes"

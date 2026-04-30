@@ -104,14 +104,14 @@ Before installing the required software, make sure you have the following:
   ```
   Replace `<repository_name>` with the name of the cloned repository directory.
 
-### 4. Check Raw Data
+### 3. Check Raw Data
 - Check if your HiFi/Hi-C/ONT reads are available and joint in its respective files and compressed with gzip:
   - /path/to/hifi_reads/hifi_reads.fasq.gz
   - /path/to/hic_reads/r1_reads.fasq.gz
   - /path/to/hic_reads/r2_reads.fasq.gz
   - /path/to/ont_reads/ont_reads.fasq.gz
 
-### 3. Configure the Pipeline
+### 4. Configure the Pipeline
 - Edit the configuration file according to your requirements at the `config` directory.
   - `config.yaml`: General configuration settings.
     ```bash
@@ -241,6 +241,10 @@ Interactive HTML reports are included in the `Files` folder for detailed examina
 
 These reports allow in-depth inspection of per-base quality, GC content, duplication rates, and other QC metrics.
 
+#### FASTA Files
+
+- All FASTA files from Hifiasm and YAHS scaffolding are found in the `workflow/report/files` directory.
+
 ### Additional Notes
 - Make sure to review and modify the Snakefile if necessary to fit your specific pipeline requirements.
 - Make sure conda is installed with singularity and snakemake in the active environment.
@@ -316,6 +320,30 @@ These reports allow in-depth inspection of per-base quality, GC content, duplica
 ```
 
 # Changelog
+
+## Pipeasm 1.1.0 – Changelog
+
+### New Features
+- Replaced `meryl` as the k-mer counter with:
+  - `FastK`
+  - `MerquryFK`
+  - `GenoScopeFK`
+- Added support for using Hi-C data from a different species:
+  - Performs a primary-only assembly using the `--primary` flag.
+  - Applies `YAHS` scaffolding on the resulting contigs.
+- Introduced a new `-j` flag for Slurm mode to control the number of jobs submitted to the queue.
+
+### Improvements
+- Updated `compleasm` to version 2.7.0.
+- Reduced RAM usage in assembly rules from 700GB to 500GB.
+- Marked raw reads as temporary files:
+  - Raw reads are now automatically deleted after pipeline execution.
+  - Only trimmed reads are retained.
+
+### Changes
+- Made `mitoHiFi` optional:
+  - Controlled via the `run_mitohifi` flag in the configuration file.
+  - Updated configuration to reflect optional `mitoHiFi` execution.
 
 ## Pipeasm 1.0.1 – Changelog
 
