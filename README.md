@@ -6,10 +6,10 @@
 
 Pipeasm is the streamlining of the VGP and DToL assembly pipelines. The pipeline is written in Snakemake, a powerful workflow management system for creating and executing data analysis pipelines, and both container daemons Docker and Singularity. This document will guide you through the installation process of these software on Linux.
 
-## How to cite Pipeasm (preprint)
+## How to cite Pipeasm
 
 ```
-Silva, B. M., Trindade, F. J., Canesin, L. E. C., Souza, G., Aleixo, A., Nunes, G. L., Oliveira, R. R. M. Pipeasm: a tool for automated large chromosome-scale genome assembly and evaluation. bioRxiv 2024.10.21.598381; doi: https://doi.org/10.1101/2024.10.21.598381
+Bruno Marques Silva, Fernanda de Jesus Trindade, Lucas Eduardo Costa Canesin, Giordano Souza, Alexandre Aleixo, Gisele Nunes, Renato Renison Moreira-Oliveira, Pipeasm: a tool for automated large chromosome-scale genome assembly and evaluation, Bioinformatics Advances, Volume 6, Issue 1, 2026, vbaf326, https://doi.org/10.1093/bioadv/vbaf326
 ```
 
 ## How Pipeasm works?
@@ -27,7 +27,7 @@ Pipeasm is a Snakemake-based workflow that integrates a suite of tools to proces
 
 2. **K-mer Profiling**
 - After trimming, the pipeline performs a series of analyses on the HiFi long reads to gather detailed genomic statistics.
-- **K-mer Counting**: `Meryl` counts and evaluates K-mers.
+- **K-mer Counting**: `FastK` counts and evaluates K-mers.
 - **Genome Statistics**: `GenomeScope2` estimates genome size, heterozygosity, and repeat content.
 - **Ploidy Identification**: `SmudgePlot` identifies ploidy levels through K-mer distribution analysis.
 - **Graphical Representation**: `KAT-GCP` provides graphical representations of K-mer spectra to help identify genomic features and contaminants.
@@ -41,7 +41,7 @@ Pipeasm is a Snakemake-based workflow that integrates a suite of tools to proces
 - After assembly, the pipeline generates a fasta file and collects detailed statistics on the assembled genome.
 - **Summaries and Statistics**: `GFAstats` generates the fasta file and provides statistics like contig lengths, N50 values, and scaffold counts.
 - **Completeness Evaluation**: `Compleasm` assesses gene-space completeness by comparing the assembled genome against BUSCO databases.
-- **Quality Assessment**: `Merqury` counts assembled K-mers and compares them to the Meryl database.
+- **Quality Assessment**: `Merqury` counts assembled K-mers and compares them to the FastK output.
 - **Visualization**: `Snailplot`, which is a part of BlobToolkit , provides a visual overview of the assembled genome.
 
 5. **Decontamination**
