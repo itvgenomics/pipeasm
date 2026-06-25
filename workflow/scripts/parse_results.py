@@ -38,7 +38,13 @@ def copy_files(sample):
         f"results/Assembly/Genome_Stats/SnailPlot/Phased_Asm/Phased-Hap1/{sample}_Phased_Hap1.snail.png",
         f"results/Assembly/Genome_Stats/SnailPlot/Phased_Asm/Phased-Hap2/{sample}_Phased_Hap2.snail.png",
         f"results/Assembly/Mitogenome/Solo_Asm/{sample}.contigs_stats.tsv",
+        f"results/Assembly/Mitogenome/Solo_Asm/final_mitogenome.annotation.png",
+        f"results/Assembly/Mitogenome/Solo_Asm/final_mitogenome.fasta",
+        f"results/Assembly/Mitogenome/Solo_Asm/final_mitogenome.gb",
         f"results/Assembly/Mitogenome/Phased_Asm/{sample}.contigs_stats.tsv",
+        f"results/Assembly/Mitogenome/Phased_Asm/final_mitogenome.annotation.png",
+        f"results/Assembly/Mitogenome/Phased_Asm/final_mitogenome.fasta",
+        f"results/Assembly/Mitogenome/Phased_Asm/final_mitogenome.gb",
         f"results/Assembly/Genome_Stats/Smudgeplot/{sample}_smudgeplot_log10.png",
         f"results/Assembly/Genome_Stats/Smudgeplot/{sample}_smudgeplot.png",
         f"results/Assembly/Genome_Stats/KatGC/{sample}.st.png",
@@ -150,6 +156,12 @@ def copy_files(sample):
                     shutil.copy(file, f"workflow/report/files/Alternative_{file_name}")
                 else:
                     shutil.copy(file, f"workflow/report/files/{file_name}")
+
+            elif "Mitogenome" in file:
+                if "Solo_Asm" in file:
+                    shutil.copy(file, f"workflow/report/files/Solo_{file_name}")
+                elif "Phased_Asm" in file:
+                    shutil.copy(file, f"workflow/report/files/Phased_{file_name}")
 
             else:
                 shutil.copy(file, "workflow/report/files")

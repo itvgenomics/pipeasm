@@ -323,6 +323,12 @@ These reports allow in-depth inspection of per-base quality, GC content, duplica
 
 # Changelog
 
+## Pipeasm 1.1.1 – Changelog
+
+### Improvements
+- Add mitogenome files to `workflow/report`.
+- Updated `Compleasm` to fix filename parsing failure.
+
 ## Pipeasm 1.1.0 – Changelog
 
 ### New Features
