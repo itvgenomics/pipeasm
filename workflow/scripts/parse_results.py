@@ -893,6 +893,7 @@ def abstract(sample):
         with open(
             f"results/Assembly/Genome_Stats/MerquryFK/Solo_Asm/{sample}.qv", "r"
         ) as file:
+            next(file)
             for line in file:
                 data_qv = line.split("\t")
                 break
@@ -994,6 +995,7 @@ QV (Prim. only) -> {data_qv[3]}
         with open(
             f"results/Assembly/Genome_Stats/MerquryFK/Phased_Asm/{sample}.qv", "r"
         ) as file:
+            next(file)
             for line in file:
                 data_qv = line.split("\t")
                 break
@@ -1096,6 +1098,7 @@ QV (Hap1. only) -> {data_qv[3]}
         with open(
             f"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.qv", "r"
         ) as file:
+            next(file)  # skip first line
             for line in file:
                 data_qv = line.split("\t")
                 break
@@ -1198,6 +1201,7 @@ QV (Hap1. only) -> {data_qv[3]}
         with open(
             f"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.qv", "r"
         ) as file:
+            next(file)
             for line in file:
                 data_qv = line.split("\t")
                 break
