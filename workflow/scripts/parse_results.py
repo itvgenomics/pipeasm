@@ -371,54 +371,74 @@ def parse_merqury(sample):
     df_phased_qv = pd.DataFrame()
 
     # Define common column names for completeness and QV files
-    completeness_columns = ["asm", "kmer_set", "kmer_in_asm", "kmer_total", "completeness(%)"]
-    qv_columns = ["asm", "kmer_asm_uniq", "kmer_both", "qv", "error_rate"]
+    #Assembly        Region  Found   Total   % Covered
+    completeness_columns = ["asm", "region", "found", "total", "completeness(%)"]
+    qv_columns = ["asm", "no_support", "total", "error_rate", "qv"]
 
     # File paths
     solo_completeness_path = f"results/Assembly/Genome_Stats/MerquryFK/Solo_Asm/{sample}.completeness.stats"
     phased_completeness_path = f"results/Assembly/Genome_Stats/MerquryFK/Phased_Asm/{sample}.completeness.stats"
+    scaffolding_completeness_path = f"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.completeness.stats"
+
     solo_qv_path = f"results/Assembly/Genome_Stats/MerquryFK/Solo_Asm/{sample}.qv"
     phased_qv_path = f"results/Assembly/Genome_Stats/MerquryFK/Phased_Asm/{sample}.qv"
+    scaffolding_qv_path = f"results/Scaffolding/Scaffolding_stats/MerquryFK/{sample}.qv"
 
     # Read HiFi completeness data if the file exists
     if os.path.exists(solo_completeness_path):
         df_solo_completeness = pd.read_csv(
-            solo_completeness_path, sep="\t", header=None, names=completeness_columns
+            solo_completeness_path, sep="\t", header=None, names=completeness_columns, skiprows=1
         )
-        df_solo_completeness["asm"] = df_solo_completeness["asm"].replace("both", "both_solo")
+        df_solo_completeness.loc[df_solo_completeness["asm"].str.contains(r"\+", na=False), "asm"] = "both_solo"
 
     # Read HiC completeness data if the file exists
     if os.path.exists(phased_completeness_path):
         df_phased_completeness = pd.read_csv(
-            phased_completeness_path, sep="\t", header=None, names=completeness_columns
+            phased_completeness_path, sep="\t", header=None, names=completeness_columns, skiprows=1
         )
-        df_phased_completeness["asm"] = df_phased_completeness["asm"].replace("both", "both_phased")
+        df_phased_completeness.loc[df_phased_completeness["asm"].str.contains(r"\+", na=False), "asm"] = "both_phased"
+
+    # Read Scaffolding completeness data if the file exists
+    if os.path.exists(scaffolding_completeness_path):
+        df_scaffolding_completeness = pd.read_csv(
+            scaffolding_completeness_path, sep="\t", header=None, names=completeness_columns, skiprows=1
+        )
+        df_scaffolding_completeness.loc[df_scaffolding_completeness["asm"].str.contains(r"\+", na=False), "asm"] = "both_yahs"
 
     # Concatenate completeness DataFrames
-    df_completeness = pd.concat([df_solo_completeness, df_phased_completeness], ignore_index=True)
+    df_completeness = pd.concat([df_solo_completeness, df_phased_completeness, df_scaffolding_completeness], ignore_index=True)
 
     # Read HiFi QV data if the file exists
     if os.path.exists(solo_qv_path):
         df_solo_qv = pd.read_csv(
-            solo_qv_path, sep="\t", header=None, names=qv_columns
+            solo_qv_path, sep="\t", header=None, names=qv_columns, skiprows=1
         )
-        df_solo_qv["asm"] = df_solo_qv["asm"].replace("Both", "both_solo")
+        df_solo_qv["asm"] = df_solo_qv["asm"].replace("both", "both_solo")
 
     # Read HiC QV data if the file exists
     if os.path.exists(phased_qv_path):
         df_phased_qv = pd.read_csv(
-            phased_qv_path, sep="\t", header=None, names=qv_columns
+            phased_qv_path, sep="\t", header=None, names=qv_columns, skiprows=1
         )
-        df_phased_qv["asm"] = df_phased_qv["asm"].replace("Both", "both_phased")
+        df_phased_qv["asm"] = df_phased_qv["asm"].replace("both", "both_phased")
+
+    # Read Scaffolding QV data if the file exists
+    if os.path.exists(scaffolding_qv_path):
+        df_scaffolding_qv = pd.read_csv(
+            scaffolding_qv_path, sep="\t", header=None, names=qv_columns, skiprows=1
+        )
+        df_scaffolding_qv["asm"] = df_scaffolding_qv["asm"].replace("both", "both_yahs")
 
     # Concatenate QV DataFrames
-    df_qv = pd.concat([df_solo_qv, df_phased_qv], ignore_index=True)
+    df_qv = pd.concat([df_solo_qv, df_phased_qv, df_scaffolding_qv], ignore_index=True)
 
     # Merge completeness and QV DataFrames
     if not df_completeness.empty and not df_qv.empty:
         df_completo = pd.merge(df_completeness, df_qv, on="asm", how="left")
     else:
         df_completo = df_completeness if not df_completeness.empty else df_qv
+
+    df_completo = df_completo.drop(columns=["region"], errors="ignore")
 
     # Save the final merged DataFrame to CSV
     df_completo.to_csv(f"workflow/report/{sample}.merqury.csv", index=False)
