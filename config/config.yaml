@@ -52,7 +52,7 @@ fastp:
 # Used for adapter trimming with Cutadapt. Customize these only if needed.
 cutadapt:
   adaptors: '-b ATCTCTCTCAACAACAACAACGGAGGAGGAGGAAAAGAGAGAGAT -b ATCTCTCTCTTTTCCTCCTCCTCCGTTGTTGTTGTTGAGAGAGAT'  # Adapter sequences to remove.
-  filtering: '--discard -O 35'  # Discard reads without adapter and require overlap of 35 bases.
+  filtering: '--discard -O 35'  # Discard reads with adapter and require overlap of 35 bases.
   adap_find: '--rc -e 0.1'  # Search for adapter on reverse complement, with 10% error rate allowed.
 
 ## NanoPlot parameters
