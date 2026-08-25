@@ -907,7 +907,7 @@ Largest scaffold (bp) -> Primary: {data_hap1[3]} Alternate: {data_hap2[3]}
 Busco (Prim. only) -> C(%): {data_busco[0]} D(%): {data_busco[1]} F(%): {data_busco[2]} M(%): {data_busco[3]} Genes:  {data_busco[4]}
 QV (Prim. only) -> {data_qv[3]}
 """
-    with open(f"workflow/report/{sample}.abstract.txt", "w") as output:
+    with open(f"workflow/report/{sample}.summary.txt", "w") as output:
         output.write(abstract_text)
 
     if os.path.exists(
@@ -1010,7 +1010,7 @@ Busco (Hap1. only) -> C(%): {data_busco[0]} D(%): {data_busco[1]} F(%): {data_bu
 QV (Hap1. only) -> {data_qv[3]}
 """
 
-        with open(f"workflow/report/{sample}.abstract.txt", "a") as output:
+        with open(f"workflow/report/{sample}.summary.txt", "a") as output:
             output.write(abstract_text)
 
     if os.path.exists(
@@ -1113,7 +1113,7 @@ Busco (Hap1. only) -> C(%): {data_busco[0]} D(%): {data_busco[1]} F(%): {data_bu
 QV (Hap1. only) -> {data_qv[3]}
 """
 
-        with open(f"workflow/report/{sample}.abstract.txt", "a") as output:
+        with open(f"workflow/report/{sample}.summary.txt", "a") as output:
             output.write(abstract_text)
 
     if os.path.exists(
@@ -1216,7 +1216,7 @@ Busco (Hap1. only) -> C(%): {data_busco[0]} D(%): {data_busco[1]} F(%): {data_bu
 QV (Hap1. only) -> {data_qv[3]}
 """
 
-        with open(f"workflow/report/{sample}.abstract.txt", "a") as output:
+        with open(f"workflow/report/{sample}.summary.txt", "a") as output:
             output.write(abstract_text)
 
 def parse_gfastats(sample):
