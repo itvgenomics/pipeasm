@@ -138,7 +138,7 @@ The fields to be edited are the following:
 | sif_dir          | '/absolute/path/to/singularity/images/'                               | Directory for storing Singularity image files.                                                                                                                                                                                                             | Required          |
 | gxdb             | '/absolute/path/to/fcs-gx_DB/gxdb' | Path to the FCS-GX contamination database. Leave empty to skip the decontamination step.                                                                                                                                                                   | Optional          |
 
-- We have set default parameters to some software threads and flags. You can change them at the `config/config.yaml` file.
+- We have set default parameters to some software threads and RAM usage. You can change them at the `config/{genome_size}_genome_params.yaml` file.
 
 ### 4. Run the Pipeline
 - Navigate back to the root directory of the cloned repository.
