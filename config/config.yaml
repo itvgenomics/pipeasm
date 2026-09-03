@@ -16,6 +16,11 @@ buscodb: ''
 # (Required) Set to 'Yes' for both solo and phased assemblies, or 'No' for phased only.
 solo_asm: 'No'
 
+# (Required) Estimated genome size. Can be "small", "medium", "large", or a specific size in base pairs.
+# Small genomes are < 2 Gb, medium genomes are 2-4 Gb, and large genomes are > 4 Gb.
+# This will be used for memory allocation on slurm config files.
+genome_size: ''
+
 # Set to 'Yes' to run MitoHiFi for mitochondrial genome assembly; 'No' to skip.
 run_mitohifi: 'No'
 # (Optional) Scientific name of the species. Used for naming and mito annotation reference. Must be present on NCBI taxonomy database.

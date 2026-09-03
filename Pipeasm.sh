@@ -4,7 +4,7 @@ set -e
 cat << 'EOF'
 
 ### Pipeasm: a tool for automated large chromosome-scale genome assembly and evaluation
-#Version: 1.1.1
+#Version: 1.1.2
 #Authors: Bruno Marques Silva, Fernanda de Jesus Trindade, Lucas Eduardo Costa Canesin, Giordano Souza, Alexandre Aleixo, Gisele Nunes, Renato Renison Moreira-Oliveira
 #Bioinformatics Advances, Volume 6, Issue 1, 2026, vbaf326, https://doi.org/10.1093/bioadv/vbaf326
 
@@ -208,6 +208,26 @@ mkdir -p $WORKDIR/singularity $WORKDIR/tmp
 # Run script to fetch the Singularity images
 python $WORKDIR/workflow/scripts/singularity.py --config $CONFIGFILE
 
+# Read genome_size from config.yaml
+GENOME_SIZE=$(grep '^genome_size:' "$CONFIGFILE" | sed -E "s/^genome_size:[[:space:]]*['\"]?([^'\"]*)['\"]?/\1/")
+
+# Select the parameter file
+case "$GENOME_SIZE" in
+    small)
+        PARAMS_FILE="$WORKDIR/config/small_genome_params.yaml"
+        ;;
+    medium)
+        PARAMS_FILE="$WORKDIR/config/medium_genome_params.yaml"
+        ;;
+    large)
+        PARAMS_FILE="$WORKDIR/config/large_genome_params.yaml"
+        ;;
+    *)
+        echo "ERROR: Invalid genome_size ('$GENOME_SIZE'). Expected 'small', 'medium', or 'large'."
+        exit 1
+        ;;
+esac
+
 echo "INFO: Running Pipeasm."
 
 if [ "$SETSLURM" = true ]; then
@@ -215,8 +235,8 @@ if [ "$SETSLURM" = true ]; then
     export SINGULARITY_CACHEDIR=$WORKDIR/singularity && \
     export SINGULARITY_TMPDIR=$WORKDIR/tmp && \
     export TMPDIR=$WORKDIR/tmp && \
-    sed "s|{WORKDIR}|$WORKDIR|g; s|{THREADS}|$THREADS|g; s|{PARTITION}|$PARTITION|g" \
-        $WORKDIR/config/slurm_params.yaml > $WORKDIR/profiles/slurm/config.yaml && \
+    sed "s|{ WORKDIR }|$WORKDIR|g; s|{ THREADS }|$THREADS|g; s|{ PARTITION }|$PARTITION|g" \
+        "$PARAMS_FILE" > $WORKDIR/profiles/slurm/config.yaml && \
     snakemake -d $WORKDIR --snakefile $SNAKEFILE \
         --configfile $CONFIGFILE \
         --profile $WORKDIR/profiles/slurm/ \
@@ -226,7 +246,7 @@ else
     export SINGULARITY_CACHEDIR=$WORKDIR/singularity && \
     export SINGULARITY_TMPDIR=$WORKDIR/tmp && \
     export TMPDIR=$WORKDIR/tmp && \
-    sed "s|{WORKDIR}|$WORKDIR|g; s|{THREADS}|$THREADS|g" \
+    sed "s|{ WORKDIR }|$WORKDIR|g; s|{ THREADS }|$THREADS|g" \
         $WORKDIR/config/local_params.yaml > $WORKDIR/profiles/local/config.yaml && \
     snakemake -d $WORKDIR --snakefile $SNAKEFILE \
         --configfile $CONFIGFILE \
