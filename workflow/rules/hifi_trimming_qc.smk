@@ -34,7 +34,7 @@ rule qc_trim_pacbio:
 	shell:
 		"""
 		mkdir -p tmp && \
-		(fastqc -t {threads} --dir tmp -a {params.adapt_txt} --svg \
+		(fastqc -t {threads} --memory 4000 --dir tmp -a {params.adapt_txt} --svg \
 		-o {params.outdir} {input} >> {log} 2>&1 \
 		&& rm -rf .cache .java)
 		"""
