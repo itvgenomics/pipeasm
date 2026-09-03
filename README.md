@@ -321,6 +321,26 @@ These reports allow in-depth inspection of per-base quality, GC content, duplica
 
 # Changelog
 
+## Pipeasm 1.1.2 – Changelog
+
+### New Features
+
+- Added small, medium, and large genome Slurm configuration files.
+
+- Added a new genome_size directive to the .yaml configuration file to select the appropriate genome-size-specific Slurm configuration.
+
+### Improvements
+
+- Changed {sample}.abstract.txt to {sample}.summary.txt in the workflow/report directory.
+
+### Bug Fixes
+
+- Fixed parsing of Merqury QV values in the summary.
+
+- Fixed the Cutadapt comment in the configuration file.
+
+- Fixed the Merqury parser.
+
 ## Pipeasm 1.1.1 – Changelog
 
 ### Improvements
