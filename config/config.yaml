@@ -108,11 +108,3 @@ pretext:
 ## YAHS parameters
 # Auto-scaffolding with Hi-C data.
 yahs: "-e GATC,GANTC,CTNAG,TTAA --no-mem-check -v 1"  # Enzyme cut sites and verbosity.
-run_trimming_qc: "Yes"
-run_kmer_evaluation: "Yes"
-run_asm: "Yes"
-run_auto_scaffolding: "Yes"
-run_trimming_qc: "Yes"
-run_kmer_evaluation: "Yes"
-run_asm: "Yes"
-run_auto_scaffolding: "Yes"
