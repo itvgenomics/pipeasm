@@ -1,6 +1,11 @@
 # Changelog
 
-## Pipeasm 1.1.3
+## Pipeasm 1.2.0
+
+### Upgrading from 1.1.x
+- Custom threads or memory set in `config/{small,medium,large}_genome_params.yaml` must be moved to `config/threads.yaml` and `config/resources/{small,medium,large}.yaml`.
+- Images in `sif_dir` are now named `<name>_<tag>.sif`, so all images are pulled again on the first run. The old `.sif` files without a version (e.g., `hic_mapping.sif`) can be deleted.
+- Write `"Yes"`/`"No"` values in quotes in `config/config.yaml`; the configuration check rejects unquoted values.
 
 ### New Features
 - Added a benchmark report (`workflow/report/benchmark.html`), written at the end of every run by `workflow/scripts/benchmark_report.py`. It reads whatever benchmark files exist, so it adapts to the rules that ran, and shows runtime, CPU and memory by stage and by rule, compared with the threads and SLURM memory set in `config/`.
@@ -84,7 +89,7 @@
 ## Pipeasm 1.0.1
 
 ### New Features
-- Added SLURM support (`-slurm`). Resources are now set in `config/{small,medium,large}_genome_params.yaml` (see 1.1.2).
+- Added SLURM support (`-slurm`). Resources are now set in `config/{small,medium,large}_genome_params.yaml` (see 1.1.2; replaced in 1.2.0).
 
 ### Improvements
 - Improved handling of `MitoHiFi` runs that fail to assemble the mitogenome.
