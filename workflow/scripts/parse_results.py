@@ -91,6 +91,15 @@ def copy_files(sample):
         f"results/Scaffolding/YAHS_Scaffolding/Hap2/{sample}.yahs_scaffolds_final.fa",
         f"results/Scaffolding/YAHS_Scaffolding/Primary/{sample}.yahs_scaffolds_final.fa",
         f"results/Scaffolding/YAHS_Scaffolding/Alternative/{sample}.yahs_scaffolds_final.fa",
+        f"results/Scaffolding/Initial_Contacts/Hap1/{sample}.merged.bam.hic_stats",
+        f"results/Scaffolding/Initial_Contacts/Hap2/{sample}.merged.bam.hic_stats",
+        f"results/Scaffolding/Initial_Contacts/Hap1/{sample}.merged.bam.flagstats",
+        f"results/Scaffolding/Initial_Contacts/Hap2/{sample}.merged.bam.flagstats",
+        f"results/Scaffolding/Final_Contacts/Hap1/{sample}.merged.bam.hic_stats",
+        f"results/Scaffolding/Final_Contacts/Hap2/{sample}.merged.bam.hic_stats",
+        f"results/Scaffolding/Final_Contacts/Hap1/{sample}.merged.bam.flagstats",
+        f"results/Scaffolding/Final_Contacts/Hap2/{sample}.merged.bam.flagstats",
+
     ]
 
     directories = [
@@ -107,6 +116,7 @@ def copy_files(sample):
         if os.path.exists(file):
             print(f"Copying file: {file}")
             file_name = os.path.basename(file)
+
             if ".png" in file or ".svg" in file or ".pdf" in file:
                 if "HiFi" in file:
                     shutil.copy(file, f"workflow/report/images/HiFi_{file_name}")
@@ -126,6 +136,24 @@ def copy_files(sample):
                     shutil.copy(file, f"workflow/report/images/KatComp_{file_name}")
                 else:
                     shutil.copy(file, "workflow/report/images")
+
+            elif ".hic_stats" in file or ".flagstats" in file:
+                if "Initial_Contacts" in file and "Hap1" in file:
+                    shutil.copy(file, f"workflow/report/files/Initial_Contacts_Hap1_{file_name}")
+                elif "Initial_Contacts" in file and "Hap2" in file:
+                    shutil.copy(file, f"workflow/report/files/Initial_Contacts_Hap2_{file_name}")
+                elif "Initial_Contacts" in file and "Primary" in file:
+                    shutil.copy(file, f"workflow/report/files/Initial_Contacts_Primary_{file_name}")
+                elif "Initial_Contacts" in file and "Alternative" in file:
+                    shutil.copy(file, f"workflow/report/files/Initial_Contacts_Alternative_{file_name}")
+                elif "Final_Contacts" in file and "Hap1" in file:
+                    shutil.copy(file, f"workflow/report/files/Final_Contacts_Hap1_{file_name}")
+                elif "Final_Contacts" in file and "Hap2" in file:
+                    shutil.copy(file, f"workflow/report/files/Final_Contacts_Hap2_{file_name}")
+                elif "Final_Contacts" in file and "Primary" in file:
+                    shutil.copy(file, f"workflow/report/files/Final_Contacts_Primary_{file_name}")
+                elif "Final_Contacts" in file and "Alternative" in file:
+                    shutil.copy(file, f"workflow/report/files/Final_Contacts_Alternative_{file_name}")
 
             elif ".pretext" in file:
                 if "Initial_Contacts" in file and "Hap1" in file:
