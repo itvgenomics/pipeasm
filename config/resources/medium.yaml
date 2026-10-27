@@ -91,10 +91,10 @@ set-resources:
   final_contacts_bwa_mem2_mapping_hap2_r2:    {mem_mb: 200000}    # 200 GB
   final_contacts_bwa_mem2_mapping_prim_r2:    {mem_mb: 200000}    # 200 GB
   final_contacts_bwa_mem2_mapping_alt_r2:     {mem_mb: 200000}    # 200 GB
-  final_contacts_pretext_map_snapshot_hap1:   {mem_mb: 20000}     # 20 GB
-  final_contacts_pretext_map_snapshot_hap2:   {mem_mb: 20000}     # 20 GB
-  final_contacts_pretext_map_snapshot_prim:   {mem_mb: 20000}     # 20 GB
-  final_contacts_pretext_map_snapshot_alt:    {mem_mb: 20000}     # 20 GB
+  final_contacts_pretext_map_snapshot_hap1:   {mem_mb: 50000}     # 50 GB
+  final_contacts_pretext_map_snapshot_hap2:   {mem_mb: 50000}     # 50 GB
+  final_contacts_pretext_map_snapshot_prim:   {mem_mb: 50000}     # 50 GB
+  final_contacts_pretext_map_snapshot_alt:    {mem_mb: 50000}     # 50 GB
   initial_contacts_bwa_mem2_index_hap1:       {mem_mb: 120000}    # 120 GB
   initial_contacts_bwa_mem2_index_hap2:       {mem_mb: 120000}    # 120 GB
   initial_contacts_bwa_mem2_index_prim:       {mem_mb: 120000}    # 120 GB
@@ -107,10 +107,10 @@ set-resources:
   initial_contacts_bwa_mem2_mapping_prim_r2:  {mem_mb: 200000}    # 200 GB
   initial_contacts_bwa_mem2_mapping_alt_r1:   {mem_mb: 200000}    # 200 GB
   initial_contacts_bwa_mem2_mapping_alt_r2:   {mem_mb: 200000}    # 200 GB
-  initial_contacts_pretext_map_snapshot_hap1: {mem_mb: 20000}     # 20 GB
-  initial_contacts_pretext_map_snapshot_hap2: {mem_mb: 20000}     # 20 GB
-  initial_contacts_pretext_map_snapshot_prim: {mem_mb: 20000}     # 20 GB
-  initial_contacts_pretext_map_snapshot_alt:  {mem_mb: 20000}     # 20 GB
+  initial_contacts_pretext_map_snapshot_hap1: {mem_mb: 50000}     # 50 GB
+  initial_contacts_pretext_map_snapshot_hap2: {mem_mb: 50000}     # 50 GB
+  initial_contacts_pretext_map_snapshot_prim: {mem_mb: 50000}     # 50 GB
+  initial_contacts_pretext_map_snapshot_alt:  {mem_mb: 50000}     # 50 GB
 
   # Scaffolding (YaHS)
   yahs_scaffolding_hap1:                      {mem_mb: 80000}     # 80 GB

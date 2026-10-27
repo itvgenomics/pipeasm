@@ -80,10 +80,10 @@ set-threads:
   final_contacts_samtools_flagstats_hap2:          4
   final_contacts_samtools_flagstats_prim:          4
   final_contacts_samtools_flagstats_alt:           4
-  final_contacts_pretext_map_snapshot_hap1:        2
-  final_contacts_pretext_map_snapshot_hap2:        2
-  final_contacts_pretext_map_snapshot_prim:        2
-  final_contacts_pretext_map_snapshot_alt:         2
+  final_contacts_pretext_map_snapshot_hap1:        4
+  final_contacts_pretext_map_snapshot_hap2:        4
+  final_contacts_pretext_map_snapshot_prim:        4
+  final_contacts_pretext_map_snapshot_alt:         4
   final_contacts_samtools_flagstats_bam_r1_hap1:   4
   final_contacts_samtools_flagstats_bam_r2_hap1:   4
   final_contacts_samtools_flagstats_bam_r1_prim:   4
@@ -112,10 +112,10 @@ set-threads:
   initial_contacts_samtools_flagstats_hap2:        4
   initial_contacts_samtools_flagstats_prim:        4
   initial_contacts_samtools_flagstats_alt:         4
-  initial_contacts_pretext_map_snapshot_hap1:      2
-  initial_contacts_pretext_map_snapshot_hap2:      2
-  initial_contacts_pretext_map_snapshot_prim:      2
-  initial_contacts_pretext_map_snapshot_alt:       2
+  initial_contacts_pretext_map_snapshot_hap1:      4
+  initial_contacts_pretext_map_snapshot_hap2:      4
+  initial_contacts_pretext_map_snapshot_prim:      4
+  initial_contacts_pretext_map_snapshot_alt:       4
   initial_contacts_samtools_flagstats_bam_r1_hap1: 4
   initial_contacts_samtools_flagstats_bam_r2_hap1: 4
   initial_contacts_samtools_flagstats_bam_r1_hap2: 4

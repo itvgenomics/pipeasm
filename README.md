@@ -81,7 +81,7 @@ Pipeasm integrates a suite of tools to process and assemble genomic data, produc
    - **Mapping**: `BWA-MEM2` indexes the assembly and maps the Hi-C reads.
    - **Filtering**: reads are sorted with `SAMtools`, then filtered and merged with `Bellerophon`.
    - **Scaffolding**: `YaHS` links contigs into chromosome-scale scaffolds.
-   - **Contact maps**: `PretextMap` and `PretextSnapshot` produce Hi-C contact maps before and after scaffolding.
+   - **Contact maps**: `PretextMap` (ultra-resolution, `--ultraRes`) and `PretextSnapshot` produce Hi-C contact maps before and after scaffolding.
 
 ### Software and Containers
 
@@ -101,7 +101,7 @@ All images are pulled automatically from Docker Hub into `sif_dir` the first tim
 | Compleasm | 0.2.8 | `itvdsbioinfo/compleasm:0.2.8` |
 | BlobToolkit | 4.3.5 | `genomehubs/blobtoolkit:4.3.5` |
 | FCS-adaptor / FCS-GX | latest | `ncbi/fcs-adaptor:latest`, `ncbi/fcs-gx:latest` |
-| BWA-MEM2 / SAMtools / Bellerophon / PretextMap / PretextSnapshot | 2.2.1 / 1.19 / 1.0 / 0.1.9 / 0.0.4 | `itvdsbioinfo/hic_mapping:1.0` |
+| BWA-MEM2 / SAMtools / Bellerophon / PretextMap / PretextSnapshot | 2.2.1 / 1.19 / 1.0 / 0.2.4 / 0.1.1 | `itvdsbioinfo/hic_mapping:1.1` |
 | YaHS | 1.2a.2 | `itvdsbioinfo/yahs:1.2a.2` |
 
 ## Installation
@@ -152,6 +152,7 @@ The memory requested per rule in SLURM mode depends on `genome_size` (see `confi
 
 - **Without decontamination** (`gxdb` empty), the peak memory is set by the Hifiasm assembly step.
 - **With decontamination**, FCS-GX needs ~480–512 GB of RAM to hold its database in memory (see [FCS-GX Database](#fcs-gx-database)).
+- **Hi-C contact maps** are built with `PretextMap --ultraRes`, which needs ~40 GB of RAM per map (50 GB is requested per job). Replace it with `--highRes` (~16 GB) or remove it in `pretext.map` (`config/config.yaml`) to save memory.
 - **Disk**: plan for several times the size of the raw reads (trimmed reads, FastK tables, BAM files and intermediate assemblies), plus the container images in `sif_dir` and, if used, ~470 GB for the FCS-GX database.
 
 **Reference runtimes** (from the [Pipeasm paper](https://doi.org/10.1093/bioadv/vbaf326); Intel Xeon Gold 6252, 3 TB RAM, 64 threads with 32 per rule):

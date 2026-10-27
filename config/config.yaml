@@ -180,7 +180,11 @@ bellerophon: "--quality 10"           # minimum mapping quality (MAPQ) to keep a
 ## PretextMap / PretextSnapshot - Hi-C contact maps
 # https://github.com/sanger-tol/PretextMap and https://github.com/sanger-tol/PretextSnapshot
 pretext:
-  map: "--mapq 10"                    # minimum mapping quality (MAPQ) of the reads used in the map
+  # --mapq 10: minimum mapping quality (MAPQ) of the reads used in the map
+  # --ultraRes: maximum-resolution map (~40 GB of RAM per map; open it in a recent PretextView).
+  #             Replace with --highRes (~16 GB) or remove it (default resolution, ~3 GB) to save memory.
+  #             In local mode, up to 4 maps can be built at the same time.
+  map: "--mapq 10 --ultraRes"
   # Image of the full map (all sequences), "Mellow Rainbow" colour map, black grid, 4000 px resolution
   snapshot: "--sequences '=full' -c 'Mellow Rainbow' --gridSize 1 --gridColour black --jpegQuality 100 -r 4000"
 

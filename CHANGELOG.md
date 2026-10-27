@@ -15,6 +15,8 @@
 - `Pipeasm.sh` no longer modifies the config file: the selected steps are passed to Snakemake with `--config`.
 - Reorganized `config/config.yaml` into sections, with accepted values, examples and links for every field, and corrected descriptions of the advanced tool parameters.
 - Set `max-jobs-per-second` to 10 in SLURM mode (it was equal to `-j`).
+- Updated `PretextMap` to version 0.2.4 and `PretextSnapshot` to version 0.1.1 in the new `itvdsbioinfo/hic_mapping:1.1` image. Removed the unused `PretextGraph` and `pretext-suite`.
+- Hi-C contact maps are now built with `PretextMap --ultraRes`. The Pretext rules now request 50 GB of RAM and 4 threads.
 - The `/tmp` of every container is now mounted on `$WORKDIR/tmp`:
   - Rules with containers: `-B { WORKDIR }/tmp:/tmp` in `singularity-args` (`config/local_params.yaml` and `config/slurm_params.yaml`).
   - FCS-adaptor and FCS-GX: new `--tmp-dir <dir>` option in `workflow/scripts/run_fcsadaptor.sh` and `workflow/scripts/fcs.py`, used with `--tmp-dir tmp` by the decontamination rules.

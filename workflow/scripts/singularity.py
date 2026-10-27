@@ -24,7 +24,7 @@ def read_yaml(file_path):
 
 
 docker_images = [
-    "itvdsbioinfo/hic_mapping:1.0",
+    "itvdsbioinfo/hic_mapping:1.1",
     "itvdsbioinfo/yahs:1.2a.2",
     "staphb/fastp:0.23.4",
     "staphb/fastqc:0.12.1",
