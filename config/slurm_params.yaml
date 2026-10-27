@@ -17,7 +17,7 @@
 # ── General settings ─────────────────────────────────────────────────────────
 executor: slurm
 use-singularity: true
-singularity-args: "-B { WORKDIR }:/data --pwd /data"
+singularity-args: "-B { WORKDIR }:/data -B { WORKDIR }/tmp:/tmp --pwd /data"   # container /tmp -> WORKDIR/tmp
 latency-wait: 60                   # seconds to wait for output files on shared file systems
 show-failed-logs: True             # print the log of a failed job
 keep-going: True                   # keep running independent jobs when one fails

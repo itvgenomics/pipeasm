@@ -144,6 +144,12 @@ class RunFCS:
             else ""
         )
         self.directory_volume_map = {}
+        # Pipeasm: mount a host directory as the container's /tmp so temporary
+        # files do not fill the server's /tmp (--tmp-dir)
+        if self.args.tmp_dir:
+            tmp_dir = os.path.abspath(self.args.tmp_dir)
+            os.makedirs(tmp_dir, exist_ok=True)
+            self.directory_volume_map["/tmp"] = Path(tmp_dir)
 
     def substitute_file_argument(self, cmd, argument, pos, volume, create_dir=False):
         self.directory_volume_map[volume] = Path(os.path.abspath(os.path.dirname(argument)))
@@ -369,6 +375,11 @@ def configure_parser(parser):
         "--env-file",
         default=None,
         help="file with environment variables",
+    )
+    parser.add_argument(
+        "--tmp-dir",
+        default=None,
+        help="host directory mounted as /tmp inside the container (Pipeasm)",
     )
     parser.add_argument(
         "--dry-run",

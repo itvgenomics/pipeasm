@@ -19,6 +19,7 @@ Options:
     --output-dir <directory>      output path (required)
     --image <file>                dockerhub address or sif file (required for singularity only)
     --container-engine <string>   default docker
+    --tmp-dir <directory>         host directory mounted as /tmp inside the container (optional)
 
     Taxonomy (exactly one required):
     --prok                        prokaryotes
@@ -60,6 +61,10 @@ do
         CONTAINER_ENGINE=$2
         shift
         ;;
+    --tmp-dir)
+      TMP_DIR="$2"
+      shift
+      ;;
     -*)
       echo "invalid option : '$1'"
       usage 10
@@ -91,6 +96,15 @@ if [[ $? != 0 ]] ; then
 fi
 
 
+# Pipeasm: mount --tmp-dir as the container's /tmp so temporary files do not fill the server's /tmp
+TMP_BIND=()
+if [[ -n "$TMP_DIR" ]]
+then
+  mkdir -p "$TMP_DIR"
+  EXPANDED_TMP=$(readlink -e "$TMP_DIR")
+  TMP_BIND=(--bind "$EXPANDED_TMP:/tmp")
+fi
+
 FASTA_DIRNAME=$(dirname "$EXPANDED_FASTA")
 FASTA_FILENAME=$(basename "$EXPANDED_FASTA")
 
@@ -117,7 +131,7 @@ then
   if [[ -n "$SINGULARITY_IMAGE" ]]
   then
     singularity run $CONTAINER --bind $FASTA_DIRNAME:/sample-volume/ \
-        --bind $EXPANDED_OUTPUT:/output-volume/ $SINGULARITY_IMAGE \
+        --bind $EXPANDED_OUTPUT:/output-volume/ "${TMP_BIND[@]}" $SINGULARITY_IMAGE \
         /app/fcs/bin/av_screen_x -o /output-volume/ $TAX /sample-volume/$FASTA_FILENAME
   else
     echo "--image is required when specifying --container-engine singularity"
