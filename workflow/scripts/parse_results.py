@@ -99,6 +99,14 @@ def copy_files(sample):
         f"results/Scaffolding/Final_Contacts/Hap2/{sample}.merged.bam.hic_stats",
         f"results/Scaffolding/Final_Contacts/Hap1/{sample}.merged.bam.flagstats",
         f"results/Scaffolding/Final_Contacts/Hap2/{sample}.merged.bam.flagstats",
+        f"results/Scaffolding/Initial_Contacts/Primary/{sample}.merged.bam.hic_stats",
+        f"results/Scaffolding/Initial_Contacts/Alternative/{sample}.merged.bam.hic_stats",
+        f"results/Scaffolding/Initial_Contacts/Primary/{sample}.merged.bam.flagstats",
+        f"results/Scaffolding/Initial_Contacts/Alternative/{sample}.merged.bam.flagstats",
+        f"results/Scaffolding/Final_Contacts/Primary/{sample}.merged.bam.hic_stats",
+        f"results/Scaffolding/Final_Contacts/Alternative/{sample}.merged.bam.hic_stats",
+        f"results/Scaffolding/Final_Contacts/Primary/{sample}.merged.bam.flagstats",
+        f"results/Scaffolding/Final_Contacts/Alternative/{sample}.merged.bam.flagstats",
 
     ]
 

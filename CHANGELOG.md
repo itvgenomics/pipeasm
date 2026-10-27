@@ -9,14 +9,18 @@
 ### Changes
 - Split the Snakemake profile templates so each value is set in one place:
   - `config/threads.yaml`: threads per rule, shared by local and SLURM modes.
-  - `config/slurm_params.yaml`: general SLURM settings and default resources (2 GB, 72 h, partition, optional account).
+  - `config/slurm_params.yaml`: general SLURM settings and default resources.
   - `config/resources/{small,medium,large}.yaml`: memory per rule for each `genome_size`.
-  - Removed `config/{small,medium,large}_genome_params.yaml`. Only rules that differ from the defaults are listed (about 900 to 140 lines per file).
+  - Removed `config/{small,medium,large}_genome_params.yaml`. Only rules that differ from the defaults are listed.
 - `Pipeasm.sh` no longer modifies the config file: the selected steps are passed to Snakemake with `--config`.
 - Reorganized `config/config.yaml` into sections, with accepted values, examples and links for every field, and corrected descriptions of the advanced tool parameters.
 - Set `max-jobs-per-second` to 10 in SLURM mode (it was equal to `-j`).
+- The `/tmp` of every container is now mounted on `$WORKDIR/tmp`:
+  - Rules with containers: `-B { WORKDIR }/tmp:/tmp` in `singularity-args` (`config/local_params.yaml` and `config/slurm_params.yaml`).
+  - FCS-adaptor and FCS-GX: new `--tmp-dir <dir>` option in `workflow/scripts/run_fcsadaptor.sh` and `workflow/scripts/fcs.py`, used with `--tmp-dir tmp` by the decontamination rules.
 
 ### Improvements
+- Added the Hi-C mapping statistics (`{sample}.merged.bam.hic_stats` and `{sample}.merged.bam.flagstats`) of the initial and final contact maps (Hap1/Hap2, or Primary/Alternative when `diff_species_hic` is "Yes") to `workflow/report/files`, named `Initial_Contacts_<assembly>_*` and `Final_Contacts_<assembly>_*`.
 - Added a `--memory` limit to FastQC for HiFi reads.
 - Rewrote the README: quick start, software versions, hardware requirements, supported input combinations, FCS-GX database setup and troubleshooting. Moved the changelog to `CHANGELOG.md`.
 
