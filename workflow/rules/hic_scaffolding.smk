@@ -11,7 +11,7 @@ rule yahs_scaffolding_hap1:
     benchmark:
         "benchmarks/{sample}.yahs_scaffolding_hap1.txt"
     singularity:
-       f"{config["sif_dir"]}/yahs.sif"
+       sif("yahs")
     shell:
         """
         samtools faidx {input.fasta} >> {log} 2>&1 && \
@@ -31,7 +31,7 @@ rule yahs_scaffolding_hap2:
     benchmark:
         "benchmarks/{sample}.yahs_scaffolding_hap2.txt"
     singularity:
-       f"{config["sif_dir"]}/yahs.sif"
+       sif("yahs")
     shell:
         """
         samtools faidx {input.fasta} >> {log} 2>&1 && \
@@ -51,7 +51,7 @@ rule yahs_scaffolding_prim:
     benchmark:
         "benchmarks/{sample}.yahs_scaffolding_prim.txt"
     singularity:
-       f"{config["sif_dir"]}/yahs.sif"
+       sif("yahs")
     shell:
         """
         samtools faidx {input.fasta} >> {log} 2>&1 && \
@@ -71,7 +71,7 @@ rule yahs_scaffolding_alt:
     benchmark:
         "benchmarks/{sample}.yahs_scaffolding_alt.txt"
     singularity:
-       f"{config["sif_dir"]}/yahs.sif"
+       sif("yahs")
     shell:
         """
         samtools faidx {input.fasta} >> {log} 2>&1 && \

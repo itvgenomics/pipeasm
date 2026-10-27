@@ -8,7 +8,7 @@ rule trimming_ont:
 	benchmark:
 		"benchmarks/{sample}.trimming_ont.txt"
 	singularity:
-		f"{config["sif_dir"]}/dorado.sif"
+		sif("dorado")
 	shell:
 		"""
         dorado trim {input} --emit-fastq -t {threads} > results/Trimming_QC/ONT/{wildcards.sample}_ONT.trimmed.fastq 2> {log} && \
@@ -36,7 +36,7 @@ rule qc_nanoplot_ont:
 	benchmark:
 		"benchmarks/{sample}.qc_nanoplot_ont.txt"
 	singularity:
-		f"{config["sif_dir"]}/nanoplot.sif"
+		sif("nanoplot")
 	shell:
 		"""
 		NanoPlot -t {threads} \

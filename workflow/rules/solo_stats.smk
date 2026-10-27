@@ -10,7 +10,7 @@ rule solo_gfastats_fasta_primary:
     benchmark:
         "benchmarks/{sample}.solo_gfastats_fasta_primary.txt"
     singularity:
-        f"{config["sif_dir"]}/gfastats.sif"
+        sif("gfastats")
     shell:
         """
         bash -c 'gfastats -f {input} \
@@ -30,7 +30,7 @@ rule solo_gfastats_stats_primary:
     benchmark:
         "benchmarks/{sample}.solo_gfastats_stats_primary.txt"
     singularity:
-        f"{config["sif_dir"]}/gfastats.sif"
+        sif("gfastats")
     shell:
         """
         bash -c 'gfastats -f {input} \
@@ -49,7 +49,7 @@ rule solo_gfastats_fasta_alt:
     benchmark:
         "benchmarks/{sample}.solo_gfastats_fasta_alt.txt"
     singularity:
-        f"{config["sif_dir"]}/gfastats.sif"
+        sif("gfastats")
     shell:
         """
         bash -c 'gfastats -f {input} \
@@ -69,7 +69,7 @@ rule solo_gfastats_stats_alt:
     benchmark:
         "benchmarks/{sample}.solo_gfastats_stats_alt.txt"
     singularity:
-        f"{config["sif_dir"]}/gfastats.sif"
+        sif("gfastats")
     shell:
         """
         bash -c 'gfastats -f {input} \

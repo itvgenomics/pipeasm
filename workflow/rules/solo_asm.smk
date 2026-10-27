@@ -12,7 +12,7 @@ rule solo_assembly:
     benchmark:
         "benchmarks/{sample}.solo_assembly.txt"
     singularity:
-        f"{config["sif_dir"]}/hifiasm.sif"
+        sif("hifiasm")
     shell:
         """
         hifiasm -t {threads} {params} \

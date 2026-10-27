@@ -21,7 +21,7 @@ rule solo_run_snailplot_create_primary:
     benchmark:
         "benchmarks/{sample}.solo_run_snailplot_create_primary.txt"
     singularity:
-        f"{config["sif_dir"]}/blobtoolkit.sif"
+        sif("blobtoolkit")
     shell:
         """
         blobtools create --replace \
@@ -45,7 +45,7 @@ rule solo_run_snailplot_plot_primary:
     benchmark:
         "benchmarks/{sample}.solo_run_snailplot_plot_primary.txt"
     singularity:
-        f"{config["sif_dir"]}/blobtoolkit.sif"
+        sif("blobtoolkit")
     shell:
         """
         blobtools view --plot --view snail results/Assembly/Genome_Stats/SnailPlot/Solo_Asm/00-Solo-Hap1/ >> {log} 2>&1 && \
@@ -63,7 +63,7 @@ rule solo_run_snailplot_create_alt:
     benchmark:
         "benchmarks/{sample}.solo_run_snailplot_create_alt.txt"
     singularity:
-        f"{config["sif_dir"]}/blobtoolkit.sif"
+        sif("blobtoolkit")
     shell:
         """
         blobtools create --replace \
@@ -87,7 +87,7 @@ rule solo_run_snailplot_plot_alt:
     benchmark:
         "benchmarks/{sample}.solo_run_snailplot_plot_alt.txt"
     singularity:
-        f"{config["sif_dir"]}/blobtoolkit.sif"
+        sif("blobtoolkit")
     shell:
         """
         blobtools view --plot --view snail results/Assembly/Genome_Stats/SnailPlot/Solo_Asm/01-Solo-Hap2/ >> {log} 2>&1 && \

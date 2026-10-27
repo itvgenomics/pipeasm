@@ -6,7 +6,7 @@ rule download_buscodb:
     log:
         "logs/{sample}.download_buscodb.log"
     singularity:
-        f"{config["sif_dir"]}/compleasm.sif"
+        sif("compleasm")
     shell:
         """
         bash -c 'mkdir {output} && \

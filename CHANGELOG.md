@@ -17,6 +17,7 @@
 - Set `max-jobs-per-second` to 10 in SLURM mode (it was equal to `-j`).
 - Updated `PretextMap` to version 0.2.4 and `PretextSnapshot` to version 0.1.1 in the new `itvdsbioinfo/hic_mapping:1.1` image. Removed the unused `PretextGraph` and `pretext-suite`.
 - Hi-C contact maps are now built with `PretextMap --ultraRes`. The Pretext rules now request 50 GB of RAM and 4 threads.
+- Container images are now listed in `workflow/containers.yaml` and saved in `sif_dir` as `<name>_<tag>.sif`. The rules use `sif("<name>")`, so updating a tag makes Pipeasm pull and use the new image, while older versions stay available.
 - The `/tmp` of every container is now mounted on `$WORKDIR/tmp`:
   - Rules with containers: `-B { WORKDIR }/tmp:/tmp` in `singularity-args` (`config/local_params.yaml` and `config/slurm_params.yaml`).
   - FCS-adaptor and FCS-GX: new `--tmp-dir <dir>` option in `workflow/scripts/run_fcsadaptor.sh` and `workflow/scripts/fcs.py`, used with `--tmp-dir tmp` by the decontamination rules.
@@ -27,6 +28,8 @@
 - Rewrote the README: quick start, software versions, hardware requirements, supported input combinations, FCS-GX database setup and troubleshooting. Moved the changelog to `CHANGELOG.md`.
 
 ### Bug Fixes
+- An updated image was never used when a `.sif` with the same name already existed in `sif_dir`.
+- An interrupted image pull left a partial `.sif` that was reused in later runs. Pulls now go to a temporary file that is renamed only when complete.
 - `phased_run_mitohifi` and `solo_run_mitohifi` wrote the same benchmark file (`{sample}.run_mitohifi.txt`); they now write `{sample}.phased_run_mitohifi.txt` and `{sample}.solo_run_mitohifi.txt`.
 - Fixed the SLURM resources of `scaffolding_merqury_prim` (listed as `scaffolding_merqury_alt`), which ran with 1 thread and Snakemake's default memory when `diff_species_hic` was "Yes".
 - Removed stale or misspelled rule names from the thread settings (`remove_buscodb`, `caffolding_gfastats_stats_alt`, `scaffolding_edit_busco_table_alt`).

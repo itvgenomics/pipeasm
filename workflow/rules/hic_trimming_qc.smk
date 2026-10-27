@@ -15,7 +15,7 @@ rule trimming_hic:
 	benchmark:
 		"benchmarks/{sample}.trimming_hic.txt"
 	singularity:
-		f"{config["sif_dir"]}/fastp.sif"
+		sif("fastp")
 	shell:
 		"""
 		fastp --in1 {input.r1} --in2 {input.r2} \
@@ -33,7 +33,7 @@ rule qc_trim_hic:
 	benchmark:
 		"benchmarks/{sample}.qc_trim_hic.txt"
 	singularity:
-		f"{config["sif_dir"]}/fastqc.sif"
+		sif("fastqc")
 	params:
 		outdir="results/Trimming_QC/QC/HiC_FastQC/"
 	shell:

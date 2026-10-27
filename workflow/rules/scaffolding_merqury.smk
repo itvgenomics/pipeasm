@@ -19,7 +19,7 @@ rule scaffolding_merqury:
 	params:
 		outdir="results/Scaffolding/Scaffolding_stats/MerquryFK"
 	singularity:
-		f"{config["sif_dir"]}/fkutils.sif"
+		sif("fkutils")
 	shell:
 		"""
 		mkdir -p {params.outdir} && \
@@ -47,7 +47,7 @@ rule scaffolding_merqury_prim:
 	params:
 		outdir="results/Scaffolding/Scaffolding_stats/MerquryFK"
 	singularity:
-		f"{config["sif_dir"]}/fkutils.sif"
+		sif("fkutils")
 	shell:
 		"""
 		mkdir -p {params.outdir} && \

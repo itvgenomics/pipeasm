@@ -10,7 +10,7 @@ rule scaffolding_gfastats_stats_hap1:
     benchmark:
         "benchmarks/{sample}.scaffolding_gfastats_stats_hap1.txt"
     singularity:
-        f"{config["sif_dir"]}/gfastats.sif"
+        sif("gfastats")
     shell:
         """
         bash -c 'gfastats -f {input} \
@@ -29,7 +29,7 @@ rule scaffolding_gfastats_stats_hap2:
     benchmark:
         "benchmarks/{sample}.scaffolding_gfastats_stats_hap2.txt"
     singularity:
-        f"{config["sif_dir"]}/gfastats.sif"
+        sif("gfastats")
     shell:
         """
         bash -c 'gfastats -f {input} \
@@ -48,7 +48,7 @@ rule scaffolding_gfastats_stats_prim:
     benchmark:
         "benchmarks/{sample}.scaffolding_gfastats_stats_prim.txt"
     singularity:
-        f"{config["sif_dir"]}/gfastats.sif"
+        sif("gfastats")
     shell:
         """
         bash -c 'gfastats -f {input} \
@@ -67,7 +67,7 @@ rule scaffolding_gfastats_stats_alt:
     benchmark:
         "benchmarks/{sample}.scaffolding_gfastats_stats_alt.txt"
     singularity:
-        f"{config["sif_dir"]}/gfastats.sif"
+        sif("gfastats")
     shell:
         """
         bash -c 'gfastats -f {input} \

@@ -22,7 +22,7 @@ rule phased_run_snailplot_create_hap1:
     benchmark:
         "benchmarks/{sample}.phased_run_snailplot_create_hap1.txt"
     singularity:
-        f"{config["sif_dir"]}/blobtoolkit.sif"
+        sif("blobtoolkit")
     shell:
         """
         blobtools create --replace \
@@ -46,7 +46,7 @@ rule phased_run_snailplot_plot_hap1:
     benchmark:
         "benchmarks/{sample}.phased_run_snailplot_plot_hap1.txt"
     singularity:
-        f"{config["sif_dir"]}/blobtoolkit.sif"
+        sif("blobtoolkit")
     shell:
         """
         blobtools view --plot --view snail results/Assembly/Genome_Stats/SnailPlot/Phased_Asm/Phased-Hap1/ >> {log} 2>&1 && \
@@ -64,7 +64,7 @@ rule phased_run_snailplot_create_hap2:
     benchmark:
         "benchmarks/{sample}.phased_run_snailplot_create_hap2.txt"
     singularity:
-        f"{config["sif_dir"]}/blobtoolkit.sif"
+        sif("blobtoolkit")
     shell:
         """
         blobtools create --replace \
@@ -88,7 +88,7 @@ rule phased_run_snailplot_plot_hap2:
     benchmark:
         "benchmarks/{sample}.phased_run_snailplot_plot_hap2.txt"
     singularity:
-        f"{config["sif_dir"]}/blobtoolkit.sif"
+        sif("blobtoolkit")
     shell:
         """
         blobtools view --plot --view snail results/Assembly/Genome_Stats/SnailPlot/Phased_Asm/Phased-Hap2/ >> {log} 2>&1 && \

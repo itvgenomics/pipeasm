@@ -1,64 +1,81 @@
-import os
-import subprocess
-import argparse
+"""Pull the Singularity images listed in workflow/containers.yaml into sif_dir.
 
-parser = argparse.ArgumentParser(description="Process some Docker images.")
+Each image is saved as <name>_<tag>.sif (see sif_name), the same path the
+rules get from sif("<name>") in workflow/rules/common.smk. Images that already
+exist are skipped. Each pull goes to a temporary file that is renamed only when
+the pull succeeds, so an interrupted pull never leaves a partial .sif behind.
+"""
+
+import argparse
+import os
+import re
+import subprocess
+import sys
+
+import yaml
+
+parser = argparse.ArgumentParser(description="Pull the Pipeasm Singularity images.")
 parser.add_argument(
     "--config", type=str, required=True, help="Path to the configuration YAML file"
 )
-
-args = parser.parse_args()
-
-
-def read_yaml(file_path):
-    sif_dir = None
-    with open(file_path, "r") as file:
-        for line in file:
-            # Strip whitespace and check for the sif_dir key
-            line = line.strip()
-            if line.startswith("sif_dir:"):
-                # Extract the value after the colon and strip whitespace
-                sif_dir = line.split(":", 1)[1].strip()
-                break
-    return sif_dir
+parser.add_argument(
+    "--containers",
+    type=str,
+    default=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "containers.yaml"),
+    help="Container registry (default: workflow/containers.yaml)",
+)
 
 
-docker_images = [
-    "itvdsbioinfo/hic_mapping:1.1",
-    "itvdsbioinfo/yahs:1.2a.2",
-    "staphb/fastp:0.23.4",
-    "staphb/fastqc:0.12.1",
-    "itvdsbioinfo/fkutils:1.2",
-    "pipecraft/cutadapt:4.4",
-    "itvdsbioinfo/hifiasm:0.25.0",
-    "nanoporetech/dorado:shae36d1b49fe470a60e006afad90bedd2fc2774a89",
-    "staphb/nanoplot:1.41.6",
-    "genomehubs/blobtoolkit:4.3.5",
-    "itvdsbioinfo/compleasm:0.2.8",
-    "ghcr.io/marcelauliano/mitohifi:master",
-    "staphb/gfastats:1.3.6",
-]
+def sif_name(name, image):
+    """<name>_<tag>.sif; must match sif() in workflow/rules/common.smk."""
+    tag = image.rsplit(":", 1)[1] if ":" in image.split("/")[-1] else "latest"
+    return f"{name}_{re.sub(r'[^A-Za-z0-9._-]', '_', tag)}.sif"
 
-sif_dir = read_yaml(args.config)
-sif_dir = sif_dir.replace('"', "").replace("'", "")
 
-os.makedirs(os.path.abspath(sif_dir), exist_ok=True)
+def main():
+    args = parser.parse_args()
 
-for image in docker_images:
-    print(f"INFO: Fetching {image} to {sif_dir}.")
+    with open(args.config) as handle:
+        sif_dir = str((yaml.safe_load(handle) or {}).get("sif_dir") or "").strip()
+    if not sif_dir:
+        print("ERROR: 'sif_dir' is not set in the configuration file.")
+        sys.exit(1)
+    with open(args.containers) as handle:
+        containers = yaml.safe_load(handle) or {}
 
-    # Construct the singularity pull command with output directory
-    output_file = os.path.join(
-        os.path.abspath(sif_dir), f"{image.split('/')[-1].split(':')[0]}.sif"
-    )
+    sif_dir = os.path.abspath(sif_dir)
+    os.makedirs(sif_dir, exist_ok=True)
 
-    # Check if the SIF file already exists
-    if os.path.exists(output_file):
-        print(f"INFO: {output_file} already exists. Skipping pull for {image}.")
-        continue
+    failed = []
+    for name, image in containers.items():
+        output_file = os.path.join(sif_dir, sif_name(name, image))
 
-    command = f"singularity pull {output_file} docker://{image}"
+        if os.path.exists(output_file):
+            print(f"INFO: {output_file} already exists. Skipping pull for {image}.")
+            continue
 
-    # Execute the command
-    subprocess.run(command, shell=True, check=True)
-    print(f"INFO: Successfully pulled {image} to {output_file}")
+        print(f"INFO: Fetching {image} to {output_file}.")
+        partial_file = output_file + ".partial"
+        if os.path.exists(partial_file):
+            os.remove(partial_file)
+
+        result = subprocess.run(["singularity", "pull", partial_file, f"docker://{image}"])
+        if result.returncode != 0 or not os.path.exists(partial_file):
+            if os.path.exists(partial_file):
+                os.remove(partial_file)
+            failed.append((image, output_file))
+            continue
+
+        os.replace(partial_file, output_file)
+        print(f"INFO: Successfully pulled {image} to {output_file}")
+
+    if failed:
+        print(f"ERROR: Could not pull {len(failed)} image(s). If this machine has no internet access, "
+              "pull them on another machine and copy them to sif_dir:")
+        for image, output_file in failed:
+            print(f"  singularity pull {os.path.basename(output_file)} docker://{image}   # -> {output_file}")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,4 +1,17 @@
 import sys
+import os
+import re
+import yaml
+
+## Container images (workflow/containers.yaml), pulled by workflow/scripts/singularity.py
+with open(os.path.join(workflow.basedir, "containers.yaml")) as handle:
+    CONTAINERS = yaml.safe_load(handle)
+
+def sif(name):
+    """Path of the <name>_<tag>.sif image in sif_dir; must match sif_name() in workflow/scripts/singularity.py."""
+    image = CONTAINERS[name]
+    tag = image.rsplit(":", 1)[1] if ":" in image.split("/")[-1] else "latest"
+    return f"{config['sif_dir']}/{name}_{re.sub(r'[^A-Za-z0-9._-]', '_', tag)}.sif"
 
 wildcard_constraints:
     sample = r"[A-Za-z0-9_]+"

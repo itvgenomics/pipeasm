@@ -7,7 +7,7 @@ rule download_mito_reference:
     benchmark:
         "benchmarks/{sample}.download_mito_reference.txt"
     singularity:
-        f"{config["sif_dir"]}/mitohifi.sif"
+        sif("mitohifi")
     shell:
         """
         rm -f resources/*.fasta resources/*.gb && \

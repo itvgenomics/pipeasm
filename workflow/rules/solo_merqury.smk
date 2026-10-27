@@ -16,7 +16,7 @@ rule solo_merqury:
 	params:
 		outdir="results/Assembly/Genome_Stats/MerquryFK/Solo_Asm"
 	singularity:
-		f"{config["sif_dir"]}/fkutils.sif"
+		sif("fkutils")
 	shell:
 		"""
 		mkdir -p {params.outdir} && \

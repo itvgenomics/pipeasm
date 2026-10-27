@@ -13,7 +13,7 @@ rule solo_run_mitohifi:
     params:
         config["geneticcode"]
     singularity:
-        f"{config["sif_dir"]}/mitohifi.sif"
+        sif("mitohifi")
     shell:
         """
         cat {input.hifi_hap1} {input.hifi_hap2} >> results/Assembly/Mitogenome/Solo_Asm/concat.fasta && \

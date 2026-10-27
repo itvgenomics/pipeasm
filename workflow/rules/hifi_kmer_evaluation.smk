@@ -12,7 +12,7 @@ rule fastk:
     benchmark:
         "benchmarks/{sample}.fastk.txt"
     singularity:
-        f"{config["sif_dir"]}/fkutils.sif"
+        sif("fkutils")
     shell:
         """
         mkdir -p results/Trimming_QC/FastK && \
@@ -37,7 +37,7 @@ rule genescopeFK:
     benchmark:
         "benchmarks/{sample}.genescopeFK.txt"
     singularity:
-        f"{config["sif_dir"]}/fkutils.sif"
+        sif("fkutils")
     shell:
         """
         mkdir -p {params.outdir} && \
@@ -65,7 +65,7 @@ rule smudgeplot:
     benchmark:
         "benchmarks/{sample}.smudgeplot_count.txt"
     singularity:
-        f"{config["sif_dir"]}/fkutils.sif"
+        sif("fkutils")
     shell:
         """
         mkdir -p {params.outdir} && \
@@ -83,7 +83,7 @@ rule katgc:
     benchmark:
         "benchmarks/{sample}.katgc.txt"
     singularity:
-        f"{config["sif_dir"]}/fkutils.sif"
+        sif("fkutils")
     shell:
         """
         mkdir -p results/Assembly/Genome_Stats/KatGC/ && \
@@ -106,7 +106,7 @@ rule katcomp:
     benchmark:
         "benchmarks/{sample}.katcomp.txt"
     singularity:
-        f"{config["sif_dir"]}/fkutils.sif"
+        sif("fkutils")
     shell:
         """
         mkdir -p {params.outdir} && \

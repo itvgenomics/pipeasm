@@ -10,7 +10,7 @@ rule phased_gfastats_fasta_hap1:
     benchmark:
         "benchmarks/{sample}.phased_gfastats_fasta_hap1.txt"
     singularity:
-        f"{config["sif_dir"]}/gfastats.sif"
+        sif("gfastats")
     shell:
         """
         bash -c 'gfastats -f {input} \
@@ -30,7 +30,7 @@ rule phased_gfastats_stats_hap1:
     benchmark:
         "benchmarks/{sample}.phased_gfastats_stats_hap1.txt"
     singularity:
-        f"{config["sif_dir"]}/gfastats.sif"
+        sif("gfastats")
     shell:
         """
         bash -c 'gfastats -f {input} \
@@ -49,7 +49,7 @@ rule phased_gfastats_fasta_hap2:
     benchmark:
         "benchmarks/{sample}.phased_gfastats_fasta_hap2.txt"
     singularity:
-        f"{config["sif_dir"]}/gfastats.sif"
+        sif("gfastats")
     shell:
         """
         bash -c 'gfastats -f {input} \
@@ -69,7 +69,7 @@ rule phased_gfastats_stats_hap2:
     benchmark:
         "benchmarks/{sample}.phased_gfastats_stats_hap2.txt"
     singularity:
-        f"{config["sif_dir"]}/gfastats.sif"
+        sif("gfastats")
     shell:
         """
         bash -c 'gfastats -f {input} \

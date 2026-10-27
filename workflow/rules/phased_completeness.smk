@@ -11,7 +11,7 @@ rule phased_compleasm_hap1:
     benchmark:
         "benchmarks/{sample}.phased_compleasm_hap1.txt"
     singularity:
-        f"{config["sif_dir"]}/compleasm.sif"
+        sif("compleasm")
     shell:
         """
         (bash -c 'compleasm run -a {input.fasta} \
@@ -33,7 +33,7 @@ rule phased_compleasm_hap2:
     benchmark:
         "benchmarks/{sample}.phased_compleasm_hap2.txt"
     singularity:
-        f"{config["sif_dir"]}/compleasm.sif"
+        sif("compleasm")
     shell:
         """
         (bash -c 'compleasm run -a {input.fasta} \

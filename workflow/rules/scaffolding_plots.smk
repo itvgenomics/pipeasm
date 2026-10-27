@@ -33,7 +33,7 @@ rule scaffolding_run_snailplot_create_hap1:
     benchmark:
         "benchmarks/{sample}.scaffolding_run_snailplot_create_hap1.txt"
     singularity:
-        f"{config["sif_dir"]}/blobtoolkit.sif"
+        sif("blobtoolkit")
     shell:
         """
         blobtools create --replace \
@@ -57,7 +57,7 @@ rule scaffolding_run_snailplot_plot_hap1:
     benchmark:
         "benchmarks/{sample}.scaffolding_run_snailplot_plot_hap1.txt"
     singularity:
-        f"{config["sif_dir"]}/blobtoolkit.sif"
+        sif("blobtoolkit")
     shell:
         """
         blobtools view --plot --view snail results/Scaffolding/Scaffolding_stats/SnailPlot/Hap1/ >> {log} 2>&1 && \
@@ -75,7 +75,7 @@ rule scaffolding_run_snailplot_create_hap2:
     benchmark:
         "benchmarks/{sample}.scaffolding_run_snailplot_create_hap2.txt"
     singularity:
-        f"{config["sif_dir"]}/blobtoolkit.sif"
+        sif("blobtoolkit")
     shell:
         """
         blobtools create --replace \
@@ -99,7 +99,7 @@ rule scaffolding_run_snailplot_plot_hap2:
     benchmark:
         "benchmarks/{sample}.scaffolding_run_snailplot_plot_hap2.txt"
     singularity:
-        f"{config["sif_dir"]}/blobtoolkit.sif"
+        sif("blobtoolkit")
     shell:
         """
         blobtools view --plot --view snail results/Scaffolding/Scaffolding_stats/SnailPlot/Hap2/ >> {log} 2>&1 && \
@@ -117,7 +117,7 @@ rule scaffolding_run_snailplot_create_prim:
     benchmark:
         "benchmarks/{sample}.scaffolding_run_snailplot_create_prim.txt"
     singularity:
-        f"{config["sif_dir"]}/blobtoolkit.sif"
+        sif("blobtoolkit")
     shell:
         """
         blobtools create --replace \
@@ -141,7 +141,7 @@ rule scaffolding_run_snailplot_plot_prim:
     benchmark:
         "benchmarks/{sample}.scaffolding_run_snailplot_plot_prim.txt"
     singularity:
-        f"{config["sif_dir"]}/blobtoolkit.sif"
+        sif("blobtoolkit")
     shell:
         """
         blobtools view --plot --view snail results/Scaffolding/Scaffolding_stats/SnailPlot/Primary/ >> {log} 2>&1 && \
@@ -159,7 +159,7 @@ rule scaffolding_run_snailplot_create_alt:
     benchmark:
         "benchmarks/{sample}.scaffolding_run_snailplot_create_alt.txt"
     singularity:
-        f"{config["sif_dir"]}/blobtoolkit.sif"
+        sif("blobtoolkit")
     shell:
         """
         blobtools create --replace \
@@ -183,7 +183,7 @@ rule scaffolding_run_snailplot_plot_alt:
     benchmark:
         "benchmarks/{sample}.scaffolding_run_snailplot_plot_alt.txt"
     singularity:
-        f"{config["sif_dir"]}/blobtoolkit.sif"
+        sif("blobtoolkit")
     shell:
         """
         blobtools view --plot --view snail results/Scaffolding/Scaffolding_stats/SnailPlot/Alternative/ >> {log} 2>&1 && \

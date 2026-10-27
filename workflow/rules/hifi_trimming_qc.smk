@@ -12,7 +12,7 @@ rule trimming_pacbio:
 	benchmark:
 		"benchmarks/{sample}.trimming_pacbio.txt"
 	singularity:
-		f"{config["sif_dir"]}/cutadapt.sif"
+		sif("cutadapt")
 	shell:
 		"cutadapt -j {threads} {params} -o {output} {input} >> {log} 2>&1"
 
@@ -27,7 +27,7 @@ rule qc_trim_pacbio:
 	benchmark:
 		"benchmarks/{sample}.qc_trim_pacbio.txt"
 	singularity:
-		f"{config["sif_dir"]}/fastqc.sif"
+		sif("fastqc")
 	params:
 		adapt_txt="resources/pacbio_adapters.txt",
 		outdir="results/Trimming_QC/QC/HiFi_FastQC/"
@@ -60,7 +60,7 @@ rule qc_nanoplot_pacbio:
 	benchmark:
 		"benchmarks/{sample}.qc_nanoplot_pacbio.txt"
 	singularity:
-		f"{config["sif_dir"]}/nanoplot.sif"
+		sif("nanoplot")
 	shell:
 		"""
 		NanoPlot -t {threads} \

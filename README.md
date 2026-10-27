@@ -85,7 +85,9 @@ Pipeasm integrates a suite of tools to process and assemble genomic data, produc
 
 ### Software and Containers
 
-All images are pulled automatically from Docker Hub into `sif_dir` the first time Pipeasm runs. The Dockerfiles for the `itvdsbioinfo/*` images are in [`container_files/dockerfiles`](container_files/dockerfiles).
+The images and their versions are listed in [`workflow/containers.yaml`](workflow/containers.yaml). Before each run, `Pipeasm.sh` pulls the missing ones from Docker Hub into `sif_dir` as `<name>_<tag>.sif` (e.g., `hic_mapping_1.1.sif`), so different versions can share the same `sif_dir` and an image is pulled again only when its version changes. The Dockerfiles for the `itvdsbioinfo/*` images are in [`container_files/dockerfiles`](container_files/dockerfiles).
+
+If the machine running Pipeasm has no internet access, `Pipeasm.sh` stops and prints the `singularity pull` command for each missing image. Run them on another machine and copy the `.sif` files to `sif_dir`.
 
 | Tool(s) | Version | Image |
 | --- | --- | --- |
@@ -445,7 +447,7 @@ Use it to check that Snakemake, Singularity and all containers work before runni
 - **`LockException` / "Directory cannot be locked"**: a previous run was interrupted. Run the same command with `-unlock`, then run it again without it.
 - **Incomplete outputs after a crash**: just rerun the same command. The profiles enable `rerun-incomplete` and `keep-going`, so Snakemake resumes from where it stopped.
 - **Where to look when a rule fails**: each rule writes its log to `logs/` and its resource usage to `benchmarks/` in the working directory. Snakemake also prints the failed rule's log at the end of the run, and `workflow/report/benchmark.html` shows the runtime and memory of the jobs that finished.
-- **"No space left on device"**: `singularity/` and `tmp/` in the working directory and `sif_dir` can grow large. Move the working directory to a larger file system or clean old runs.
+- **"No space left on device"**: `singularity/` and `tmp/` in the working directory and `sif_dir` can grow large. Move the working directory to a larger file system or clean old runs. Old image versions in `sif_dir` that are no longer listed in `workflow/containers.yaml` can be deleted.
 - **`ERROR: Invalid genome_size`**: `genome_size` in `config.yaml` must be `small`, `medium` or `large`, even in local mode.
 - **`-t is not allowed with -slurm`**: in SLURM mode, use `-j` for the number of queued jobs and `-partition` for the queue.
 - **`ERROR: Found N problem(s) in ...config.yaml`**: the configuration check found invalid fields. Fix each item listed and run again.

@@ -18,7 +18,7 @@ rule initial_contacts_bwa_mem2_index_hap1:
     benchmark:
         "benchmarks/{sample}.initial_contacts_bwa_mem2_index_hap1.txt"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         mkdir -p results/Scaffolding/Initial_Contacts/Hap1 && \
@@ -34,7 +34,7 @@ rule initial_contacts_bwa_mem2_index_hap2:
     benchmark:
         "benchmarks/{sample}.initial_contacts_bwa_mem2_index_hap2.txt"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         mkdir -p results/Scaffolding/Initial_Contacts/Hap2 && \
@@ -50,7 +50,7 @@ rule initial_contacts_bwa_mem2_index_prim:
     benchmark:
         "benchmarks/{sample}.initial_contacts_bwa_mem2_index_prim.txt"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         mkdir -p results/Scaffolding/Initial_Contacts/Primary && \
@@ -66,7 +66,7 @@ rule initial_contacts_bwa_mem2_index_alt:
     benchmark:
         "benchmarks/{sample}.initial_contacts_bwa_mem2_index_alt.txt"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         mkdir -p results/Scaffolding/Initial_Contacts/Alternative && \
@@ -87,7 +87,7 @@ rule initial_contacts_bwa_mem2_mapping_hap1_r1:
     params:
         tmpdir="results/Scaffolding/Initial_Contacts/Hap1/tmp1"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         mkdir -p {params.tmpdir} && \
@@ -108,7 +108,7 @@ rule initial_contacts_bwa_mem2_mapping_hap1_r2:
     params:
         tmpdir="results/Scaffolding/Initial_Contacts/Hap1/tmp2"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         mkdir -p {params.tmpdir} && \
@@ -129,7 +129,7 @@ rule initial_contacts_bwa_mem2_mapping_hap2_r1:
     params:
         tmpdir="results/Scaffolding/Initial_Contacts/Hap2/tmp1"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         mkdir -p {params.tmpdir} && \
@@ -150,7 +150,7 @@ rule initial_contacts_bwa_mem2_mapping_hap2_r2:
     params:
         tmpdir="results/Scaffolding/Initial_Contacts/Hap2/tmp2"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         mkdir -p {params.tmpdir} && \
@@ -171,7 +171,7 @@ rule initial_contacts_bwa_mem2_mapping_prim_r1:
     params:
         tmpdir="results/Scaffolding/Initial_Contacts/Primary/tmp1"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         mkdir -p {params.tmpdir} && \
@@ -192,7 +192,7 @@ rule initial_contacts_bwa_mem2_mapping_prim_r2:
     params:
         tmpdir="results/Scaffolding/Initial_Contacts/Primary/tmp2"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         mkdir -p {params.tmpdir} && \
@@ -213,7 +213,7 @@ rule initial_contacts_bwa_mem2_mapping_alt_r1:
     params:
         tmpdir="results/Scaffolding/Initial_Contacts/Alternative/tmp1"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         mkdir -p {params.tmpdir} && \
@@ -234,7 +234,7 @@ rule initial_contacts_bwa_mem2_mapping_alt_r2:
     params:
         tmpdir="results/Scaffolding/Initial_Contacts/Alternative/tmp2"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         mkdir -p {params.tmpdir} && \
@@ -254,7 +254,7 @@ rule initial_contacts_bellerophon_merge_hap1:
     benchmark:
         "benchmarks/{sample}.initial_contacts_bellerophon_merge_hap1.txt"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         bellerophon --forward {input.bam_r1} --reverse {input.bam_r2} --output {output} {params} --threads {threads} >> {log} 2>&1
@@ -273,7 +273,7 @@ rule initial_contacts_bellerophon_merge_hap2:
     benchmark:
         "benchmarks/{sample}.initial_contacts_bellerophon_merge_hap2.txt"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         bellerophon --forward {input.bam_r1} --reverse {input.bam_r2} --output {output} {params} --threads {threads} >> {log} 2>&1
@@ -292,7 +292,7 @@ rule initial_contacts_bellerophon_merge_prim:
     benchmark:
         "benchmarks/{sample}.initial_contacts_bellerophon_merge_prim.txt"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         bellerophon --forward {input.bam_r1} --reverse {input.bam_r2} --output {output} {params} --threads {threads} >> {log} 2>&1
@@ -311,7 +311,7 @@ rule initial_contacts_bellerophon_merge_alt:
     benchmark:
         "benchmarks/{sample}.initial_contacts_bellerophon_merge_alt.txt"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         bellerophon --forward {input.bam_r1} --reverse {input.bam_r2} --output {output} {params} --threads {threads} >> {log} 2>&1
@@ -328,7 +328,7 @@ rule initial_contacts_samtools_flagstats_hap1:
     benchmark:
         "benchmarks/{sample}.initial_contacts_samtools_flagstats_hap1.txt"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         samtools flagstat -@ {threads} -O tsv {input.merged_bam} > {output.flagstats} 2>{log} && \
@@ -346,7 +346,7 @@ rule initial_contacts_samtools_flagstats_hap2:
     benchmark:
         "benchmarks/{sample}.initial_contacts_samtools_flagstats_hap2.txt"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         samtools flagstat -@ {threads} -O tsv {input.merged_bam} > {output.flagstats} 2>{log} && \
@@ -364,7 +364,7 @@ rule initial_contacts_samtools_flagstats_prim:
     benchmark:
         "benchmarks/{sample}.initial_contacts_samtools_flagstats_prim.txt"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         samtools flagstat -@ {threads} -O tsv {input.merged_bam} > {output.flagstats} 2>{log} && \
@@ -382,7 +382,7 @@ rule initial_contacts_samtools_flagstats_alt:
     benchmark:
         "benchmarks/{sample}.initial_contacts_samtools_flagstats_alt.txt"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         samtools flagstat -@ {threads} -O tsv {input.merged_bam} > {output.flagstats} 2>{log} && \
@@ -402,7 +402,7 @@ rule initial_contacts_pretext_map_snapshot_hap1:
     benchmark:
         "benchmarks/{sample}.initial_contacts_pretext_map_snapshot_hap1.txt"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         samtools view -h {input.merged_bam} | PretextMap -o {output} {params.pretextmap} >> {log} 2>&1 && \
@@ -422,7 +422,7 @@ rule initial_contacts_pretext_map_snapshot_hap2:
     benchmark:
         "benchmarks/{sample}.initial_contacts_pretext_map_snapshot_hap2.txt"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         samtools view -h {input.merged_bam} | PretextMap -o {output} {params.pretextmap} >> {log} 2>&1 && \
@@ -442,7 +442,7 @@ rule initial_contacts_pretext_map_snapshot_prim:
     benchmark:
         "benchmarks/{sample}.initial_contacts_pretext_map_snapshot_prim.txt"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         samtools view -h {input.merged_bam} | PretextMap -o {output} {params.pretextmap} >> {log} 2>&1 && \
@@ -462,7 +462,7 @@ rule initial_contacts_pretext_map_snapshot_alt:
     benchmark:
         "benchmarks/{sample}.initial_contacts_pretext_map_snapshot_alt.txt"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         samtools view -h {input.merged_bam} | PretextMap -o {output} {params.pretextmap} >> {log} 2>&1 && \
@@ -482,7 +482,7 @@ rule initial_contacts_samtools_flagstats_bam_r1_hap1:
     benchmark:
         "benchmarks/{sample}.initial_contacts_samtools_flagstats_bam_r1_hap1.txt"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         samtools flagstat -@ {threads} -O tsv {input.bam_r1} > {output.flagstats_r1} 2>{log}
@@ -501,7 +501,7 @@ rule initial_contacts_samtools_flagstats_bam_r2_hap1:
     benchmark:
         "benchmarks/{sample}.initial_contacts_samtools_flagstats_bam_r2_hap1.txt"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         samtools flagstat -@ {threads} -O tsv {input.bam_r2} > {output.flagstats_r2} 2>{log}
@@ -520,7 +520,7 @@ rule initial_contacts_samtools_flagstats_bam_r1_hap2:
     benchmark:
         "benchmarks/{sample}.initial_contacts_samtools_flagstats_bam_r1_hap2.txt"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         samtools flagstat -@ {threads} -O tsv {input.bam_r1} > {output.flagstats_r1} 2>{log}
@@ -539,7 +539,7 @@ rule initial_contacts_samtools_flagstats_bam_r2_hap2:
     benchmark:
         "benchmarks/{sample}.initial_contacts_samtools_flagstats_bam_r2_hap2.txt"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         samtools flagstat -@ {threads} -O tsv {input.bam_r2} > {output.flagstats_r2} 2>{log}
@@ -558,7 +558,7 @@ rule initial_contacts_samtools_flagstats_bam_r1_prim:
     benchmark:
         "benchmarks/{sample}.initial_contacts_samtools_flagstats_bam_r1_prim.txt"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         samtools flagstat -@ {threads} -O tsv {input.bam_r1} > {output.flagstats_r1} 2>{log}
@@ -577,7 +577,7 @@ rule initial_contacts_samtools_flagstats_bam_r2_prim:
     benchmark:
         "benchmarks/{sample}.initial_contacts_samtools_flagstats_bam_r2_prim.txt"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         samtools flagstat -@ {threads} -O tsv {input.bam_r2} > {output.flagstats_r2} 2>{log}
@@ -596,7 +596,7 @@ rule initial_contacts_samtools_flagstats_bam_r1_alt:
     benchmark:
         "benchmarks/{sample}.initial_contacts_samtools_flagstats_bam_r1_alt.txt"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         samtools flagstat -@ {threads} -O tsv {input.bam_r1} > {output.flagstats_r1} 2>{log}
@@ -615,7 +615,7 @@ rule initial_contacts_samtools_flagstats_bam_r2_alt:
     benchmark:
         "benchmarks/{sample}.initial_contacts_samtools_flagstats_bam_r2_alt.txt"
     singularity:
-       f"{config["sif_dir"]}/hic_mapping.sif"
+       sif("hic_mapping")
     shell:
         """
         samtools flagstat -@ {threads} -O tsv {input.bam_r2} > {output.flagstats_r2} 2>{log}

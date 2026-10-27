@@ -11,7 +11,7 @@ rule scaffolding_compleasm_hap1:
     benchmark:
         "benchmarks/{sample}.scaffolding_compleasm_hap1.txt"
     singularity:
-        f"{config["sif_dir"]}/compleasm.sif"
+        sif("compleasm")
     shell:
         """
         (bash -c 'compleasm run -a {input.fasta} \
@@ -33,7 +33,7 @@ rule scaffolding_compleasm_hap2:
     benchmark:
         "benchmarks/{sample}.scaffolding_compleasm_hap2.txt"
     singularity:
-        f"{config["sif_dir"]}/compleasm.sif"
+        sif("compleasm")
     shell:
         """
         (bash -c 'compleasm run -a {input.fasta} \
@@ -55,7 +55,7 @@ rule scaffolding_compleasm_prim:
     benchmark:
         "benchmarks/{sample}.scaffolding_compleasm_prim.txt"
     singularity:
-        f"{config["sif_dir"]}/compleasm.sif"
+        sif("compleasm")
     shell:
         """
         (bash -c 'compleasm run -a {input.fasta} \
@@ -77,7 +77,7 @@ rule scaffolding_compleasm_alt:
     benchmark:
         "benchmarks/{sample}.scaffolding_compleasm_alt.txt"
     singularity:
-        f"{config["sif_dir"]}/compleasm.sif"
+        sif("compleasm")
     shell:
         """
         (bash -c 'compleasm run -a {input.fasta} \
