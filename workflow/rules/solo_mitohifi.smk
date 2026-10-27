@@ -9,7 +9,7 @@ rule solo_run_mitohifi:
     log:
         "logs/{sample}.run_mitohifi.log"
     benchmark:
-        "benchmarks/{sample}.run_mitohifi.txt"
+        "benchmarks/{sample}.solo_run_mitohifi.txt"
     params:
         config["geneticcode"]
     singularity:

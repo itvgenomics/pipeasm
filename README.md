@@ -340,6 +340,24 @@ All results are written to `results/`. The main files are also collected into `w
   - FastQC HTML reports (`{sample}.trimmed_fastqc.html`, `{sample}_R1.trimmed_paired_fastqc.html`, `{sample}_R2.trimmed_paired_fastqc.html`).
   - Detailed statistics, e.g. `{sample}.completeness.stats` and `{sample}.contigs_stats.tsv`.
 
+### Benchmark Report
+
+At the end of every run (but not on dry runs), Pipeasm writes an HTML report of runtime, CPU and memory usage to `workflow/report/benchmark.html`. The report is also written when some jobs fail, so it always covers the jobs finished so far. It is built from the Snakemake benchmark files in `benchmarks/`, so it only shows the rules that actually ran for your inputs and options. It includes:
+
+- Summary tiles: cumulative runtime, CPU time, peak memory, longest job and data read/written.
+- The run configuration (inputs and options that decide which rules run).
+- Runtime by stage (Trimming and QC, K-mer profiling, Assembly, Assembly statistics, Decontamination, Hi-C mapping and scaffolding, Scaffolding statistics).
+- Resources by rule: runtime, CPU time, average cores used vs. the threads set in `config/threads.yaml`, and peak memory vs. the memory requested in `config/resources/{genome_size}.yaml`. Rules using 90% or more of the requested memory are highlighted. Use this table to tune the SLURM resources for your next genomes.
+- The rules with the highest peak memory.
+
+If the report cannot be generated, the run is not affected and the reason is written to `logs/benchmark_report.log`. To rebuild it manually, run from the Pipeasm working directory:
+
+```bash
+python workflow/scripts/benchmark_report.py -c config/config.yaml
+```
+
+See `--help` for the other options (e.g., `--all-samples` when the `benchmarks/` directory holds runs of more than one sample).
+
 ### Results Directory Structure
 
 Only the directories that apply to your inputs and settings are created.
@@ -425,7 +443,7 @@ Use it to check that Snakemake, Singularity and all containers work before runni
 
 - **`LockException` / "Directory cannot be locked"**: a previous run was interrupted. Run the same command with `-unlock`, then run it again without it.
 - **Incomplete outputs after a crash**: just rerun the same command. The profiles enable `rerun-incomplete` and `keep-going`, so Snakemake resumes from where it stopped.
-- **Where to look when a rule fails**: each rule writes its log to `logs/` and its resource usage to `benchmarks/` in the working directory. Snakemake also prints the failed rule's log at the end of the run.
+- **Where to look when a rule fails**: each rule writes its log to `logs/` and its resource usage to `benchmarks/` in the working directory. Snakemake also prints the failed rule's log at the end of the run, and `workflow/report/benchmark.html` shows the runtime and memory of the jobs that finished.
 - **"No space left on device"**: `singularity/` and `tmp/` in the working directory and `sif_dir` can grow large. Move the working directory to a larger file system or clean old runs.
 - **`ERROR: Invalid genome_size`**: `genome_size` in `config.yaml` must be `small`, `medium` or `large`, even in local mode.
 - **`-t is not allowed with -slurm`**: in SLURM mode, use `-j` for the number of queued jobs and `-partition` for the queue.

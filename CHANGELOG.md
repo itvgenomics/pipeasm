@@ -3,6 +3,7 @@
 ## Pipeasm 1.1.3
 
 ### New Features
+- Added a benchmark report (`workflow/report/benchmark.html`), written at the end of every run by `workflow/scripts/benchmark_report.py`. It reads whatever benchmark files exist, so it adapts to the rules that ran, and shows runtime, CPU and memory by stage and by rule, compared with the threads and SLURM memory set in `config/`.
 - Added `workflow/scripts/check_config.py`, which validates the config file before every run and lists all problems at once (missing required fields, files not found, relative paths, invalid "Yes"/"No" values, incomplete Hi-C pairs, missing MitoHiFi fields, mismatched k-mer sizes).
 
 ### Changes
@@ -20,6 +21,7 @@
 - Rewrote the README: quick start, software versions, hardware requirements, supported input combinations, FCS-GX database setup and troubleshooting. Moved the changelog to `CHANGELOG.md`.
 
 ### Bug Fixes
+- `phased_run_mitohifi` and `solo_run_mitohifi` wrote the same benchmark file (`{sample}.run_mitohifi.txt`); they now write `{sample}.phased_run_mitohifi.txt` and `{sample}.solo_run_mitohifi.txt`.
 - Fixed the SLURM resources of `scaffolding_merqury_prim` (listed as `scaffolding_merqury_alt`), which ran with 1 thread and Snakemake's default memory when `diff_species_hic` was "Yes".
 - Removed stale or misspelled rule names from the thread settings (`remove_buscodb`, `caffolding_gfastats_stats_alt`, `scaffolding_edit_busco_table_alt`).
 - Fixed the `{ WORKDIR }` placeholder in `config/local_params.yaml`, which was not replaced in local mode, leaving the Singularity bind path as the literal `{WORKDIR}`.

@@ -63,3 +63,26 @@ rule all:
 		get_output(config["sample"])
 	script:
 		"scripts/parse_results.py"
+
+## Benchmark report (workflow/report/benchmark.html), rebuilt at the end of every
+## run, also when some jobs failed, so it reflects all benchmarks written so far.
+## Snakemake skips these handlers on dry runs.
+def build_benchmark_report():
+	import os, shlex
+	os.makedirs("logs", exist_ok=True)
+	config_path = str(workflow.configfiles[-1]) if workflow.configfiles else "config/config.yaml"
+	try:
+		shell(
+			"python workflow/scripts/benchmark_report.py "
+			f"-c {shlex.quote(config_path)} -o workflow/report/benchmark.html "
+			"> logs/benchmark_report.log 2>&1"
+		)
+		print("Benchmark report written to workflow/report/benchmark.html")
+	except Exception:
+		print("Benchmark report could not be generated, see logs/benchmark_report.log")
+
+onsuccess:
+	build_benchmark_report()
+
+onerror:
+	build_benchmark_report()
