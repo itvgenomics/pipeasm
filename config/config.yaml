@@ -18,20 +18,20 @@ solo_asm: 'No'
 
 # (Required) Estimated genome size. Can be "small", "medium", "large".
 # Small genomes are < 2 Gb, medium genomes are 2-4 Gb, and large genomes are > 4 Gb.
-# This will be used for memory allocation on slurm config files.
+# This selects the SLURM resource file (config/{genome_size}_genome_params.yaml) and must be set in both local and SLURM modes.
 genome_size: ''
 
-# Set to 'Yes' to run MitoHiFi for mitochondrial genome assembly; 'No' to skip.
+# (Required) Set to 'Yes' to run MitoHiFi for mitochondrial genome assembly; 'No' to skip.
 run_mitohifi: 'No'
-# (Optional) Scientific name of the species. Used for naming and mito annotation reference. Must be present on NCBI taxonomy database.
-# This name is used to seach a mithocondrial reference.
+# (Optional) Scientific name of the species. Used for naming and mito annotation reference. Must be present in the NCBI Taxonomy database.
+# This name is used to search for a mitochondrial reference.
 # Required if run_mitohifi is 'Yes'.
 species: ''
 # (Optional) Genetic code for mitochondrial genome annotation (e.g., 2 for vertebrates).
 # Required if run_mitohifi is 'Yes'.
 geneticcode:
 
-# Set to 'Yes' if Hi-C data is from a different species; otherwise 'No'.
+# (Required) Set to 'Yes' if Hi-C data is from a different species; otherwise 'No'.
 # This will run Hifiasm with solo assembly primary mode and run YAHS scaffolding only on this assembly.
 # The final pretext map will still be generated before and after scaffolding.
 diff_species_hic: "No"
@@ -75,7 +75,7 @@ fastk:
 ## GeneScopeFK parameters
 # Used for estimating genome properties from k-mer histogram.
 genescopeFK:
-  kmer: "-k 31"  # K-mer size (should match meryl).
+  kmer: "-k 31"  # K-mer size (should match FastK).
   ploidy: "-p 2"  # Ploidy level; usually 2 for diploids.
 
 ## Parameters for SmudgePlot

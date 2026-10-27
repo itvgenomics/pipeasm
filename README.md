@@ -1,392 +1,432 @@
 # Pipeasm: a tool for automated large chromosome-scale genome assembly and evaluation
 
+[![DOI](https://img.shields.io/badge/DOI-10.1093%2Fbioadv%2Fvbaf326-blue)](https://doi.org/10.1093/bioadv/vbaf326)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+[![Snakemake](https://img.shields.io/badge/snakemake-8.5.1-brightgreen.svg)](https://snakemake.readthedocs.io)
+[![Release](https://img.shields.io/github/v/tag/itvgenomics/pipeasm?label=release)](https://github.com/itvgenomics/pipeasm/tags)
+
 <p align="center">
-  <img src="https://github.com/itvgenomics/pipeasm/blob/main/Pipeasm.png" alt="Pipeasm Logo"/>
+  <img src="Pipeasm.png" alt="Pipeasm Logo"/>
 </p>
 
-Pipeasm is the streamlining of the VGP and DToL assembly pipelines. The pipeline is written in Snakemake, a powerful workflow management system for creating and executing data analysis pipelines, and both container daemons Docker and Singularity. This document will guide you through the installation process of these software on Linux.
+Pipeasm streamlines the VGP and DToL assembly pipelines into a single automated workflow. It is written in [Snakemake](https://snakemake.readthedocs.io) and runs every tool inside Singularity containers, so the only software you need to install is Snakemake and Singularity.
 
-## How to cite Pipeasm
+## Table of Contents
 
+- [Quick Start](#quick-start)
+- [How Pipeasm Works](#how-pipeasm-works)
+- [Installation](#installation)
+- [Hardware Requirements](#hardware-requirements)
+- [Inputs and Configuration](#inputs-and-configuration)
+- [Running Pipeasm](#running-pipeasm)
+- [Outputs](#outputs)
+- [Test Dataset](#test-dataset)
+- [Troubleshooting](#troubleshooting)
+- [How to Cite](#how-to-cite)
+- [Changelog](#changelog)
+
+## Quick Start
+
+```bash
+# 1. Create an environment with Snakemake and Singularity
+conda create -n pipeasm -c conda-forge -c bioconda python=3.11 singularity=3.8.5 snakemake=8.5.1
+conda activate pipeasm
+
+# 2. Clone the repository
+git clone https://github.com/itvgenomics/pipeasm.git
+cd pipeasm
+
+# 3. Fill in config/config.yaml (sample, reads, taxid, buscodb, genome_size, sif_dir, ...)
+
+# 4. Dry run: checks inputs, pulls the container images and builds the job graph
+bash Pipeasm.sh -d . -t 32 -np
+
+# 5. Run
+bash Pipeasm.sh -d . -t 32
 ```
-Bruno Marques Silva, Fernanda de Jesus Trindade, Lucas Eduardo Costa Canesin, Giordano Souza, Alexandre Aleixo, Gisele Nunes, Renato Renison Moreira-Oliveira, Pipeasm: a tool for automated large chromosome-scale genome assembly and evaluation, Bioinformatics Advances, Volume 6, Issue 1, 2026, vbaf326, https://doi.org/10.1093/bioadv/vbaf326
-```
 
-## How Pipeasm works?
+## How Pipeasm Works
 
-Pipeasm is a Snakemake-based workflow that integrates a suite of tools to process and assemble genomic data, producing comprehensive reports and statistics. The pipeline is organized into six main steps, as shown in the schematic diagram.
+Pipeasm integrates a suite of tools to process and assemble genomic data, producing comprehensive reports and statistics. The workflow is organized into six main steps:
 
 <p align="center">
-  <img src="https://github.com/itvgenomics/pipeasm/blob/main/workflow.png" alt="Workflow"/>
+  <img src="workflow.png" alt="Workflow"/>
 </p>
 
 1. **Trimming and Quality Control (QC)**
-- Pipeasm can use **PacBio high-fidelity (HiFi-CCS) long reads**, **Oxford Nanopore Long-Reads (ONT)**, and **chromatin-contact (Hi-C) Illumina short reads**.
-- **Trimming**: It uses `Cutadapt` for HiFi reads, `Fastp` for Hi-C reads and `Dorado` for ONT reads, to remove adapters and primers.
-- **Quality Assessment**: `FastQC` and `Nanoplot` perform quality control on the reads.
+   - Accepts **PacBio HiFi (CCS) long reads**, **Oxford Nanopore (ONT) long reads** and **Hi-C Illumina paired-end short reads**.
+   - **Trimming**: `Cutadapt` for HiFi reads, `fastp` for Hi-C reads and `Dorado` for ONT reads, to remove adapters and primers.
+   - **Quality assessment**: `FastQC` and `NanoPlot`.
 
-2. **K-mer Profiling**
-- After trimming, the pipeline performs a series of analyses on the HiFi long reads to gather detailed genomic statistics.
-- **K-mer Counting**: `FastK` counts and evaluates K-mers.
-- **Genome Statistics**: `GenomeScope2` estimates genome size, heterozygosity, and repeat content.
-- **Ploidy Identification**: `SmudgePlot` identifies ploidy levels through K-mer distribution analysis.
-- **Graphical Representation**: `KAT-GCP` provides graphical representations of K-mer spectra to help identify genomic features and contaminants.
+2. **K-mer Profiling** (HiFi reads)
+   - **K-mer counting**: `FastK`.
+   - **Genome statistics**: `GeneScopeFK` estimates genome size, heterozygosity and repeat content.
+   - **Ploidy**: `Smudgeplot` infers ploidy from k-mer pairs.
+   - **K-mer spectra**: `KatGC` and `KatComp` (from `MerquryFK`) plot k-mer spectra to help identify genomic features and contaminants.
 
 3. **Assembly**
-- This is the core of the pipeline where the genome is assembled.
-- **Hifiasm** produces haplotype-resolved genomes, which is crucial for creating accurate and contiguous assemblies.
-- **Mitogenome Assembly**: `MitoHiFi` recovers the mitochondrial genome.
+   - `Hifiasm` produces haplotype-resolved (Hi-C phased) or primary/alternate assemblies. ONT reads, when provided, are integrated as ultra-long reads (`--ul`).
+   - **Mitogenome** (optional): `MitoHiFi` recovers the mitochondrial genome.
 
 4. **Assembly Statistics**
-- After assembly, the pipeline generates a fasta file and collects detailed statistics on the assembled genome.
-- **Summaries and Statistics**: `GFAstats` generates the fasta file and provides statistics like contig lengths, N50 values, and scaffold counts.
-- **Completeness Evaluation**: `Compleasm` assesses gene-space completeness by comparing the assembled genome against BUSCO databases.
-- **Quality Assessment**: `Merqury` counts assembled K-mers and compares them to the FastK output.
-- **Visualization**: `Snailplot`, which is a part of BlobToolkit , provides a visual overview of the assembled genome.
+   - **Summary statistics**: `gfastats` converts the assembly graph to FASTA and reports contig counts, N50, etc.
+   - **Completeness**: `Compleasm` assesses gene-space completeness against BUSCO lineages.
+   - **K-mer QV and completeness**: `MerquryFK` compares assembled k-mers with the read k-mers.
+   - **Visualization**: Snail plots from `BlobToolkit`.
 
-5. **Decontamination**
-- This step eliminates remaining contaminants from the assembled genome.
-- `FCS Adaptor` removes adapters, and `FCS-GX` targets other contaminants.
+5. **Decontamination** (optional)
+   - `FCS-adaptor` removes adapters and `FCS-GX` removes other contaminants.
 
-6. **Hi-C Mapping and Scaffolding**
-- This final stage links contigs into longer, chromosome-scale scaffolds.
-- **Mapping**: `BWA-MEM2` is used for genome indexing and mapping Hi-C reads.
-- **Sorting and Filtering**: Aligned reads are sorted with `SAMtools`, and low-quality and duplicated reads are filtered and merged using `Bellerophon`.
-- **Scaffolding**: `YAHS` links the contigs into longer scaffolds, enhancing the assembly.
-- **Visualization**: `Pretext` tools (Map and Snapshot) convert the mapping results into visual representations of Hi-C contact maps
+6. **Hi-C Mapping and Scaffolding** (requires Hi-C reads)
+   - **Mapping**: `BWA-MEM2` indexes the assembly and maps the Hi-C reads.
+   - **Filtering**: reads are sorted with `SAMtools`, then filtered and merged with `Bellerophon`.
+   - **Scaffolding**: `YaHS` links contigs into chromosome-scale scaffolds.
+   - **Contact maps**: `PretextMap` and `PretextSnapshot` produce Hi-C contact maps before and after scaffolding.
 
-## How to Install Pipeasm Enviroment on Linux
+### Software and Containers
+
+All images are pulled automatically from Docker Hub into `sif_dir` the first time Pipeasm runs. The Dockerfiles for the `itvdsbioinfo/*` images are in [`container_files/dockerfiles`](container_files/dockerfiles).
+
+| Tool(s) | Version | Image |
+| --- | --- | --- |
+| Cutadapt | 4.4 | `pipecraft/cutadapt:4.4` |
+| fastp | 0.23.4 | `staphb/fastp:0.23.4` |
+| FastQC | 0.12.1 | `staphb/fastqc:0.12.1` |
+| NanoPlot | 1.41.6 | `staphb/nanoplot:1.41.6` |
+| Dorado | pinned build | `nanoporetech/dorado:shae36d1b49fe470a60e006afad90bedd2fc2774a89` |
+| FastK / MerquryFK / GeneScopeFK / Smudgeplot | 1.2 / 1.2 / 1.0.0 / 0.5.3 | `itvdsbioinfo/fkutils:1.2` |
+| Hifiasm | 0.25.0 | `itvdsbioinfo/hifiasm:0.25.0` |
+| MitoHiFi | master | `ghcr.io/marcelauliano/mitohifi:master` |
+| gfastats | 1.3.6 | `staphb/gfastats:1.3.6` |
+| Compleasm | 0.2.8 | `itvdsbioinfo/compleasm:0.2.8` |
+| BlobToolkit | 4.3.5 | `genomehubs/blobtoolkit:4.3.5` |
+| FCS-adaptor / FCS-GX | latest | `ncbi/fcs-adaptor:latest`, `ncbi/fcs-gx:latest` |
+| BWA-MEM2 / SAMtools / Bellerophon / PretextMap / PretextSnapshot | 2.2.1 / 1.19 / 1.0 / 0.1.9 / 0.0.4 | `itvdsbioinfo/hic_mapping:1.0` |
+| YaHS | 1.2a.2 | `itvdsbioinfo/yahs:1.2a.2` |
+
+## Installation
 
 ### Prerequisites
-Before installing the required software, make sure you have the following:
-- A Linux-based operating system (e.g., Ubuntu, CentOS, Fedora)
-- Python (version 3.5 or later) installed on your system
+- A Linux operating system (e.g., Ubuntu, CentOS, Fedora).
+- [Conda](https://conda.io/projects/conda/en/latest/user-guide/install/index.html) or [Mamba](https://mamba.readthedocs.io/en/latest/installation/mamba-installation.html).
+- Python 3.11 or later (required by Snakemake 8). It is installed in the environment below.
 
-### Snakemake/Singularity/Docker Instalation
-1. - **Install Conda or Mamba**: The pipeline requires a conda/mamba installation with snakemake and singularity installed in the base environment. You can find the installation steps [here](https://conda.io/projects/conda/en/latest/user-guide/install/index.html) and [here](https://mamba.readthedocs.io/en/latest/installation/mamba-installation.html). Then activate the base environment and install:
-  ```
-  conda install -c bioconda -c conda-forge singularity=3.8.5 snakemake=8.5.1
-  ```
-  or
-  ```
-  mamba install -c bioconda -c conda-forge singularity=3.8.5 snakemake=8.5.1
-  ```
+### Snakemake and Singularity
+Create a dedicated environment (recommended):
 
-  - You can also create a conda new enviroment:
-  ```
-  conda create -n snakemake -c bioconda -c conda-forge singularity=3.8.5 snakemake=8.5.1
+```bash
+conda create -n pipeasm -c conda-forge -c bioconda python=3.11 singularity=3.8.5 snakemake=8.5.1
+conda activate pipeasm
+```
 
-  conda activate snakemake
-  ```
+Or install them in an existing environment:
 
-**Make sure you are installing Singularity, Snakemake and Docker compatible versions.**
+```bash
+mamba install -c conda-forge -c bioconda singularity=3.8.5 snakemake=8.5.1
+```
 
-2. - **Install Docker**: Docker installation can be found [here](https://docs.docker.com/engine/install/). If you instal the above recommended versions, use the Docker 24.0.7 version.
+**Docker is optional.** Pipeasm pulls Docker Hub images through Singularity (`singularity pull docker://...`), so Docker is only needed if you want to rebuild the images from [`container_files/dockerfiles`](container_files/dockerfiles) (tested with Docker 24.0.7).
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/itvgenomics/pipeasm.git
+cd pipeasm
+```
 
 ### Additional Resources
-- [Snakemake Documentation](https://snakemake.readthedocs.io/en/stable/)
-- [Snakemake GitHub Repository](https://github.com/snakemake/snakemake)
+- [Snakemake documentation](https://snakemake.readthedocs.io/en/stable/)
+- [Snakemake GitHub repository](https://github.com/snakemake/snakemake)
 
-## How to run the Pipeasm Workflow
+## Hardware Requirements
 
-### 1. Clone the Snakemake Repository from GitHub
-- Open your terminal.
-- Navigate to the directory where you want to clone the repository.
-- Run the following command to clone the repository:
-  ```bash
-  git clone https://github.com/itvgenomics/pipeasm.git
-  ```
+Pipeasm targets HPC nodes or large workstations. By default, the heavy rules use **31 threads**, so a node with at least **32 cores** is recommended.
 
-### 2. Navigate to the Cloned Repository
-- Change directory to the cloned repository:
-  ```bash
-  cd <repository_name>
-  ```
-  Replace `<repository_name>` with the name of the cloned repository directory.
+The memory requested per rule depends on `genome_size` (see `config/{small,medium,large}_genome_params.yaml`). The table shows the largest requests:
 
-### 3. Check Raw Data
-- Check if your HiFi/Hi-C/ONT reads are available and joint in its respective files and compressed with gzip:
-  - /path/to/hifi_reads/hifi_reads.fasq.gz
-  - /path/to/hic_reads/r1_reads.fasq.gz
-  - /path/to/hic_reads/r2_reads.fasq.gz
-  - /path/to/ont_reads/ont_reads.fasq.gz
+| `genome_size` | Genome size | Hifiasm assembly | FCS-GX (if enabled) | BWA-MEM2 index |
+| --- | --- | --- | --- | --- |
+| `small` | < 2 Gb | 200 GB | 480 GB | 40 GB |
+| `medium` | 2–4 Gb | 400 GB | 480 GB | 120 GB |
+| `large` | > 4 Gb | 800 GB | 480 GB | 240 GB |
 
-### 4. Configure the Pipeline
-- Edit the configuration file according to your requirements at the `config` directory.
-  - `config.yaml`: General configuration settings.
-    ```bash
-    vim config/config.yaml
-    ```
+- **Without decontamination** (`gxdb` empty), the peak memory is set by the Hifiasm assembly step.
+- **With decontamination**, FCS-GX needs ~480–512 GB of RAM to hold its database in memory (see [FCS-GX Database](#fcs-gx-database)).
+- **Disk**: plan for several times the size of the raw reads (trimmed reads, FastK tables, BAM files and intermediate assemblies), plus the container images in `sif_dir` and, if used, ~470 GB for the FCS-GX database.
 
-The fields to be edited are the following:
+**Reference runtimes** (from the [Pipeasm paper](https://doi.org/10.1093/bioadv/vbaf326); Intel Xeon Gold 6252, 3 TB RAM, 64 threads with 32 per rule):
 
-| Field            | Example                                                    | Description                                                                                                                                                                                                                                                | Field Requirement |
-| ---------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| sample           | 'bHypStr1'                                               | Unique identifier of the sample, e.g., DToL ID.                                                                                                                                                                                                            | Required          |
-| hifi_reads       | '/absolute/path/to/raw_data/hifi/bHypStr1.fastq.gz'        | Absolute path to your HiFi reads, merged into a single `.fastq.gz` file.                                                                                                                                                                                   | Required          |
-| hic_r1           | '/absolute/path/to/raw_data/hic/bHypStr1.R1.fastq.gz'      | Absolute path to Hi-C forward reads in `.fastq.gz` format.                                                                                                                                                                                                 | Optional          |
-| hic_r2           | '/absolute/path/to/raw_data/hic/bHypStr1.R2.fastq.gz'      | Absolute path to Hi-C reverse reads in `.fastq.gz` format.                                                                                                                                                                                                 | Optional          |
-| ont_reads        | '/absolute/path/to/raw_data/ont/bHypStr1.ONT.fastq.gz'     | Absolute path to Oxford Nanopore reads in `.fastq.gz` format.                                                                                                                                                                                              | Optional          |
-| taxid            | 1202453                                                    | NCBI Taxonomy ID. Use a similar species if unavailable. Important for the decontamination step.                                                                                                                                                            | Required          |
-| buscodb          | 'aves'                                                     | BUSCO lineage name, e.g., `aves`, based on the closest taxonomic group. Do not use the `_odb10` suffix.                                                                                                                                                    | Required          |
-| solo_asm         | 'No'                                                       | Set to `Yes` for both solo and phased assemblies, or `No` for phased-only assembly.                                                                                                                                                                        | Required          |
-| genome_size      | 'medium'                                                   | Estimated genome size. Can be `small`, `medium`, `large`. Small genomes are < 2 Gb, medium genomes are 2–4 Gb, and large genomes are > 4 Gb. This is used for memory allocation in the Slurm configuration files. | Required          |
-| run_mitohifi     | 'No'                                                       | Set to `Yes` to run MitoHiFi for mitochondrial genome assembly, or `No` to skip it.                                                                                                                                                                        | Required          |
-| species          | 'Hypocnemis striata'                                       | Scientific name of the species. Used for naming and for the mitochondrial annotation reference. The species must be present in the NCBI Taxonomy database. Required when `run_mitohifi` is `Yes`.                                                          | Optional          |
-| geneticcode      | 2                                                          | Genetic code used for mitochondrial genome annotation, e.g., `2` for vertebrates. Required when `run_mitohifi` is `Yes`.                                                                                                                                   | Optional          |
-| diff_species_hic | 'No'                                                       | Set to `Yes` if the Hi-C data is from a different species; otherwise set to `No`. This runs Hifiasm in solo primary mode and applies YAHS scaffolding only to this assembly.                                                                               | Required          |
-| sif_dir          | '/absolute/path/to/singularity/images/'                               | Directory for storing Singularity image files.                                                                                                                                                                                                             | Required          |
-| gxdb             | '/absolute/path/to/fcs-gx_DB/gxdb' | Path to the FCS-GX contamination database. Leave empty to skip the decontamination step.                                                                                                                                                                   | Optional          |
+| Species | Genome size | HiFi | Hi-C | Phased assembly + scaffolding |
+| --- | --- | --- | --- | --- |
+| *Taeniopygia guttata* (bTaeGut) | 1.1 Gb | 39.5 Gb | 99.0 Gb | ~14 h |
+| *Pseudophryne corroboree* (aPseCor) | 8.9 Gb | 230.3 Gb | 381.0 Gb | ~80 h |
 
-- We have set default parameters to some software threads and RAM usage. You can change them at the `config/{genome_size}_genome_params.yaml` file.
+In general, an assembly ready for manual curation takes about 1–4 days.
 
-### 4. Run the Pipeline
-- Navigate back to the root directory of the cloned repository.
-- Run the pipeline with default parameters:
-  ``` bash
-  bash Pipeasm.sh -d /path/to/work/dir -t <n_threads>
+## Inputs and Configuration
 
- - Run with all available parameters:
-  ``` bash
-  bash Pipeasm.sh -d /path/to/work/dir -c </path/to/config.yaml> -s </path/to/snakefile> -t <n_threads> <step>
-  ```
-- **Extra Flags**:
-  - **-d** </path/to/work/dir> (Required) = Path to your working directory where all the workflow file are
-  - **-c** </path/to/config.yaml> (Optional) = Overwrite the default configuration file with all nedded parameters (config/config.yaml)
-  - **-s** </path/to/snakefile> (Optional) = Overwrite the default snakefile path (workflow/snakefile)
-  - **-t** {int} (Required) = Number of threads to use. If running in **SLURM** mode, this value determines how many jobs will be submitted to the queue.
-  - **-slurm** (Optional) = Use the `config/slurm_params.yaml` file to run the workflow with SLURM job submission using Snakemake’s profile system. This enables use of SLURM-specific resource configuration, submission rules, and cluster-specific options. If you want to change any default SLURM settings, such as the partition: Edit `config/slurm_params.yaml` and set the appropriate value for the `slurm_partition` variable
-  - **-partition** {string} (Required when **-slurm** is used) — Specifies the SLURM partition (queue) to which the jobs will be submitted.
-  - **-np** (Optional) = Perform a dry run to see what jobs will be executed without actually running them.
-  - **-unlock** (Optional) = Unlock the working directory if Snakemake has somehow locked it.
+### Supported Input Combinations
 
-  - Only the **-d** and **-t** flags are required if you want to run Pipeasm with default parameters. If you do not want to run the decontamination step, set **gxdb**, in the **config.yaml** file, **blank**.
-  - You can perform a dry-run (build only the DAG, no rule will be run) with `-np` and unlock the directory, if needed, with `-unlock`
-  - If you want to change any default settings, such as the threads number and memory usage: Edit `config/local_params.yaml`. **DO NOT CHANGE THE {WORKDIR}/{THREADS}/{PARTITION} VARIABLES**. Change the `{PARTITION}` only if you want to set multiple slurm partitions.
+HiFi reads are always required. Hi-C and ONT reads are optional and change which assemblies are produced:
 
-- You can choose a Pipeasm step with:
-  -  `-trimming_qc` (for Trimming and Quality Control);
-  -  `-kmer_eval` (for k-mer Evaluation stats/plots);
-  -  `-assembly` (for all Assembly and Decontamination steps);
-  -  `-scaffolding` (to run YAHS auto-scaffolding and create the Hi-C Maps);
+| Inputs | `solo_asm` | `diff_species_hic` | Assemblies produced | Scaffolding |
+| --- | --- | --- | --- | --- |
+| HiFi | `Yes` | `No` | Primary + alternate (Hifiasm solo) | No |
+| HiFi | `No` | `No` | None (only trimming/QC and k-mer profiling) | No |
+| HiFi + Hi-C (same species) | `No` | `No` | Hap1 + Hap2 (Hi-C phased) | Hap1 and Hap2 |
+| HiFi + Hi-C (same species) | `Yes` | `No` | Hap1 + Hap2 **and** primary + alternate | Hap1 and Hap2 |
+| HiFi + Hi-C (different species) | any | `Yes` | Primary + alternate (`--primary`) | Primary and alternate |
+| Any of the above + ONT | — | — | Same as above, with ONT reads added as ultra-long reads (`--ul`) | Same as above |
 
-- Just make sure to run previous steps before running the next one.
-  - Run
-  `bash Pipeasm.sh -d /path/to/work/dir -t 64 -trimming_qc`
-  before
-  `bash Pipeasm.sh -d /path/to/work/dir -t 64 -kmer_eval`
+ONT-only and Hi-C-only runs are not supported.
 
+### Raw Data
+Each read type must be merged into a single gzip-compressed FASTQ file:
 
-- Pipeasm will create a temporary directory at you working dir to store all singularity images and Snakemake temp files.
-
-### 5. Monitor Progress and View Results
-- Snakemake will display progress information and any errors encountered during the execution.
-- Once the pipeline completes successfully, you can find the output files in the `results` output directory as specified.
-- Pipeasm provides a extensive report data located at `workflow/report` directory.
-
-## How to Test the Pipeline
-
-We provide a test dataset, a ready-to-use configuration file, and all expected output files to help you quickly test and validate your Pipeasm installation.
-These resources are available on [Zenodo](https://zenodo.org/records/17243106?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6ImVjYjM1NWJjLTg1YzYtNDljOC1hMTYxLWFhNDEwNzM5ZDkyZSIsImRhdGEiOnt9LCJyYW5kb20iOiJhMzk0NDQ1NjdhYWY2MDBhZjM3ODExNjllODc0OWQ0OSJ9.b65MGFEuokHENviKgaDa9ITTpS9dOPRyCHzDSUAiikQDkW0CQDI5nUyAbWaHntvjqqNU847jdc9B5_7uEbSBcw).
-
-This Zenodo repository contains, for the *Panthera onca* (mPanOnc):
-
-1. Example HiFi and Hi-C read files for testing.
-2. A pre-configured config.yaml file tailored for the test dataset.
-3. Complete expected output files and reports from a successful run — useful for verifying your results match the reference outputs.
-
-You can use this dataset to ensure that your installation of Snakemake, Singularity, and all dependent containers are working properly before running your own genomic data.
-
-
-#### Summary Files
-
-The main output files include:
-
-- **Assembly Metrics**
-  - `{sample}.gfastats.csv`: General assembly statistics including contig and scaffold counts, N50, and L50.
-  - `{sample}.merqury.csv`: K-mer-based assembly quality metrics for evaluating base-level accuracy.
-  - `{sample}.compleasm.csv`: Completeness assessment using conserved single-copy orthologs.
-  - `{sample}.genomescope2_model.csv` and `{sample}.genomescope2_summary.csv`: Genome characterization and heterozygosity estimates.
-  - `{sample}.fcsadaptor.csv` and `{sample}.fcsgx.csv`: Adapters and contamination statistics.
-
-- **Metrics**
-  - `{sample}.flagstats.csv`: Alignment statistics from mapped reads.
-  - `{sample}.hifi_nanoplot.csv`: HiFi read quality metrics and length distributions.
-  - `Files/{sample}.completeness.stats` and `Files/{sample}.contigs_stats.tsv`: Detailed statistics for contigs, scaffolds, and completeness.
-
-#### Visualizations
-
-The `Images` folder contains a range of figures to aid interpretation:
-
-- **Contact Maps**:
-  - `{sample}.final_contacts_Hap1FullMap.png` and `{sample}.final_contacts_Hap2FullMap.png`: Hi-C contact maps for haplotype assemblies.
-
-- **Assembly Spectra**:
-  - Merqury phased and solo assemblies visualized via spectra plots (`*.spectra-cn.st.png`, `*.spectra-asm.st.png`).
-
-- **Scaffolding and Snail Plots**:
-  - `*_snail.png` files provide circular visualizations of scaffolding quality and haplotype structure.
-
-- **Read Quality and Length Distribution**:
-  - HiFi read length and quality plots (`HiFi_*` files) including linear, log-transformed, and weighted histograms.
-
-- **Smudgeplots**:
-  - `{sample}_smudgeplot.png` and `{sample}_smudgeplot_log10.png` visualize k-mer multiplicity and genome ploidy/heterozygosity patterns.
-
-#### HTML Reports
-
-Interactive HTML reports are included in the `Files` folder for detailed examination of read quality:
-
-- `{sample}.trimmed_fastqc.html`
-- `{sample}_R1.trimmed_paired_fastqc.html`
-- `{sample}_R2.trimmed_paired_fastqc.html`
-
-These reports allow in-depth inspection of per-base quality, GC content, duplication rates, and other QC metrics.
-
-#### FASTA Files
-
-- All FASTA files from Hifiasm and YAHS scaffolding are found in the `workflow/report/files` directory.
-
-### Additional Notes
-- Make sure to review and modify the Snakefile if necessary to fit your specific pipeline requirements.
-- Make sure conda is installed with singularity and snakemake in the active environment.
-- We are providing a [PBS](https://www.openpbs.org/) example file to run Pipeasm in a cloud/HPC environment. See `pipeasm.pbs`.
-
-### Example of the Results Structure
 ```
+/path/to/hifi_reads/hifi_reads.fastq.gz
+/path/to/hic_reads/r1_reads.fastq.gz
+/path/to/hic_reads/r2_reads.fastq.gz
+/path/to/ont_reads/ont_reads.fastq.gz
+```
+
+> **Note:** raw reads copied into the working directory are marked as temporary and deleted at the end of the run. Only the trimmed reads are kept.
+
+### `config/config.yaml`
+
+| Field | Example | Description | Requirement |
+| --- | --- | --- | --- |
+| sample | `'bHypStr1'` | Unique identifier of the sample, e.g., DToL ID. | Required |
+| hifi_reads | `'/absolute/path/to/raw_data/hifi/bHypStr1.fastq.gz'` | Absolute path to your HiFi reads, merged into a single `.fastq.gz` file. | Required |
+| hic_r1 | `'/absolute/path/to/raw_data/hic/bHypStr1.R1.fastq.gz'` | Absolute path to Hi-C forward reads in `.fastq.gz` format. | Optional |
+| hic_r2 | `'/absolute/path/to/raw_data/hic/bHypStr1.R2.fastq.gz'` | Absolute path to Hi-C reverse reads in `.fastq.gz` format. | Optional |
+| ont_reads | `'/absolute/path/to/raw_data/ont/bHypStr1.ONT.fastq.gz'` | Absolute path to Oxford Nanopore reads in `.fastq.gz` format. | Optional |
+| taxid | `1202453` | NCBI Taxonomy ID. Use a similar species if unavailable. Used by the decontamination step. | Required |
+| buscodb | `'aves'` | BUSCO lineage name based on the closest taxonomic group. Do not use the `_odb10` suffix. | Required |
+| solo_asm | `'No'` | `Yes` for both solo and phased assemblies, or `No` for phased only. | Required |
+| genome_size | `'medium'` | `small` (< 2 Gb), `medium` (2–4 Gb) or `large` (> 4 Gb). Selects the SLURM resource file and must be set in **both local and SLURM** modes. | Required |
+| run_mitohifi | `'No'` | `Yes` to assemble the mitogenome with MitoHiFi, `No` to skip it. | Required |
+| species | `'Hypocnemis striata'` | Scientific name, used to search for a mitochondrial reference. Must exist in the NCBI Taxonomy database. | Required if `run_mitohifi: 'Yes'` |
+| geneticcode | `2` | Genetic code for mitogenome annotation, e.g., `2` for vertebrates. | Required if `run_mitohifi: 'Yes'` |
+| diff_species_hic | `'No'` | `Yes` if the Hi-C data comes from a different species. Hifiasm then runs in solo primary mode and YaHS scaffolds only that assembly. | Required |
+| sif_dir | `'/absolute/path/to/singularity/images/'` | Directory where the Singularity images are stored. | Required |
+| gxdb | `'/absolute/path/to/gxdb'` | Path to the FCS-GX database. Leave empty to skip decontamination. | Optional |
+
+The rest of `config.yaml` holds tool parameters (fastp, Cutadapt, NanoPlot, FastK, GeneScopeFK, Smudgeplot, Hifiasm, gfastats, Bellerophon, Pretext, YaHS), each with a comment describing it.
+
+> **Note:** `Pipeasm.sh` appends `run_trimming_qc`, `run_kmer_evaluation`, `run_asm` and `run_auto_scaffolding` to the config file and switches them to `"Yes"` according to the selected steps. Reset them to `"No"` (or delete them) if you reuse the config file to run a different subset of steps.
+
+### Threads and Memory
+
+- **Local mode**: threads per rule are set in `config/local_params.yaml`.
+- **SLURM mode**: threads, memory (`mem_mb`), runtime and partition per rule are set in `config/{genome_size}_genome_params.yaml`.
+
+Do not edit the placeholders in braces (`{ WORKDIR }`, `{ THREADS }`, `{ PARTITION }`). `Pipeasm.sh` fills them in and writes the result to `profiles/local/config.yaml` or `profiles/slurm/config.yaml`, which are overwritten on every run. To send specific rules to a different partition, replace `{ PARTITION }` for those rules only.
+
+### FCS-GX Database
+
+Decontamination runs only when `gxdb` is set. The FCS-GX database takes **~470 GB of disk**, and FCS-GX needs **~512 GB of RAM** to run at full speed, so store it on fast local storage when possible.
+
+Download it with the `fcs.py` wrapper shipped with Pipeasm. First build the FCS-GX image (Pipeasm also builds it in `resources/` when `gxdb` is set, so you can reuse it later):
+
+```bash
+singularity build resources/fcs-gx.sif docker://ncbi/fcs-gx:latest
+
+python3 workflow/scripts/fcs.py --image resources/fcs-gx.sif db get \
+    --mft "https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/database/latest/all.manifest" \
+    --dir /absolute/path/to/gxdb
+```
+
+Then set `gxdb: '/absolute/path/to/gxdb'` in `config/config.yaml`. See the [FCS-GX wiki](https://github.com/ncbi/fcs/wiki/FCS-GX) for details.
+
+## Running Pipeasm
+
+### Command-line Options
+
+```bash
+bash Pipeasm.sh -d </path/to/work/dir> [-c <config.yaml>] [-s <Snakefile>] (-t <threads> | -slurm -partition <name> -j <jobs>) [step] [-np] [-unlock]
+```
+
+| Flag | Required | Description |
+| --- | --- | --- |
+| `-d <path>` | Yes | Working directory (the cloned repository). |
+| `-t <int>` | Yes, in local mode | Number of threads (cores) available to Snakemake. Not allowed with `-slurm`. |
+| `-j <int>` | Yes, with `-slurm` | Maximum number of jobs submitted to the SLURM queue at the same time. |
+| `-slurm` | No | Submit each rule as a SLURM job, using the resources from `config/{genome_size}_genome_params.yaml`. |
+| `-partition <name>` | Yes, with `-slurm` | SLURM partition (queue) for the jobs. |
+| `-c <path>` | No | Alternative config file (default: `config/config.yaml`). |
+| `-s <path>` | No | Alternative Snakefile (default: `workflow/Snakefile`). |
+| `-np` | No | Dry run: build the job graph without running any rule. |
+| `-unlock` | No | Unlock the working directory after an interrupted run. |
+
+**Steps.** By default, all steps run. To run only some of them, add one or more of:
+
+| Flag | Step |
+| --- | --- |
+| `-trimming_qc` | Trimming and quality control |
+| `-kmer_eval` | K-mer profiling statistics and plots |
+| `-assembly` | Assembly, statistics and decontamination |
+| `-scaffolding` | YaHS scaffolding and Hi-C contact maps |
+
+Steps depend on the outputs of the previous ones. Run them in order, e.g. `-trimming_qc` before `-kmer_eval`.
+
+### Local Mode
+
+```bash
+bash Pipeasm.sh -d /path/to/pipeasm -t 64
+```
+
+### SLURM Mode
+
+```bash
+bash Pipeasm.sh -d /path/to/pipeasm -slurm -partition <partition> -j 20
+```
+
+A submission script template is provided in [`pipeasm.slurm`](pipeasm.slurm). The Snakemake controller job itself needs few resources (e.g., 4 CPUs and 2 GB of RAM) but must run for the whole pipeline.
+
+### Temporary Files
+
+Pipeasm creates `singularity/` (Singularity cache) and `tmp/` (temporary files) in the working directory. Both can grow large, so the working directory should be on a file system with enough free space.
+
+## Outputs
+
+All results are written to `results/`. The main files are also collected into `workflow/report/`.
+
+### Report (`workflow/report/`)
+
+- **Summary**
+  - `{sample}.summary.txt`: a plain-text summary of the main metrics for each assembly.
+- **Assembly metrics**
+  - `{sample}.gfastats.csv`: contig and scaffold counts, N50, L50, etc.
+  - `{sample}.merqury.csv`: k-mer QV and completeness.
+  - `{sample}.compleasm.csv`: BUSCO gene completeness.
+  - `{sample}.genomescope2_model.csv` and `{sample}.genomescope2_summary.csv`: genome size, heterozygosity and repeat content estimates.
+  - `{sample}.fcsadaptor.csv` and `{sample}.fcsgx.csv`: adapters and contaminants found.
+- **Read and mapping metrics**
+  - `{sample}.flagstats.csv`: Hi-C mapping statistics.
+  - `{sample}.hifi_nanoplot.csv` and `{sample}.ont_nanoplot.csv`: read length and quality metrics.
+  - `{sample}.fastqc_basic_stats.csv` and `{sample}.fastqc_overrepresented_sequences.csv`: FastQC summaries.
+- **`images/`**
+  - Hi-C contact maps (`*FullMap.png`), before and after scaffolding.
+  - MerquryFK spectra plots (`*.spectra-cn.*.png`, `*.spectra-asm.*.png`).
+  - Snail plots (`*_snail.png`).
+  - KatGC and KatComp plots.
+  - Read length and quality plots (`HiFi_*`, `ONT_*`).
+  - Smudgeplots (`{sample}_smudgeplot*.png`).
+- **`files/`**
+  - FASTA files from Hifiasm and YaHS.
+  - Mitogenome files (when `run_mitohifi: 'Yes'`).
+  - FastQC HTML reports (`{sample}.trimmed_fastqc.html`, `{sample}_R1.trimmed_paired_fastqc.html`, `{sample}_R2.trimmed_paired_fastqc.html`).
+  - Detailed statistics, e.g. `{sample}.completeness.stats` and `{sample}.contigs_stats.tsv`.
+
+### Results Directory Structure
+
+Only the directories that apply to your inputs and settings are created.
+
+```
+results/
+├── Trimming_QC
+│   ├── HiFi
+│   ├── HiC
+│   ├── ONT
+│   ├── FastK
+│   └── QC
+│       ├── HiFi_FastQC
+│       ├── HiFi_NanoPlot
+│       ├── HiC_FastQC
+│       └── ONT_NanoPlot
 ├── Assembly
-│ ├── Contigging
-│ │ ├── Phased_Asm
-│ │ └── Solo_Asm
-│ ├── Genome_Stats
-│ │ ├── Compleasm
-│ │ │ ├── Phased_Asm_Hap1
-│ │ │ ├── Phased_Asm_Hap2
-│ │ │ ├── Solo_Asm_Alt
-│ │ │ └── Solo_Asm_Primary
-│ │ ├── GFAstats
-│ │ ├── GeneScopeFK
-│ │ ├── KAT
-│ │ ├── Merqury
-│ │ │ ├── Phased_Asm
-│ │ │ └── Solo_Asm
-│ │ ├── Smudgeplot
-│ │ └── SnailPlot
-│ │     ├── Phased_Asm
-│ │     │ ├── Phased-Hap1
-│ │     │ └── Phased-Hap2
-│ │     └── Solo_Asm
-│ │         ├── 00-Solo-Hap1
-│ │         └── 01-Solo-Hap2
-│ └── Mitogenome
-│     ├── Phased_Asm
-│     └── Solo_Asm
+│   ├── Contigging
+│   │   ├── Phased_Asm
+│   │   └── Solo_Asm
+│   ├── Genome_Stats
+│   │   ├── Compleasm
+│   │   │   ├── Phased_Asm_Hap1
+│   │   │   ├── Phased_Asm_Hap2
+│   │   │   ├── Solo_Asm_Alt
+│   │   │   └── Solo_Asm_Primary
+│   │   ├── GFAstats
+│   │   ├── GeneScopeFK
+│   │   ├── KatComp
+│   │   ├── KatGC
+│   │   ├── MerquryFK
+│   │   │   ├── Phased_Asm
+│   │   │   └── Solo_Asm
+│   │   ├── Smudgeplot
+│   │   └── SnailPlot
+│   │       ├── Phased_Asm
+│   │       │   ├── Phased-Hap1
+│   │       │   └── Phased-Hap2
+│   │       └── Solo_Asm
+│   │           ├── 00-Solo-Hap1
+│   │           └── 01-Solo-Hap2
+│   └── Mitogenome
+│       ├── Phased_Asm
+│       └── Solo_Asm
 ├── Decontamination
-│ ├── Contaminants
-│ │ ├── Phased_Asm_Hap1
-│ │ ├── Phased_Asm_Hap2
-│ │ ├── Solo_Asm_Alt
-│ │ └── Solo_Asm_Primary
-│ └── FCS-Adaptor
-│     ├── Phased_Asm_Hap1
-│     ├── Phased_Asm_Hap2
-│     ├── Solo_Asm_Alt
-│     └── Solo_Asm_Primary
-├── Scaffolding
-│ ├── Final_Contacts
-│ │ ├── Hap1
-│ │ └── Hap2
-│ ├── Initial_Contacts
-│ │ ├── Hap1
-│ │ └── Hap2
-│ ├── Scaffolding_stats
-│ │ ├── Compleasm
-│ │ │ ├── Hap1
-│ │ │ └── Hap2
-│ │ ├── GFAstats
-│ │ ├── Merqury
-│ │ └── SnailPlot
-│ │     ├── Hap1
-│ │     └── Hap2
-│ └── YAHS_Scaffolding
-│     ├── Hap1
-│     └── Hap2
-└── Trimming_QC
-    ├── HiC
-    ├── HiFi
-    ├── Meryl_DB
-    └── QC
-        ├── HiC_FastQC
-        ├── HiFi_FastQC
-        └── HiFi_NanoPlot
+│   ├── Contaminants
+│   │   ├── Phased_Asm_Hap1
+│   │   ├── Phased_Asm_Hap2
+│   │   ├── Solo_Asm_Alt
+│   │   └── Solo_Asm_Primary
+│   └── FCS-Adaptor
+│       ├── Phased_Asm_Hap1
+│       ├── Phased_Asm_Hap2
+│       ├── Solo_Asm_Alt
+│       └── Solo_Asm_Primary
+└── Scaffolding
+    ├── Initial_Contacts
+    │   └── {Hap1,Hap2,Primary,Alternative}
+    ├── YAHS_Scaffolding
+    │   └── {Hap1,Hap2,Primary,Alternative}
+    ├── Final_Contacts
+    │   └── {Hap1,Hap2,Primary,Alternative}
+    └── Scaffolding_stats
+        ├── Compleasm
+        │   └── {Hap1,Hap2,Primary,Alternative}
+        ├── GFAstats
+        ├── MerquryFK
+        └── SnailPlot
+            └── {Hap1,Hap2,Primary,Alternative}
 ```
 
-# Changelog
+## Test Dataset
 
-## Pipeasm 1.1.2 – Changelog
+We provide a test dataset, a ready-to-use configuration file and all expected output files on [Zenodo](https://zenodo.org/records/17243106?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6ImVjYjM1NWJjLTg1YzYtNDljOC1hMTYxLWFhNDEwNzM5ZDkyZSIsImRhdGEiOnt9LCJyYW5kb20iOiJhMzk0NDQ1NjdhYWY2MDBhZjM3ODExNjllODc0OWQ0OSJ9.b65MGFEuokHENviKgaDa9ITTpS9dOPRyCHzDSUAiikQDkW0CQDI5nUyAbWaHntvjqqNU847jdc9B5_7uEbSBcw), for *Panthera onca* (mPanOnc):
 
-### New Features
+1. Example HiFi and Hi-C read files.
+2. A pre-configured `config.yaml` for the test dataset.
+3. The complete outputs and reports of a successful run, to compare with your results.
 
-- Added small, medium, and large genome Slurm configuration files.
+Use it to check that Snakemake, Singularity and all containers work before running your own data.
 
-- Added a new genome_size directive to the .yaml configuration file to select the appropriate genome-size-specific Slurm configuration.
+## Troubleshooting
 
-### Improvements
+- **`LockException` / "Directory cannot be locked"**: a previous run was interrupted. Run the same command with `-unlock`, then run it again without it.
+- **Incomplete outputs after a crash**: just rerun the same command. The profiles enable `rerun-incomplete` and `keep-going`, so Snakemake resumes from where it stopped.
+- **Where to look when a rule fails**: each rule writes its log to `logs/` and its resource usage to `benchmarks/` in the working directory. Snakemake also prints the failed rule's log at the end of the run.
+- **"No space left on device"**: `singularity/` and `tmp/` in the working directory and `sif_dir` can grow large. Move the working directory to a larger file system or clean old runs.
+- **`ERROR: Invalid genome_size`**: `genome_size` in `config.yaml` must be `small`, `medium` or `large`, even in local mode.
+- **`-t is not allowed with -slurm`**: in SLURM mode, use `-j` for the number of queued jobs and `-partition` for the queue.
+- **Unexpected steps running (or not running)**: check the `run_*` flags at the end of `config.yaml` (see the note in [`config/config.yaml`](#configconfigyaml)).
 
-- Changed {sample}.abstract.txt to {sample}.summary.txt in the workflow/report directory.
+## How to Cite
 
-### Bug Fixes
+> Bruno Marques Silva, Fernanda de Jesus Trindade, Lucas Eduardo Costa Canesin, Giordano Souza, Alexandre Aleixo, Gisele Nunes, Renato Renison Moreira-Oliveira. Pipeasm: a tool for automated large chromosome-scale genome assembly and evaluation. *Bioinformatics Advances*, Volume 6, Issue 1, 2026, vbaf326. https://doi.org/10.1093/bioadv/vbaf326
 
-- Fixed parsing of Merqury QV values in the summary.
+```bibtex
+@article{silva2026pipeasm,
+  author  = {Silva, Bruno Marques and Trindade, Fernanda de Jesus and Canesin, Lucas Eduardo Costa and Souza, Giordano and Aleixo, Alexandre and Nunes, Gisele and Moreira-Oliveira, Renato Renison},
+  title   = {Pipeasm: a tool for automated large chromosome-scale genome assembly and evaluation},
+  journal = {Bioinformatics Advances},
+  volume  = {6},
+  number  = {1},
+  pages   = {vbaf326},
+  year    = {2026},
+  doi     = {10.1093/bioadv/vbaf326}
+}
+```
 
-- Fixed the Cutadapt comment in the configuration file.
+## Changelog
 
-- Fixed the Merqury parser.
-
-## Pipeasm 1.1.1 – Changelog
-
-### Improvements
-- Add mitogenome files to `workflow/report`.
-- Updated `Compleasm` to fix filename parsing failure.
-
-## Pipeasm 1.1.0 – Changelog
-
-### New Features
-- Replaced `meryl` as the k-mer counter with:
-  - `FastK`
-  - `MerquryFK`
-  - `GenoScopeFK`
-- Added support for using Hi-C data from a different species:
-  - Performs a primary-only assembly using the `--primary` flag.
-  - Applies `YAHS` scaffolding on the resulting contigs.
-- Introduced a new `-j` flag for Slurm mode to control the number of jobs submitted to the queue.
-
-### Improvements
-- Updated `compleasm` to version 2.7.0.
-- Reduced RAM usage in assembly rules from 700GB to 500GB.
-- Marked raw reads as temporary files:
-  - Raw reads are now automatically deleted after pipeline execution.
-  - Only trimmed reads are retained.
-
-### Changes
-- Made `mitoHiFi` optional:
-  - Controlled via the `run_mitohifi` flag in the configuration file.
-  - Updated configuration to reflect optional `mitoHiFi` execution.
-
-## Pipeasm 1.0.1 – Changelog
-
-### New Features
-- Added Slurm support:
-  - To modify default parameters, edit `profiles/slurm/config.yaml`.
-  - Set your partition using the `slurm_partition` variable.
-
-### Improvements
-- Enhanced handling when `mitoHiFi` fails to assemble the mitogenome.
-- Added `Singularity` temporary directory (`tmpdir`) handling in the `.sh` scripts.
-- Included YAHS FASTA outputs in the reports.
-- Updated `hifiasm` to version 0.25.0.
-
-### Bug Fixes
-- Fixed abstract text formatting.
-- Corrected file checking and `fcs-adaptor` Singularity image issues.
-- Fixed `fcs` stderr output.
+See [CHANGELOG.md](CHANGELOG.md).

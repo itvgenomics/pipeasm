@@ -14,14 +14,14 @@ TBEGIN=`echo "print time();" | perl`
 printf "\n"
 printf "> Running with $CORES cores, in $NODES nodes\n"
 
-# Make sure to activate the conda enviroment with snakemake and singularity installation
+# Make sure to activate the conda environment with Snakemake and Singularity installed
 source /mnt/gen/opt/softwares/miniconda3/etc/profile.d/conda.sh
 conda activate snakemake2
 
 cd $PBS_O_WORKDIR
 
-# Caminho dos arquivos do singularity para colocar no config.yaml (sif_dir): "/scratch/sif_files/pipeasm"
-# Caminho para colocar no gxdb: "/mnt/gen/opt/utils/lucas/S4-Databases/fcs-gx_testDB/gxdb"
+# Example Singularity image directory to set in config.yaml (sif_dir): "/scratch/sif_files/pipeasm"
+# Example FCS-GX database path to set in config.yaml (gxdb): "/mnt/gen/opt/utils/lucas/S4-Databases/fcs-gx_testDB/gxdb"
 bash Pipeasm.sh -d . -c config/config.yaml -s workflow/Snakefile -t <threads>
 
 TEND=`echo "print time();" | perl`

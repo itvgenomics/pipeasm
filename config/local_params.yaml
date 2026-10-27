@@ -1,6 +1,6 @@
 executor: local
 use-singularity: true
-singularity-args: "-B {WORKDIR}:/data --pwd /data"
+singularity-args: "-B { WORKDIR }:/data --pwd /data"
 latency-wait: 60
 show-failed-logs: True
 keep-going: True

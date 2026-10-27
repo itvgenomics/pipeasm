@@ -114,14 +114,16 @@ fi
 # Ensure THREADS and WORKDIR have values
 if [ -z "$WORKDIR" ] || [ -z "$THREADS" ]; then
     cat << 'EOF'
-ERROR: Missing one of the required arguments: -d (Work Directory), -t (# Threads)
+ERROR: Missing one of the required arguments: -d (Work Directory), -t (# Threads) or -j (# Jobs, with -slurm)
 
-## Usage: ./Pipeasm.sh -c <config.yaml> -d </path/to/work/dir> -s </path/to/snakefile> -t <# threads>
-#-d </path/to/work/dir> = Path to your working directory where all the workflow file are
-#-c </path/to/config.yaml> = Overwrite the default configuration file with all nedded parameters (config/config.yaml).
-#-s </path/to/snakefile> = Overwrite the default snakefile path (workflow/Snakefile)
-#-t <int> = Number of threads to use
-#-j <int> = Number of jobs submitted to the queue (only for -slurm)
+## Usage: ./Pipeasm.sh -d </path/to/work/dir> [-c <config.yaml>] [-s <Snakefile>] (-t <# threads> | -slurm -partition <name> -j <# jobs>) [step] [-np] [-unlock]
+#-d </path/to/work/dir> = Path to your working directory where all the workflow files are
+#-c </path/to/config.yaml> = Overwrite the default configuration file with all needed parameters (config/config.yaml)
+#-s </path/to/snakefile> = Overwrite the default Snakefile path (workflow/Snakefile)
+#-t <int> = Number of threads to use (local mode only)
+#-slurm = Submit the jobs to SLURM, using config/{genome_size}_genome_params.yaml
+#-partition <name> = SLURM partition (required with -slurm)
+#-j <int> = Number of jobs submitted to the queue (required with -slurm)
 
 # You can choose a Pipeasm step with:
     -trimming_qc (for Trimming and Quality Control);
@@ -129,8 +131,8 @@ ERROR: Missing one of the required arguments: -d (Work Directory), -t (# Threads
     -assembly (for all Assembly and Decontamination steps);
     -scaffolding (for all Scaffolding and Hi-C Map steps);
 
-# Only the -d and -t flags are required if you want to use the Snakemake default parameters
-# You can perform a dry-run (build only the DAG, no rule will be run) with -np and unlock the directory, if needed, with --unlock
+# Only the -d and -t flags are required to run locally with the default parameters
+# You can perform a dry-run (build only the DAG, no rule will be run) with -np and unlock the directory, if needed, with -unlock
 
 EOF
 

@@ -12,7 +12,7 @@ printf "Begin: `date`\n";
 TBEGIN=`echo "print time();" | perl`
 
 printf "\n"
-# Activate conda envs
+# Load Snakemake and Singularity (e.g., via environment modules or conda)
 
 module load snakemake
 
@@ -24,11 +24,11 @@ mkdir -p $SLURM_SUBMIT_DIR/singularity $SLURM_SUBMIT_DIR/tmp
 
 ### RECOMMENDED ###
 # Perform a dry run to see what jobs will be executed without actually running them.
-# This is will check all input files, build singularity images and download the seeds. After this command you can run the following, without -np
-# bash Pipeasm.sh -d . -c config/config.yaml -s workflow/Snakefile -t <threads> -np
+# This will check all input files and build the Singularity images. After this command you can run the following, without -np
+# bash Pipeasm.sh -d . -c config/config.yaml -s workflow/Snakefile -j <n_jobs> -slurm -partition op1_slurm -np
 
-# Caminho dos arquivos do singularity para colocar no config.yaml (sif_dir): "/scratch/sif_files/pipeasm"
-# Caminho para colocar no gxdb: "/mnt/gen/opt/utils/lucas/S4-Databases/fcs-gx_testDB/gxdb"
+# Example Singularity image directory to set in config.yaml (sif_dir): "/scratch/sif_files/pipeasm"
+# Example FCS-GX database path to set in config.yaml (gxdb): "/mnt/gen/opt/utils/lucas/S4-Databases/fcs-gx_testDB/gxdb"
 # Example command to run Pipeasm with slurm:
 bash Pipeasm.sh -d . -c config/config.yaml -s workflow/Snakefile -j <n_jobs> -slurm -partition op1_slurm
 
