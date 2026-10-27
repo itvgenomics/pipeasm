@@ -121,7 +121,7 @@ ERROR: Missing one of the required arguments: -d (Work Directory), -t (# Threads
 #-c </path/to/config.yaml> = Overwrite the default configuration file with all needed parameters (config/config.yaml)
 #-s </path/to/snakefile> = Overwrite the default Snakefile path (workflow/Snakefile)
 #-t <int> = Number of threads to use (local mode only)
-#-slurm = Submit the jobs to SLURM, using config/{genome_size}_genome_params.yaml
+#-slurm = Submit the jobs to SLURM, using config/slurm_params.yaml and config/resources/{genome_size}.yaml
 #-partition <name> = SLURM partition (required with -slurm)
 #-j <int> = Number of jobs submitted to the queue (required with -slurm)
 
@@ -160,47 +160,32 @@ fi
 CONFIGFILE=$(realpath "$CONFIGFILE")
 SNAKEFILE=$(realpath "$SNAKEFILE")
 
-lines=(
-    'run_trimming_qc: "No"'
-    'run_kmer_evaluation: "No"'
-    'run_asm: "No"'
-    'run_auto_scaffolding: "No"'
-)
-
-for line in "${lines[@]}"; do
-    if ! grep -qF "$line" "$CONFIGFILE"; then
-        echo "$line" >> "$CONFIGFILE"
-    fi
-done
-
+# Steps to run. They are passed to Snakemake with --config, so the config file is never modified.
 if [ "$FULL" = true ]; then
-    sed -i 's/run_trimming_qc: "No"/run_trimming_qc: "Yes"/g' "$CONFIGFILE"
-    sed -i 's/run_kmer_evaluation: "No"/run_kmer_evaluation: "Yes"/g' "$CONFIGFILE"
-    sed -i 's/run_asm: "No"/run_asm: "Yes"/g' "$CONFIGFILE"
-    sed -i 's/run_auto_scaffolding: "No"/run_auto_scaffolding: "Yes"/g' "$CONFIGFILE"
+    TRIMMING_QC=true
+    KMER_EVAL=true
+    ASSEMBLY=true
+    SCAFFOLDING=true
 fi
 
-if [ "$TRIMMING_QC" = true ]; then
-    sed -i 's/run_trimming_qc: "No"/run_trimming_qc: "Yes"/g' "$CONFIGFILE"
-fi
+yes_no() {
+    if [ "$1" = true ]; then echo "Yes"; else echo "No"; fi
+}
 
-if [ "$KMER_EVAL" = true ]; then
-    sed -i 's/run_kmer_evaluation: "No"/run_kmer_evaluation: "Yes"/g' "$CONFIGFILE"
-fi
-
-if [ "$ASSEMBLY" = true ]; then
-    sed -i 's/run_asm: "No"/run_asm: "Yes"/g' "$CONFIGFILE"
-fi
-
-if [ "$SCAFFOLDING" = true ]; then
-    sed -i 's/run_auto_scaffolding: "No"/run_auto_scaffolding: "Yes"/g' "$CONFIGFILE"
-fi
+RUN_STEPS="run_trimming_qc=$(yes_no $TRIMMING_QC) run_kmer_evaluation=$(yes_no $KMER_EVAL) run_asm=$(yes_no $ASSEMBLY) run_auto_scaffolding=$(yes_no $SCAFFOLDING)"
 
 echo "INFO: Arguments:"
 echo "      WORKDIR $WORKDIR"
 echo "      CONFIGFILE $CONFIGFILE"
 echo "      SNAKEFILE $SNAKEFILE"
 echo "      THREADS $THREADS"
+echo "      STEPS $RUN_STEPS"
+
+# Check the config file before doing anything else
+if [ -z "$SETUNLOCK" ]; then
+    echo "INFO: Checking the configuration file."
+    python $WORKDIR/workflow/scripts/check_config.py --config $CONFIGFILE
+fi
 
 echo "INFO: Creating temp dirs."
 
@@ -213,16 +198,10 @@ python $WORKDIR/workflow/scripts/singularity.py --config $CONFIGFILE
 # Read genome_size from config.yaml
 GENOME_SIZE=$(grep '^genome_size:' "$CONFIGFILE" | sed -E "s/^genome_size:[[:space:]]*['\"]?([^'\"]*)['\"]?/\1/")
 
-# Select the parameter file
+# Select the SLURM resources file
 case "$GENOME_SIZE" in
-    small)
-        PARAMS_FILE="$WORKDIR/config/small_genome_params.yaml"
-        ;;
-    medium)
-        PARAMS_FILE="$WORKDIR/config/medium_genome_params.yaml"
-        ;;
-    large)
-        PARAMS_FILE="$WORKDIR/config/large_genome_params.yaml"
+    small|medium|large)
+        RESOURCES_FILE="$WORKDIR/config/resources/$GENOME_SIZE.yaml"
         ;;
     *)
         echo "ERROR: Invalid genome_size ('$GENOME_SIZE'). Expected 'small', 'medium', or 'large'."
@@ -237,10 +216,12 @@ if [ "$SETSLURM" = true ]; then
     export SINGULARITY_CACHEDIR=$WORKDIR/singularity && \
     export SINGULARITY_TMPDIR=$WORKDIR/tmp && \
     export TMPDIR=$WORKDIR/tmp && \
-    sed "s|{ WORKDIR }|$WORKDIR|g; s|{ THREADS }|$THREADS|g; s|{ PARTITION }|$PARTITION|g" \
-        "$PARAMS_FILE" > $WORKDIR/profiles/slurm/config.yaml && \
+    cat $WORKDIR/config/slurm_params.yaml $WORKDIR/config/threads.yaml "$RESOURCES_FILE" | \
+        sed "s|{ WORKDIR }|$WORKDIR|g; s|{ THREADS }|$THREADS|g; s|{ PARTITION }|$PARTITION|g" \
+        > $WORKDIR/profiles/slurm/config.yaml && \
     snakemake -d $WORKDIR --snakefile $SNAKEFILE \
         --configfile $CONFIGFILE \
+        --config $RUN_STEPS \
         --profile $WORKDIR/profiles/slurm/ \
         $SETUNLOCK $SETNP
 else
@@ -248,10 +229,12 @@ else
     export SINGULARITY_CACHEDIR=$WORKDIR/singularity && \
     export SINGULARITY_TMPDIR=$WORKDIR/tmp && \
     export TMPDIR=$WORKDIR/tmp && \
-    sed "s|{ WORKDIR }|$WORKDIR|g; s|{ THREADS }|$THREADS|g" \
-        $WORKDIR/config/local_params.yaml > $WORKDIR/profiles/local/config.yaml && \
+    cat $WORKDIR/config/local_params.yaml $WORKDIR/config/threads.yaml | \
+        sed "s|{ WORKDIR }|$WORKDIR|g; s|{ THREADS }|$THREADS|g" \
+        > $WORKDIR/profiles/local/config.yaml && \
     snakemake -d $WORKDIR --snakefile $SNAKEFILE \
         --configfile $CONFIGFILE \
+        --config $RUN_STEPS \
         --profile $WORKDIR/profiles/local/ \
         --cores $THREADS $SETUNLOCK $SETNP
 fi

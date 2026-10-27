@@ -1,0 +1,42 @@
+###############################################################################
+# Pipeasm - Snakemake profile for SLURM execution (Pipeasm.sh -slurm)
+#
+# This is a template. Pipeasm.sh joins this file with config/threads.yaml and
+# config/resources/{genome_size}.yaml, replaces { WORKDIR }, { THREADS } (the
+# value of -j) and { PARTITION } (the value of -partition), and writes the
+# result to profiles/slurm/config.yaml before every run. Edit THESE files, not
+# the generated one.
+#
+# Each job is submitted with:
+#   --cpus-per-task = threads           (config/threads.yaml)
+#   --mem           = mem_mb (MB)       (config/resources/{genome_size}.yaml)
+#   --time          = runtime (minutes)
+#   --partition     = slurm_partition
+###############################################################################
+
+# ── General settings ─────────────────────────────────────────────────────────
+executor: slurm
+use-singularity: true
+singularity-args: "-B { WORKDIR }:/data --pwd /data"
+latency-wait: 60                   # seconds to wait for output files on shared file systems
+show-failed-logs: True             # print the log of a failed job
+keep-going: True                   # keep running independent jobs when one fails
+printshellcmds: True               # print the shell command of each job
+rerun-incomplete: True             # re-run jobs whose output was left incomplete
+jobs: { THREADS }                  # maximum number of jobs queued/running at once (-j)
+max-jobs-per-second: 10            # submission rate limit, to avoid flooding the scheduler
+max-status-checks-per-second: 20
+
+
+# ── Default resources ────────────────────────────────────────────────────────
+# Applied to every rule. Rules listed in config/resources/{genome_size}.yaml
+# override only the values they set and inherit the rest from here.
+# String values are wrapped in single quotes inside double quotes so Snakemake
+# reads them as text and not as Python expressions.
+default-resources:
+  slurm_partition: "'{ PARTITION }'"
+  mem_mb: 2000                     # 2 GB
+  runtime: 4320                    # 72 h
+  nodes: 1
+  # slurm_account: "'my_account'"  # uncomment if your cluster requires an account
+

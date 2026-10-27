@@ -1,0 +1,142 @@
+###############################################################################
+# Pipeasm - SLURM resources per rule for medium genomes (2-4 Gb)
+#
+# Used when `genome_size: "medium"` is set in config/config.yaml and Pipeasm
+# runs with -slurm. Pipeasm.sh appends this file to config/slurm_params.yaml
+# and config/threads.yaml to build profiles/slurm/config.yaml.
+#
+# Only rules that need more than the defaults in config/slurm_params.yaml
+# (2 GB of RAM, 72 h, the -partition queue) are listed. Each rule overrides
+# only the values it sets and inherits the rest from the defaults.
+#
+# Examples:
+#   phased_assembly: {mem_mb: 300000}                            # more memory
+#   phased_fcsgx: {mem_mb: 480000, slurm_partition: "highmem"}   # another queue
+#   yahs_scaffolding_hap1: {mem_mb: 16000, runtime: 1440}        # 24 h limit
+###############################################################################
+
+set-resources:
+  # Trimming and QC
+  trimming_hic:                               {mem_mb: 100000}    # 100 GB
+  qc_trim_hic:                                {mem_mb: 100000}    # 100 GB
+  trimming_pacbio:                            {mem_mb: 100000}    # 100 GB
+  trimming_ont:                               {mem_mb: 100000}    # 100 GB
+  qc_trim_pacbio:                             {mem_mb: 50000}     # 50 GB
+  qc_nanoplot_pacbio:                         {mem_mb: 50000}     # 50 GB
+  qc_nanoplot_ont:                            {mem_mb: 50000}     # 50 GB
+
+  # K-mer profiling
+  fastk:                                      {mem_mb: 32000}     # 32 GB
+  genescopeFK:                                {mem_mb: 20000}     # 20 GB
+  smudgeplot:                                 {mem_mb: 150000}    # 150 GB
+  katgc:                                      {mem_mb: 200000}    # 200 GB
+  katcomp:                                    {mem_mb: 200000}    # 200 GB
+
+  # Assembly (Hifiasm)
+  phased_assembly:                            {mem_mb: 400000}    # 400 GB
+  ont_phased_assembly:                        {mem_mb: 400000}    # 400 GB
+  ont_solo_assembly:                          {mem_mb: 400000}    # 400 GB
+  solo_assembly:                              {mem_mb: 200000}    # 200 GB
+
+  # Mitogenome (MitoHiFi)
+  phased_run_mitohifi:                        {mem_mb: 200000}    # 200 GB
+  solo_run_mitohifi:                          {mem_mb: 200000}    # 200 GB
+
+  # Decontamination (FCS-adaptor and FCS-GX)
+  phased_fcsadaptor_hap1:                     {mem_mb: 200000}    # 200 GB
+  phased_fcsadaptor_hap2:                     {mem_mb: 200000}    # 200 GB
+  phased_fcsgx:                               {mem_mb: 480000}    # 480 GB
+  phased_fcsgx_clean_hap1:                    {mem_mb: 200000}    # 200 GB
+  phased_fcsgx_clean_hap2:                    {mem_mb: 200000}    # 200 GB
+  solo_fcsadaptor_hap1:                       {mem_mb: 200000}    # 200 GB
+  solo_fcsadaptor_hap2:                       {mem_mb: 200000}    # 200 GB
+  solo_fcsgx:                                 {mem_mb: 480000}    # 480 GB
+  solo_fcsgx_clean_hap1:                      {mem_mb: 200000}    # 200 GB
+  solo_fcsgx_clean_hap2:                      {mem_mb: 200000}    # 200 GB
+
+  # Assembly statistics (gfastats, Compleasm, MerquryFK, snail plots)
+  phased_run_snailplot_create_hap1:           {mem_mb: 16000}     # 16 GB
+  phased_run_snailplot_plot_hap1:             {mem_mb: 8000}      # 8 GB
+  phased_run_snailplot_create_hap2:           {mem_mb: 16000}     # 16 GB
+  phased_run_snailplot_plot_hap2:             {mem_mb: 8000}      # 8 GB
+  phased_compleasm_hap1:                      {mem_mb: 80000}     # 80 GB
+  phased_compleasm_hap2:                      {mem_mb: 80000}     # 80 GB
+  phased_merqury:                             {mem_mb: 200000}    # 200 GB
+  phased_gfastats_fasta_hap1:                 {mem_mb: 8000}      # 8 GB
+  phased_gfastats_stats_hap1:                 {mem_mb: 8000}      # 8 GB
+  phased_gfastats_fasta_hap2:                 {mem_mb: 8000}      # 8 GB
+  phased_gfastats_stats_hap2:                 {mem_mb: 8000}      # 8 GB
+  solo_run_snailplot_create_primary:          {mem_mb: 16000}     # 16 GB
+  solo_run_snailplot_plot_primary:            {mem_mb: 8000}      # 8 GB
+  solo_run_snailplot_create_alt:              {mem_mb: 16000}     # 16 GB
+  solo_run_snailplot_plot_alt:                {mem_mb: 8000}      # 8 GB
+  solo_compleasm_hap1:                        {mem_mb: 80000}     # 80 GB
+  solo_compleasm_hap2:                        {mem_mb: 80000}     # 80 GB
+  solo_merqury:                               {mem_mb: 200000}    # 200 GB
+  solo_gfastats_fasta_primary:                {mem_mb: 8000}      # 8 GB
+  solo_gfastats_stats_primary:                {mem_mb: 8000}      # 8 GB
+  solo_gfastats_fasta_alt:                    {mem_mb: 8000}      # 8 GB
+  solo_gfastats_stats_alt:                    {mem_mb: 8000}      # 8 GB
+
+  # Hi-C mapping and contact maps (BWA-MEM2, SAMtools, Bellerophon, Pretext)
+  final_contacts_bwa_mem2_index_hap1:         {mem_mb: 120000}    # 120 GB
+  final_contacts_bwa_mem2_index_hap2:         {mem_mb: 120000}    # 120 GB
+  final_contacts_bwa_mem2_index_prim:         {mem_mb: 120000}    # 120 GB
+  final_contacts_bwa_mem2_index_alt:          {mem_mb: 120000}    # 120 GB
+  final_contacts_bwa_mem2_mapping_hap1_r1:    {mem_mb: 200000}    # 200 GB
+  final_contacts_bwa_mem2_mapping_hap1_r2:    {mem_mb: 200000}    # 200 GB
+  final_contacts_bwa_mem2_mapping_prim_r1:    {mem_mb: 200000}    # 200 GB
+  final_contacts_bwa_mem2_mapping_alt_r1:     {mem_mb: 200000}    # 200 GB
+  final_contacts_bwa_mem2_mapping_hap2_r1:    {mem_mb: 200000}    # 200 GB
+  final_contacts_bwa_mem2_mapping_hap2_r2:    {mem_mb: 200000}    # 200 GB
+  final_contacts_bwa_mem2_mapping_prim_r2:    {mem_mb: 200000}    # 200 GB
+  final_contacts_bwa_mem2_mapping_alt_r2:     {mem_mb: 200000}    # 200 GB
+  final_contacts_pretext_map_snapshot_hap1:   {mem_mb: 20000}     # 20 GB
+  final_contacts_pretext_map_snapshot_hap2:   {mem_mb: 20000}     # 20 GB
+  final_contacts_pretext_map_snapshot_prim:   {mem_mb: 20000}     # 20 GB
+  final_contacts_pretext_map_snapshot_alt:    {mem_mb: 20000}     # 20 GB
+  initial_contacts_bwa_mem2_index_hap1:       {mem_mb: 120000}    # 120 GB
+  initial_contacts_bwa_mem2_index_hap2:       {mem_mb: 120000}    # 120 GB
+  initial_contacts_bwa_mem2_index_prim:       {mem_mb: 120000}    # 120 GB
+  initial_contacts_bwa_mem2_index_alt:        {mem_mb: 120000}    # 120 GB
+  initial_contacts_bwa_mem2_mapping_hap1_r1:  {mem_mb: 200000}    # 200 GB
+  initial_contacts_bwa_mem2_mapping_hap1_r2:  {mem_mb: 200000}    # 200 GB
+  initial_contacts_bwa_mem2_mapping_hap2_r1:  {mem_mb: 200000}    # 200 GB
+  initial_contacts_bwa_mem2_mapping_hap2_r2:  {mem_mb: 200000}    # 200 GB
+  initial_contacts_bwa_mem2_mapping_prim_r1:  {mem_mb: 200000}    # 200 GB
+  initial_contacts_bwa_mem2_mapping_prim_r2:  {mem_mb: 200000}    # 200 GB
+  initial_contacts_bwa_mem2_mapping_alt_r1:   {mem_mb: 200000}    # 200 GB
+  initial_contacts_bwa_mem2_mapping_alt_r2:   {mem_mb: 200000}    # 200 GB
+  initial_contacts_pretext_map_snapshot_hap1: {mem_mb: 20000}     # 20 GB
+  initial_contacts_pretext_map_snapshot_hap2: {mem_mb: 20000}     # 20 GB
+  initial_contacts_pretext_map_snapshot_prim: {mem_mb: 20000}     # 20 GB
+  initial_contacts_pretext_map_snapshot_alt:  {mem_mb: 20000}     # 20 GB
+
+  # Scaffolding (YaHS)
+  yahs_scaffolding_hap1:                      {mem_mb: 80000}     # 80 GB
+  yahs_scaffolding_hap2:                      {mem_mb: 80000}     # 80 GB
+  yahs_scaffolding_prim:                      {mem_mb: 80000}     # 80 GB
+  yahs_scaffolding_alt:                       {mem_mb: 80000}     # 80 GB
+
+  # Scaffolding statistics (gfastats, Compleasm, MerquryFK, snail plots)
+  scaffolding_compleasm_hap1:                 {mem_mb: 80000}     # 80 GB
+  scaffolding_compleasm_hap2:                 {mem_mb: 80000}     # 80 GB
+  scaffolding_compleasm_prim:                 {mem_mb: 80000}     # 80 GB
+  scaffolding_compleasm_alt:                  {mem_mb: 80000}     # 80 GB
+  scaffolding_run_snailplot_create_hap1:      {mem_mb: 8000}      # 8 GB
+  scaffolding_run_snailplot_plot_hap1:        {mem_mb: 8000}      # 8 GB
+  scaffolding_run_snailplot_create_hap2:      {mem_mb: 8000}      # 8 GB
+  scaffolding_run_snailplot_plot_hap2:        {mem_mb: 8000}      # 8 GB
+  scaffolding_run_snailplot_create_prim:      {mem_mb: 8000}      # 8 GB
+  scaffolding_run_snailplot_plot_prim:        {mem_mb: 8000}      # 8 GB
+  scaffolding_run_snailplot_create_alt:       {mem_mb: 8000}      # 8 GB
+  scaffolding_run_snailplot_plot_alt:         {mem_mb: 8000}      # 8 GB
+  scaffolding_gfastats_stats_hap1:            {mem_mb: 8000}      # 8 GB
+  scaffolding_gfastats_stats_hap2:            {mem_mb: 8000}      # 8 GB
+  scaffolding_gfastats_stats_prim:            {mem_mb: 8000}      # 8 GB
+  scaffolding_gfastats_stats_alt:             {mem_mb: 8000}      # 8 GB
+  scaffolding_merqury:                        {mem_mb: 200000}    # 200 GB
+  scaffolding_merqury_prim:                   {mem_mb: 200000}    # 200 GB
+
+  # Final report (rule all: parses the results into workflow/report)
+  all:                                        {mem_mb: 8000}      # 8 GB

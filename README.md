@@ -142,7 +142,7 @@ cd pipeasm
 
 Pipeasm targets HPC nodes or large workstations. By default, the heavy rules use **31 threads**, so a node with at least **32 cores** is recommended.
 
-The memory requested per rule depends on `genome_size` (see `config/{small,medium,large}_genome_params.yaml`). The table shows the largest requests:
+The memory requested per rule in SLURM mode depends on `genome_size` (see `config/resources/{small,medium,large}.yaml`). The table shows the largest requests:
 
 | `genome_size` | Genome size | Hifiasm assembly | FCS-GX (if enabled) | BWA-MEM2 index |
 | --- | --- | --- | --- | --- |
@@ -194,34 +194,55 @@ Each read type must be merged into a single gzip-compressed FASTQ file:
 
 ### `config/config.yaml`
 
+The config file is split into sections (sample and reads, assembly options, completeness and contaminants, mitogenome, containers, and advanced tool parameters). Each field has a comment explaining its accepted values. Use absolute paths, and write `"Yes"`/`"No"` in quotes.
+
 | Field | Example | Description | Requirement |
 | --- | --- | --- | --- |
-| sample | `'bHypStr1'` | Unique identifier of the sample, e.g., DToL ID. | Required |
-| hifi_reads | `'/absolute/path/to/raw_data/hifi/bHypStr1.fastq.gz'` | Absolute path to your HiFi reads, merged into a single `.fastq.gz` file. | Required |
-| hic_r1 | `'/absolute/path/to/raw_data/hic/bHypStr1.R1.fastq.gz'` | Absolute path to Hi-C forward reads in `.fastq.gz` format. | Optional |
-| hic_r2 | `'/absolute/path/to/raw_data/hic/bHypStr1.R2.fastq.gz'` | Absolute path to Hi-C reverse reads in `.fastq.gz` format. | Optional |
-| ont_reads | `'/absolute/path/to/raw_data/ont/bHypStr1.ONT.fastq.gz'` | Absolute path to Oxford Nanopore reads in `.fastq.gz` format. | Optional |
-| taxid | `1202453` | NCBI Taxonomy ID. Use a similar species if unavailable. Used by the decontamination step. | Required |
-| buscodb | `'aves'` | BUSCO lineage name based on the closest taxonomic group. Do not use the `_odb10` suffix. | Required |
-| solo_asm | `'No'` | `Yes` for both solo and phased assemblies, or `No` for phased only. | Required |
-| genome_size | `'medium'` | `small` (< 2 Gb), `medium` (2–4 Gb) or `large` (> 4 Gb). Selects the SLURM resource file and must be set in **both local and SLURM** modes. | Required |
-| run_mitohifi | `'No'` | `Yes` to assemble the mitogenome with MitoHiFi, `No` to skip it. | Required |
-| species | `'Hypocnemis striata'` | Scientific name, used to search for a mitochondrial reference. Must exist in the NCBI Taxonomy database. | Required if `run_mitohifi: 'Yes'` |
-| geneticcode | `2` | Genetic code for mitogenome annotation, e.g., `2` for vertebrates. | Required if `run_mitohifi: 'Yes'` |
-| diff_species_hic | `'No'` | `Yes` if the Hi-C data comes from a different species. Hifiasm then runs in solo primary mode and YaHS scaffolds only that assembly. | Required |
-| sif_dir | `'/absolute/path/to/singularity/images/'` | Directory where the Singularity images are stored. | Required |
-| gxdb | `'/absolute/path/to/gxdb'` | Path to the FCS-GX database. Leave empty to skip decontamination. | Optional |
+| sample | `"bHypStr1"` | Unique sample identifier (letters, numbers and underscores), e.g., DToL ID. | Required |
+| hifi_reads | `"/data/raw_data/hifi/bHypStr1.fastq.gz"` | Absolute path to the HiFi reads, merged into a single `.fastq.gz` file. | Required |
+| hic_r1 / hic_r2 | `"/data/raw_data/hic/bHypStr1.R1.fastq.gz"` | Absolute paths to the Hi-C forward and reverse reads (`.fastq.gz`). Set both or neither. | Optional |
+| ont_reads | `"/data/raw_data/ont/bHypStr1.ONT.fastq.gz"` | Absolute path to the Oxford Nanopore reads (`.fastq.gz`). | Optional |
+| genome_size | `"medium"` | `small` (< 2 Gb), `medium` (2–4 Gb) or `large` (> 4 Gb). Selects the SLURM resource file and must be set in **both local and SLURM** modes. | Required |
+| solo_asm | `"No"` | `"Yes"` for both solo and phased assemblies, `"No"` for phased only. Set `"Yes"` when there is no Hi-C. | Required |
+| diff_species_hic | `"No"` | `"Yes"` if the Hi-C data comes from a different species. Hifiasm then runs in solo primary mode and YaHS scaffolds the primary and alternate assemblies. | Required |
+| buscodb | `"aves"` | [BUSCO lineage](https://busco-data.ezlab.org/v5/data/lineages/) of the closest taxonomic group, without the `_odb10` suffix. | Required |
+| taxid | `1202453` | [NCBI Taxonomy](https://www.ncbi.nlm.nih.gov/taxonomy) ID. Use a similar species if unavailable. Used by the decontamination step. | Required |
+| gxdb | `"/databases/fcs-gx/gxdb"` | Path to the FCS-GX database. Leave empty to skip decontamination. | Optional |
+| run_mitohifi | `"No"` | `"Yes"` to assemble the mitogenome with MitoHiFi, `"No"` to skip it. | Required |
+| species | `"Hypocnemis striata"` | Scientific name, used to search for a mitochondrial reference. Must exist in the NCBI Taxonomy database. | Required if `run_mitohifi: "Yes"` |
+| geneticcode | `2` | [Genetic code](https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi) for mitogenome annotation, e.g., `2` for vertebrates. | Required if `run_mitohifi: "Yes"` |
+| sif_dir | `"/data/singularity_images/pipeasm"` | Directory where the Singularity images are stored. | Required |
 
-The rest of `config.yaml` holds tool parameters (fastp, Cutadapt, NanoPlot, FastK, GeneScopeFK, Smudgeplot, Hifiasm, gfastats, Bellerophon, Pretext, YaHS), each with a comment describing it.
+The **advanced tool parameters** at the end of the file (fastp, Cutadapt, NanoPlot, FastK, GeneScopeFK, Smudgeplot, Hifiasm, gfastats, Bellerophon, Pretext, YaHS) follow the VGP/DToL defaults. Each one has a comment explaining what it does. For example, change the YaHS `-e` enzyme motifs to match your Hi-C kit, or use `-l 0` in Hifiasm for highly homozygous genomes.
 
-> **Note:** `Pipeasm.sh` appends `run_trimming_qc`, `run_kmer_evaluation`, `run_asm` and `run_auto_scaffolding` to the config file and switches them to `"Yes"` according to the selected steps. Reset them to `"No"` (or delete them) if you reuse the config file to run a different subset of steps.
+**Configuration check.** Before every run, `Pipeasm.sh` validates the config file with `workflow/scripts/check_config.py`. It reports all problems at once (missing required fields, files not found, relative paths, invalid `"Yes"`/`"No"` values, Hi-C R1 without R2, missing `species`/`geneticcode` for MitoHiFi, mismatched k-mer sizes, etc.) and stops before anything runs. The config file is never modified by Pipeasm.
 
 ### Threads and Memory
 
-- **Local mode**: threads per rule are set in `config/local_params.yaml`.
-- **SLURM mode**: threads, memory (`mem_mb`), runtime and partition per rule are set in `config/{genome_size}_genome_params.yaml`.
+Threads and resources are kept in a few small files under `config/`, so each value is set in one place only:
 
-Do not edit the placeholders in braces (`{ WORKDIR }`, `{ THREADS }`, `{ PARTITION }`). `Pipeasm.sh` fills them in and writes the result to `profiles/local/config.yaml` or `profiles/slurm/config.yaml`, which are overwritten on every run. To send specific rules to a different partition, replace `{ PARTITION }` for those rules only.
+| File | Used in | Contents |
+| --- | --- | --- |
+| `config/threads.yaml` | Local and SLURM | Threads per rule (rules not listed use 1 thread). |
+| `config/local_params.yaml` | Local | General Snakemake settings for local runs. |
+| `config/slurm_params.yaml` | SLURM | General SLURM settings and the default resources for every rule (2 GB, 72 h, the `-partition` queue, and an optional `slurm_account`). |
+| `config/resources/{small,medium,large}.yaml` | SLURM | Memory per rule for each `genome_size`. Only rules that need more than the defaults are listed. |
+
+`Pipeasm.sh` joins the files for the selected mode, fills in the placeholders in braces (`{ WORKDIR }`, `{ THREADS }`, `{ PARTITION }`; do not edit them) and writes `profiles/local/config.yaml` or `profiles/slurm/config.yaml`. Those generated files are overwritten on every run, so edit the files in `config/` instead.
+
+Examples:
+
+```yaml
+# config/threads.yaml - give Hifiasm 64 threads
+  phased_assembly: 64
+
+# config/resources/large.yaml - more memory, another partition or a longer time limit for one rule
+  phased_assembly: {mem_mb: 1000000}
+  phased_fcsgx: {mem_mb: 480000, slurm_partition: "highmem"}
+  yahs_scaffolding_hap1: {mem_mb: 16000, runtime: 7200}
+```
+
+In local mode, a job never uses more threads than `-t`, and Snakemake does not limit memory. Make sure the machine has enough RAM for the heavy steps (see [Hardware Requirements](#hardware-requirements)).
 
 ### FCS-GX Database
 
@@ -237,7 +258,7 @@ python3 workflow/scripts/fcs.py --image resources/fcs-gx.sif db get \
     --dir /absolute/path/to/gxdb
 ```
 
-Then set `gxdb: '/absolute/path/to/gxdb'` in `config/config.yaml`. See the [FCS-GX wiki](https://github.com/ncbi/fcs/wiki/FCS-GX) for details.
+Then set `gxdb: "/absolute/path/to/gxdb"` in `config/config.yaml`. See the [FCS-GX wiki](https://github.com/ncbi/fcs/wiki/FCS-GX) for details.
 
 ## Running Pipeasm
 
@@ -252,7 +273,7 @@ bash Pipeasm.sh -d </path/to/work/dir> [-c <config.yaml>] [-s <Snakefile>] (-t <
 | `-d <path>` | Yes | Working directory (the cloned repository). |
 | `-t <int>` | Yes, in local mode | Number of threads (cores) available to Snakemake. Not allowed with `-slurm`. |
 | `-j <int>` | Yes, with `-slurm` | Maximum number of jobs submitted to the SLURM queue at the same time. |
-| `-slurm` | No | Submit each rule as a SLURM job, using the resources from `config/{genome_size}_genome_params.yaml`. |
+| `-slurm` | No | Submit each rule as a SLURM job, using `config/slurm_params.yaml` and `config/resources/{genome_size}.yaml`. |
 | `-partition <name>` | Yes, with `-slurm` | SLURM partition (queue) for the jobs. |
 | `-c <path>` | No | Alternative config file (default: `config/config.yaml`). |
 | `-s <path>` | No | Alternative Snakefile (default: `workflow/Snakefile`). |
@@ -408,7 +429,8 @@ Use it to check that Snakemake, Singularity and all containers work before runni
 - **"No space left on device"**: `singularity/` and `tmp/` in the working directory and `sif_dir` can grow large. Move the working directory to a larger file system or clean old runs.
 - **`ERROR: Invalid genome_size`**: `genome_size` in `config.yaml` must be `small`, `medium` or `large`, even in local mode.
 - **`-t is not allowed with -slurm`**: in SLURM mode, use `-j` for the number of queued jobs and `-partition` for the queue.
-- **Unexpected steps running (or not running)**: check the `run_*` flags at the end of `config.yaml` (see the note in [`config/config.yaml`](#configconfigyaml)).
+- **`ERROR: Found N problem(s) in ...config.yaml`**: the configuration check found invalid fields. Fix each item listed and run again.
+- **A SLURM job runs out of memory or time**: raise `mem_mb` or `runtime` for that rule in `config/resources/{genome_size}.yaml` (see [Threads and Memory](#threads-and-memory)) and run the same command again.
 
 ## How to Cite
 

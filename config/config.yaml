@@ -1,110 +1,192 @@
-## Samples information and input and output
-# (Required) Unique identifier of the sample, e.g., DToL ID.
-sample: ''
-# (Required) Absolute path to your HiFi reads, merged into a single .fastq.gz file.
-hifi_reads: ''
-# (Optional) Absolute path to Hi-C forward reads in .fastq.gz format.
-hic_r1: ''
-# (Optional) Absolute path to Hi-C reverse reads in .fastq.gz format.
-hic_r2: ''
-# (Optional) Absolute path to Oxford Nanopore reads in .fastq.gz format.
-ont_reads: ''
-# (Required) NCBI Taxonomy ID; use a similar species if unavailable. Important for the decontamination step.
-taxid:
-# (Required) BUSCO lineage name, e.g., "aves", based on closest taxonomic group. Do not use the "_odb10" suffix.
-buscodb: ''
-# (Required) Set to 'Yes' for both solo and phased assemblies, or 'No' for phased only.
-solo_asm: 'No'
+###############################################################################
+# Pipeasm - Main configuration file
+#
+# Fill in the fields marked (Required) and run:
+#   bash Pipeasm.sh -d /path/to/pipeasm -t <threads> -np    # dry run first
+#
+# - Use absolute paths for every file and directory.
+# - "Yes"/"No" fields are not case-sensitive.
+# - The steps to run are chosen with Pipeasm.sh flags (-trimming_qc, -kmer_eval,
+#   -assembly, -scaffolding), not in this file.
+# - Pipeasm checks this file before running and lists any problems it finds.
+#
+# Threads and memory per rule are set in config/threads.yaml and
+# config/resources/{genome_size}.yaml (see "Threads and Memory" in the README).
+###############################################################################
 
-# (Required) Estimated genome size. Can be "small", "medium", "large".
-# Small genomes are < 2 Gb, medium genomes are 2-4 Gb, and large genomes are > 4 Gb.
-# This selects the SLURM resource file (config/{genome_size}_genome_params.yaml) and must be set in both local and SLURM modes.
-genome_size: ''
 
-# (Required) Set to 'Yes' to run MitoHiFi for mitochondrial genome assembly; 'No' to skip.
-run_mitohifi: 'No'
-# (Optional) Scientific name of the species. Used for naming and mito annotation reference. Must be present in the NCBI Taxonomy database.
-# This name is used to search for a mitochondrial reference.
-# Required if run_mitohifi is 'Yes'.
-species: ''
-# (Optional) Genetic code for mitochondrial genome annotation (e.g., 2 for vertebrates).
-# Required if run_mitohifi is 'Yes'.
-geneticcode:
+################################
+#### SAMPLE AND INPUT READS ####
+################################
 
-# (Required) Set to 'Yes' if Hi-C data is from a different species; otherwise 'No'.
-# This will run Hifiasm with solo assembly primary mode and run YAHS scaffolding only on this assembly.
-# The final pretext map will still be generated before and after scaffolding.
+# (Required) Unique sample identifier, used to name all output files.
+# Letters, numbers and underscores only (e.g., a DToL/VGP ID such as "bHypStr1").
+sample: ""
+
+# (Required) Absolute path to the PacBio HiFi reads, merged into a single .fastq.gz file.
+# E.g.: "/data/raw_data/hifi/bHypStr1.fastq.gz"
+hifi_reads: ""
+
+# (Optional) Absolute paths to the Hi-C paired-end reads (.fastq.gz). Set both or leave both empty.
+# Without Hi-C, no phasing or scaffolding is done (see "Supported Input Combinations" in the README).
+# E.g.: "/data/raw_data/hic/bHypStr1.R1.fastq.gz" and "/data/raw_data/hic/bHypStr1.R2.fastq.gz"
+hic_r1: ""
+hic_r2: ""
+
+# (Optional) Absolute path to Oxford Nanopore reads (.fastq.gz).
+# They are trimmed with Dorado and added to Hifiasm as ultra-long reads (--ul).
+# E.g.: "/data/raw_data/ont/bHypStr1.ONT.fastq.gz"
+ont_reads: ""
+
+
+################################
+####### ASSEMBLY OPTIONS #######
+################################
+
+# (Required) Estimated haploid genome size: "small" (< 2 Gb), "medium" (2-4 Gb) or "large" (> 4 Gb).
+# Selects the memory requested per rule in SLURM mode (config/resources/{genome_size}.yaml).
+# Required in local mode too.
+genome_size: ""
+
+# (Required) "Yes" to also run a Hifiasm solo (primary/alternate) assembly; "No" for the Hi-C phased assembly only.
+# With HiFi reads only (no Hi-C), set "Yes", otherwise no assembly is produced.
+solo_asm: "No"
+
+# (Required) "Yes" if the Hi-C reads come from a different species than the HiFi reads; otherwise "No".
+# Hifiasm then runs in solo primary mode (--primary) and YaHS scaffolds the primary and alternate
+# assemblies. Hi-C contact maps are still generated before and after scaffolding. Requires hic_r1/hic_r2.
 diff_species_hic: "No"
 
-# (Required) Directory for storing Singularity image files.
-# E.g.: "/scratch/sif_files/pipeasm"
-sif_dir: ''
 
-## FCS-GX Database
-# (Optional) Path to FCS-GX contamination DB. Leave empty to skip.
-# E.g.: "/mnt/gen/opt/utils/lucas/S4-Databases/fcs-gx_testDB/gxdb"
+################################
+## COMPLETENESS AND CONTAMINANTS
+################################
+
+# (Required) BUSCO lineage used by Compleasm, based on the closest taxonomic group (e.g., "aves", "mammalia").
+# Do not add the "_odb10" suffix. Available lineages: https://busco-data.ezlab.org/v5/data/lineages/
+buscodb: ""
+
+# (Required) NCBI Taxonomy ID of the species (e.g., 1202453). Use a closely related species if unavailable.
+# Used by FCS-GX to tell contaminants from the target organism. Search: https://www.ncbi.nlm.nih.gov/taxonomy
+taxid:
+
+# (Optional) Absolute path to the FCS-GX database directory. Leave empty to skip decontamination.
+# The database takes ~470 GB of disk and FCS-GX needs ~512 GB of RAM
+# (see "FCS-GX Database" in the README for how to download it).
+# E.g.: "/databases/fcs-gx/gxdb"
 gxdb:
 
-## Fastp parameters
-# Parameters used for read trimming and QC via fastp.
+
+################################
+########## MITOGENOME ##########
+################################
+
+# (Required) "Yes" to assemble the mitochondrial genome with MitoHiFi; "No" to skip it.
+run_mitohifi: "No"
+
+# (Required if run_mitohifi is "Yes") Scientific name of the species (e.g., "Hypocnemis striata").
+# Used to search NCBI for a mitochondrial reference of the same or a related species.
+species: ""
+
+# (Required if run_mitohifi is "Yes") Genetic code for mitogenome annotation:
+# 2 = vertebrate mitochondrial, 5 = invertebrate mitochondrial.
+# Full list: https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi
+geneticcode:
+
+
+################################
+########## CONTAINERS ##########
+################################
+
+# (Required) Absolute path to the directory where the Singularity images (.sif) are stored.
+# The images are downloaded on the first run and reused afterwards, so it can be shared between runs.
+# E.g.: "/data/singularity_images/pipeasm"
+sif_dir: ""
+
+
+###############################################################################
+######################### ADVANCED TOOL PARAMETERS ############################
+#
+# The default values below follow the VGP/DToL assembly pipelines and work for
+# most genomes. Change them only if you know what you are doing.
+# Each value is passed as-is to the tool's command line.
+###############################################################################
+
+## fastp - Hi-C read trimming and QC
+# https://github.com/OpenGene/fastp
 fastp:
-  flags: '--cut_tail --detect_adapter_for_pe --dont_eval_duplication --trim_poly_g'  # Main fastp flags for adapter detection and trimming.
-  min_len: '--length_required 35'  # Minimum read length to keep after trimming.
-  crop: '--trim_front1 5'  # Trim 5 bases from start of read1.
-  quality: '--cut_mean_quality 24'  # Trim based on mean quality (Q24 threshold).
+  # --cut_tail: trim low-quality bases from the 3' end (sliding window, see `quality`)
+  # --detect_adapter_for_pe: detect adapters by read overlap; --trim_poly_g: trim poly-G tails (NovaSeq/NextSeq)
+  # --dont_eval_duplication: skip the duplication analysis (saves time and memory)
+  flags: "--cut_tail --detect_adapter_for_pe --dont_eval_duplication --trim_poly_g"
+  min_len: "--length_required 35"     # discard reads shorter than 35 bp after trimming
+  crop: "--trim_front1 5"             # trim 5 bp from the start of read 1 only (add --trim_front2 for read 2)
+  quality: "--cut_mean_quality 24"    # mean quality threshold of the --cut_tail sliding window
 
-## Cutadapt parameters
-# Used for adapter trimming with Cutadapt. Customize these only if needed.
+## Cutadapt - PacBio HiFi adapter removal
+# https://cutadapt.readthedocs.io
 cutadapt:
-  adaptors: '-b ATCTCTCTCAACAACAACAACGGAGGAGGAGGAAAAGAGAGAGAT -b ATCTCTCTCTTTTCCTCCTCCTCCGTTGTTGTTGTTGAGAGAGAT'  # Adapter sequences to remove.
-  filtering: '--discard -O 35'  # Discard reads with adapter and require overlap of 35 bases.
-  adap_find: '--rc -e 0.1'  # Search for adapter on reverse complement, with 10% error rate allowed.
+  # PacBio SMRTbell adapter sequences; -b searches for them anywhere in the read
+  adaptors: "-b ATCTCTCTCAACAACAACAACGGAGGAGGAGGAAAAGAGAGAGAT -b ATCTCTCTCTTTTCCTCCTCCTCCGTTGTTGTTGTTGAGAGAGAT"
+  filtering: "--discard -O 35"        # discard the whole read when an adapter is found (minimum overlap of 35 bp)
+  adap_find: "--rc -e 0.1"            # also search the reverse complement, allowing a 10% error rate
 
-## NanoPlot parameters
-# Parameters for read quality plots using NanoPlot.
+## NanoPlot - HiFi and ONT read length and quality plots
+# https://github.com/wdecoster/NanoPlot
 nanoplot:
-  args: "--tsv_stats --format svg"  # Output format and statistical tables.
-  plots: "--plots kde hex dot"  # Types of plots to generate.
+  args: "--tsv_stats --format svg"    # write statistics as TSV and plots as SVG
+  plots: "--plots kde hex dot"        # plot types for the length vs. quality plots
 
-## FastK parameters
-# Used for counting k-mers with FastK.
+## FastK - k-mer counting of the HiFi reads
+# https://github.com/thegenemyers/FASTK
 fastk:
-  default: "-v -M32 -t1"
-  kmer: "-k31"
+  default: "-v -M32 -t1"              # -v: verbose; -M32: use up to 32 GB of memory for sorting; -t1: keep k-mers seen at least once
+  kmer: "-k31"                        # k-mer size. Must match genescopeFK.kmer
 
-## GeneScopeFK parameters
-# Used for estimating genome properties from k-mer histogram.
+## GeneScopeFK - genome size, heterozygosity and repeat content from the k-mer histogram
+# https://github.com/thegenemyers/GENESCOPE.FK
 genescopeFK:
-  kmer: "-k 31"  # K-mer size (should match FastK).
-  ploidy: "-p 2"  # Ploidy level; usually 2 for diploids.
+  kmer: "-k 31"                       # k-mer size. Must match fastk.kmer
+  ploidy: "-p 2"                      # expected ploidy (2 for diploids)
 
-## Parameters for SmudgePlot
-# Used to infer ploidy from k-mer pairs.
+## Smudgeplot - ploidy estimation from k-mer pairs
+# https://github.com/KamilSJaron/smudgeplot
 smudgeplot:
-  minsize: "-L 12"  # Minimum size of k-mer pairs to consider.
+  # k-mers with a count below this value are treated as sequencing errors.
+  # Set it just above the error peak of the GeneScopeFK k-mer spectrum.
+  minsize: "-L 12"
 
-## Hifiasm parameters
-# Assembly-specific flags; advanced users can tweak these for purge and similarity tuning.
+## Hifiasm - contig assembly
+# https://hifiasm.readthedocs.io
 hifiasm:
-  purgelevel: "-l 1 -O 1"  # Controls haplotig purging.
-  similarity: "-s 0.75"  # Controls stringency for contig comparison.
+  # -l: duplicate (haplotig) purge level: 0 = none, 1 = light, 2/3 = aggressive.
+  #     Use -l 0 for inbred or highly homozygous genomes.
+  # -O: minimum number of overlapping reads needed to remove a duplicated contig
+  purgelevel: "-l 1 -O 1"
+  # Similarity threshold to call two contigs duplicated haplotigs during purging
+  # (Hifiasm default: 0.75 for -l 1/2, 0.55 for -l 3)
+  similarity: "-s 0.75"
 
-## gfastats parameters
-# Used for summarizing assemblies.
+## gfastats - assembly graph to FASTA conversion and assembly statistics
+# https://github.com/vgl-hub/gfastats
 gfastats:
-  params: "-o fa --discover-paths"  # Output in FASTA format with extra stats.
+  params: "-o fa --discover-paths"    # write FASTA, building the sequences from the paths in the Hifiasm GFA
 
-## Bellerophon parameters
-# Filter mapped reads where the mapping spans a junction, retaining the 5-prime read.
-# Keep quality thresholds here.
-bellerophon: "--quality 10"
+## Bellerophon - Hi-C read filtering
+# Keeps only the 5' side of Hi-C reads that span a ligation junction and merges R1/R2.
+# https://github.com/davebx/bellerophon
+bellerophon: "--quality 10"           # minimum mapping quality (MAPQ) to keep a read
 
-## Pretext parameters
-# Hi-C visualization; adjust styles here if needed.
+## PretextMap / PretextSnapshot - Hi-C contact maps
+# https://github.com/sanger-tol/PretextMap and https://github.com/sanger-tol/PretextSnapshot
 pretext:
-  map: "--mapq 10"  # Minimum mapping quality for PretextMap.
-  snapshot: "--sequences '=full' -c 'Mellow Rainbow' --gridSize 1 --gridColour black --jpegQuality 100 -r 4000"  # Snapshot settings.
+  map: "--mapq 10"                    # minimum mapping quality (MAPQ) of the reads used in the map
+  # Image of the full map (all sequences), "Mellow Rainbow" colour map, black grid, 4000 px resolution
+  snapshot: "--sequences '=full' -c 'Mellow Rainbow' --gridSize 1 --gridColour black --jpegQuality 100 -r 4000"
 
-## YAHS parameters
-# Auto-scaffolding with Hi-C data.
-yahs: "-e GATC,GANTC,CTNAG,TTAA --no-mem-check -v 1"  # Enzyme cut sites and verbosity.
+## YaHS - Hi-C scaffolding
+# https://github.com/c-zhou/yahs
+# -e: restriction enzyme motifs of the Hi-C library. The default matches the Arima kit
+#     (GATC, GANTC, CTNAG, TTAA). Remove "-e ..." for enzyme-free kits such as Omni-C.
+# --no-mem-check: skip YaHS's memory check; -v 1: verbosity level
+yahs: "-e GATC,GANTC,CTNAG,TTAA --no-mem-check -v 1"

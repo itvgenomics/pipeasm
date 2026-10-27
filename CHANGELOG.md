@@ -2,11 +2,26 @@
 
 ## Pipeasm 1.1.3
 
+### New Features
+- Added `workflow/scripts/check_config.py`, which validates the config file before every run and lists all problems at once (missing required fields, files not found, relative paths, invalid "Yes"/"No" values, incomplete Hi-C pairs, missing MitoHiFi fields, mismatched k-mer sizes).
+
+### Changes
+- Split the Snakemake profile templates so each value is set in one place:
+  - `config/threads.yaml`: threads per rule, shared by local and SLURM modes.
+  - `config/slurm_params.yaml`: general SLURM settings and default resources (2 GB, 72 h, partition, optional account).
+  - `config/resources/{small,medium,large}.yaml`: memory per rule for each `genome_size`.
+  - Removed `config/{small,medium,large}_genome_params.yaml`. Only rules that differ from the defaults are listed (about 900 to 140 lines per file).
+- `Pipeasm.sh` no longer modifies the config file: the selected steps are passed to Snakemake with `--config`.
+- Reorganized `config/config.yaml` into sections, with accepted values, examples and links for every field, and corrected descriptions of the advanced tool parameters.
+- Set `max-jobs-per-second` to 10 in SLURM mode (it was equal to `-j`).
+
 ### Improvements
 - Added a `--memory` limit to FastQC for HiFi reads.
 - Rewrote the README: quick start, software versions, hardware requirements, supported input combinations, FCS-GX database setup and troubleshooting. Moved the changelog to `CHANGELOG.md`.
 
 ### Bug Fixes
+- Fixed the SLURM resources of `scaffolding_merqury_prim` (listed as `scaffolding_merqury_alt`), which ran with 1 thread and Snakemake's default memory when `diff_species_hic` was "Yes".
+- Removed stale or misspelled rule names from the thread settings (`remove_buscodb`, `caffolding_gfastats_stats_alt`, `scaffolding_edit_busco_table_alt`).
 - Fixed the `{ WORKDIR }` placeholder in `config/local_params.yaml`, which was not replaced in local mode, leaving the Singularity bind path as the literal `{WORKDIR}`.
 - Replaced hard-coded SLURM partitions in `config/{small,medium,large}_genome_params.yaml` with the `{ PARTITION }` placeholder set by `-partition`.
 - Removed leftover `run_*` flags from `config/config.yaml`.
