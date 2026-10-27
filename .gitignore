@@ -2,3 +2,4 @@
 *.slurm
 toydata/
 changelog.txt
+benchmarks/
